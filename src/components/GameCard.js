@@ -3,11 +3,15 @@ import PropTypes from "prop-types";
 import Price from "./price";
 import Featured from "./Featured";
 
-const GameCard = ({ game }) => (
+const GameCard = ({ game, toggleFeatured }) => (
   <div className="ui card">
     <div className="image">
       <Price cents={game.price} />
-      <Featured featured={game.featured} />
+      <Featured
+        featured={game.featured}
+        toggleFeatured={toggleFeatured}
+        gameID={game._id}
+      />
       <img src={game.thumbnail} alt="Cover game " />
     </div>
     <div className="content">
@@ -26,7 +30,8 @@ GameCard.propTypes = {
     price: PropTypes.number.isRequired,
     duration: PropTypes.number.isRequired,
     featured: PropTypes.bool.isRequired
-  }).isRequired
+  }).isRequired,
+  toggleFeatured: PropTypes.func.isRequired
 };
 
 export default GameCard;
