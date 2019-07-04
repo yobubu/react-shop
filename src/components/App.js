@@ -1,5 +1,5 @@
 import React from "react";
-import _sortBy from "lodash/sortBy";
+import _orderBy from "lodash/orderBy";
 import GamesList from "./GamesList";
 
 const games = [
@@ -41,7 +41,9 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({ games: _sortBy(games, ["name"]) });
+    this.setState({
+      games: _orderBy(games, ["featured", "name"], ["desc", "asc"])
+    });
   }
   render() {
     return (

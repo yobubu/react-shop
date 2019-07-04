@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Price from "./price";
+import Featured from "./Featured";
 
 const GameCard = ({ game }) => (
   <div className="ui card">
     <div className="image">
       <Price cents={game.price} />
+      <Featured featured={game.featured} />
       <img src={game.thumbnail} alt="Cover game " />
     </div>
     <div className="content">
