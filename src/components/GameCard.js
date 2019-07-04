@@ -9,9 +9,7 @@ const GameCard = ({ game }) => (
       <img src={game.thumbnail} alt="Cover game " />
     </div>
     <div className="content">
-      <a href="#" className="header">
-        {game.name}
-      </a>
+      <a className="header">{game.name}</a>
       <i className="icon users" /> {game.players}&nbsp;
       <i className="icon wait" /> {game.duration} min.
     </div>
@@ -24,7 +22,8 @@ GameCard.propTypes = {
     thumbnail: PropTypes.string.isRequired,
     players: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    duration: PropTypes.number.isRequired
+    duration: PropTypes.number.isRequired,
+    featured: PropTypes.bool.isRequired
   }).isRequired
 };
 
