@@ -8,14 +8,14 @@ const Featured = ({ featured, toggleFeatured, gameID }) => (
         onClick={() => toggleFeatured(gameID)}
         className="ui right yellow corner label"
       >
-        <i className="star icon" />
+        <i className="heart icon" />
       </a>
     ) : (
       <a
         onClick={() => toggleFeatured(gameID)}
         className="ui right corner label"
       >
-        <i className="empty star icon" />
+        <i className="heart outline icon" />
       </a>
     )}
   </span>
