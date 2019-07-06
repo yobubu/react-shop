@@ -2,7 +2,8 @@ import React, { Component } from "react";
 
 export default class GameForm extends Component {
   state = {
-    name: ""
+    name: "",
+    description: ""
   };
 
   handleSubmit = e => {
@@ -10,7 +11,7 @@ export default class GameForm extends Component {
     console.log(this.state);
   };
 
-  handleNameChange = e => this.setState({ name: e.target.value });
+  handleChange = e => this.setState({ [e.target.name]: e.target.value });
 
   render() {
     return (
@@ -20,9 +21,21 @@ export default class GameForm extends Component {
           <input
             type="text"
             id="name"
+            name="name"
             placeholder="Full game title"
             value={this.state.name}
-            onChange={this.handleNameChange}
+            onChange={this.handleChange}
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="description">Game Description</label>
+          <textarea
+            type="text"
+            id="description"
+            name="description"
+            placeholder="Full game title"
+            value={this.state.description}
+            onChange={this.handleChange}
           />
         </div>
 
