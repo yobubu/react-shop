@@ -3,6 +3,17 @@ import _orderBy from "lodash/orderBy";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
 
+const publishers = [
+  {
+    _id: 1,
+    name: "Days of Wonder"
+  },
+  {
+    _id: 2,
+    name: "Rio Grande Games"
+  }
+]
+
 const games = [
   {
     _id: 1,
