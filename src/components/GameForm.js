@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactImageFallback from "react-image-fallback";
-
-
+import FormInlineMessage from "./FormInlineMessage";
 
 export default class GameForm extends Component {
   state = {
@@ -14,10 +13,9 @@ export default class GameForm extends Component {
       players: "",
       featured: false,
       publisher: 0,
-      thumbnail: ''
+      thumbnail: ""
     },
-    errors: ''
-
+    errors: {}
   };
 
   handleSubmit = e => {
@@ -28,40 +26,34 @@ export default class GameForm extends Component {
   handleStringChange = e =>
     this.setState({
       data: {
-        ...this.state.data, [e.target.name]:
-          e.target.value
+        ...this.state.data,
+        [e.target.name]: e.target.value
       }
-
     });
 
   handleNumberChange = e =>
     this.setState({
       data: {
-        ...this.state.data, [e.target.name]:
-          parseInt(e.target.value, 10)
+        ...this.state.data,
+        [e.target.name]: parseInt(e.target.value, 10)
       }
-
-
     });
 
   handleCheckboxChange = e =>
     this.setState({
       data: {
         ...this.state.data,
-        [e.target.name]:
-          e.target.checked
+        [e.target.name]: e.target.checked
       }
     });
 
-
   render() {
-    const { data } = this.state;
+    const { data, errors } = this.state;
     return (
       <form className="ui form" onSubmit={this.handleSubmit}>
-
         <div class="ui grid">
           <div class="twelve wide column">
-            <div className="field">
+            <div className={errors.name ? "field error" : "field"}>
               <label htmlFor="name">Game Title</label>
               <input
                 type="text"
@@ -71,8 +63,9 @@ export default class GameForm extends Component {
                 value={data.name}
                 onChange={this.handleStringChange}
               />
+              <FormInlineMessage content={errors.name} type="error" />
             </div>
-            <div className="field">
+            <div className={errors.description ? "field error" : "field"}>
               <label htmlFor="description">Game Description</label>
               <textarea
                 type="text"
@@ -82,22 +75,34 @@ export default class GameForm extends Component {
                 value={data.description}
                 onChange={this.handleStringChange}
               />
+              <FormInlineMessage content={errors.description} type="error" />
             </div>
-
           </div>
           <div class="four wide column">
             <ReactImageFallback
               src={data.thumbnail}
               fallbackImage="http://via.placeholder.com/250x250"
               alt="Thumbnail"
-              className="ui image" />
-
+              className="ui image"
+            />
           </div>
         </div>
 
+        <div className={errors.thumbnail ? "field error" : "field"}>
+          <label htmlFor="thumbnail">Thumbnail</label>
+          <input
+            type="text"
+            id="thumbnail"
+            name="thumbnail"
+            placeholder="Image URL"
+            value={data.thumbnail}
+            onChange={this.handleStringChange}
+          />
+          <FormInlineMessage content={errors.thumbnail} type="error" />
+        </div>
 
         <div className="three fields">
-          <div className="field">
+          <div className={errors.price ? "field error" : "field"}>
             <label htmlFor="price">Price (in cents) </label>
             <input
               type="number"
@@ -106,8 +111,9 @@ export default class GameForm extends Component {
               value={data.price}
               onChange={this.handleNumberChange}
             />
+            <FormInlineMessage content={errors.price} type="error" />
           </div>
-          <div className="field">
+          <div className={errors.duration ? "field error" : "field"}>
             <label htmlFor="duration">Duration (in minutes)</label>
             <input
               type="number"
@@ -116,8 +122,9 @@ export default class GameForm extends Component {
               value={data.duration}
               onChange={this.handleNumberChange}
             />
+            <FormInlineMessage content={errors.duration} type="error" />
           </div>
-          <div className="field">
+          <div className={errors.players ? "field error" : "field"}>
             <label htmlFor="players">Number of players</label>
             <input
               type="text"
@@ -126,24 +133,28 @@ export default class GameForm extends Component {
               value={data.players}
               onChange={this.handleStringChange}
             />
+            <FormInlineMessage content={errors.players} type="error" />
           </div>
         </div>
 
         <div className="inline field">
-          <input id="featured"
+          <input
+            id="featured"
             name="featured"
-            type="checkox"
+            type="checkbox"
             checked={data.featured}
-            onChange={this.handleCheckboxChange} />
+            onChange={this.handleCheckboxChange}
+          />
           <label htmlFor="featured">Featured?</label>
         </div>
 
-        <div className="field">
+        <div className={errors.publishers ? "field error" : "field"}>
           <label>Publishers</label>
           <select
             name="publishers"
             value={data.publisher}
-            onChange={this.handleNumberChange}>
+            onChange={this.handleNumberChange}
+          >
             <option value="0">Choose Publisher</option>
             {this.props.publishers.map(publisher => (
               <option value={publisher._id} key={publisher._id}>
@@ -151,28 +162,32 @@ export default class GameForm extends Component {
               </option>
             ))}
           </select>
+          <FormInlineMessage content={errors.publishers} type="error" />
         </div>
 
         <div className="ui fluid buttons">
           <button className="ui primary button" type="submit">
             Create
-        </button>
-          <div className="or"></div>
-          <a className="ui button" onClick={this.props.cancel}>Cancel</a>
+          </button>
+          <div className="or" />
+          <a className="ui button" onClick={this.props.cancel}>
+            Cancel
+          </a>
         </div>
-
       </form>
     );
   }
 }
 
 GameForm.propTypes = {
-  publishers: PropTypes.arrayOf(PropTypes.shape({
-    _id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired
-  })).isRequired,
+  publishers: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired
+    })
+  ).isRequired,
   cancel: PropTypes.func.isRequired
-}
+};
 GameForm.defaultProps = {
   publishers: []
-}
+};
