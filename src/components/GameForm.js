@@ -6,43 +6,56 @@ import ReactImageFallback from "react-image-fallback";
 
 export default class GameForm extends Component {
   state = {
-    name: "",
-    description: "",
-    price: 0,
-    duration: 0,
-    players: "",
-    featured: false,
-    publisher: 0,
-    thumbnail: ''
+    data: {
+      name: "",
+      description: "",
+      price: 0,
+      duration: 0,
+      players: "",
+      featured: false,
+      publisher: 0,
+      thumbnail: ''
+    },
+    errors: ''
+
   };
 
   handleSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
+    console.log(this.state.data);
   };
 
   handleStringChange = e =>
     this.setState({
-      [e.target.name]:
-        e.target.value
+      data: {
+        ...this.state.data, [e.target.name]:
+          e.target.value
+      }
+
     });
 
   handleNumberChange = e =>
     this.setState({
-      [e.target.name]:
-        e.target.type === "number"
-          ? parseInt(e.target.value, 10)
-          : e.target.value
+      data: {
+        ...this.state.data, [e.target.name]:
+          parseInt(e.target.value, 10)
+      }
+
+
     });
 
   handleCheckboxChange = e =>
     this.setState({
-      [e.target.name]:
-        e.target.checked
+      data: {
+        ...this.state.data,
+        [e.target.name]:
+          e.target.checked
+      }
     });
 
 
   render() {
+    const { data } = this.state;
     return (
       <form className="ui form" onSubmit={this.handleSubmit}>
 
@@ -55,7 +68,7 @@ export default class GameForm extends Component {
                 id="name"
                 name="name"
                 placeholder="Full game title"
-                value={this.state.name}
+                value={data.name}
                 onChange={this.handleStringChange}
               />
             </div>
@@ -66,7 +79,7 @@ export default class GameForm extends Component {
                 id="description"
                 name="description"
                 placeholder="Full game title"
-                value={this.state.description}
+                value={data.description}
                 onChange={this.handleStringChange}
               />
             </div>
@@ -74,7 +87,7 @@ export default class GameForm extends Component {
           </div>
           <div class="four wide column">
             <ReactImageFallback
-              src={this.state.thumbnail}
+              src={data.thumbnail}
               fallbackImage="http://via.placeholder.com/250x250"
               alt="Thumbnail"
               className="ui image" />
@@ -90,7 +103,7 @@ export default class GameForm extends Component {
               type="number"
               id="price"
               name="price"
-              value={this.state.price}
+              value={data.price}
               onChange={this.handleNumberChange}
             />
           </div>
@@ -100,7 +113,7 @@ export default class GameForm extends Component {
               type="number"
               id="duration"
               name="duration"
-              value={this.state.duration}
+              value={data.duration}
               onChange={this.handleNumberChange}
             />
           </div>
@@ -110,7 +123,7 @@ export default class GameForm extends Component {
               type="text"
               id="players"
               name="players"
-              value={this.state.players}
+              value={data.players}
               onChange={this.handleStringChange}
             />
           </div>
@@ -120,7 +133,7 @@ export default class GameForm extends Component {
           <input id="featured"
             name="featured"
             type="checkox"
-            checked={this.state.featured}
+            checked={data.featured}
             onChange={this.handleCheckboxChange} />
           <label htmlFor="featured">Featured?</label>
         </div>
@@ -129,7 +142,7 @@ export default class GameForm extends Component {
           <label>Publishers</label>
           <select
             name="publishers"
-            value={this.state.publisher}
+            value={data.publisher}
             onChange={this.handleNumberChange}>
             <option value="0">Choose Publisher</option>
             {this.props.publishers.map(publisher => (
