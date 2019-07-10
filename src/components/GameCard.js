@@ -4,7 +4,13 @@ import PropTypes from "prop-types";
 import Price from "./price";
 import Featured from "./Featured";
 
-const GameCard = ({ game, toggleFeatured, descriptionToggle, gameID }) => (
+const GameCard = ({
+  game,
+  toggleFeatured,
+  descriptionToggle,
+  gameID,
+  editGame
+}) => (
   <div className="ui card">
     {game.descriptionVisible ? (
       <div className="image">
@@ -30,6 +36,16 @@ const GameCard = ({ game, toggleFeatured, descriptionToggle, gameID }) => (
         </a>
       </span>
     </div>
+    <div className="extra content">
+      <div className="ui two buttons">
+        <a className="ui basic green button" onClick={() => editGame(game)}>
+          <i className="ui icon edit" />
+        </a>
+        <a className="ui red basic button">
+          <i className="ui icon trash" />
+        </a>
+      </div>
+    </div>
   </div>
 );
 
@@ -44,7 +60,8 @@ GameCard.propTypes = {
     description: PropTypes.string.isRequired
   }).isRequired,
   toggleFeatured: PropTypes.func.isRequired,
-  descriptionToggle: PropTypes.func.isRequired
+  descriptionToggle: PropTypes.func.isRequired,
+  editGame: PropTypes.func.isRequired
 };
 
 export default GameCard;
