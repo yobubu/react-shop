@@ -1,9 +1,10 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import ReactImageFallback from "react-image-fallback";
 import FormInlineMessage from "./FormInlineMessage";
 
-export default class GameForm extends Component {
+class GameForm extends Component {
   state = {
     data: {
       name: "",
@@ -13,7 +14,8 @@ export default class GameForm extends Component {
       players: "",
       featured: false,
       publisher: 0,
-      thumbnail: ""
+      thumbnail: "",
+      descriptionVisible: true
     },
     errors: {}
   };
@@ -23,7 +25,7 @@ export default class GameForm extends Component {
 
     if (!data.name) errors.name = "This field can't be blank";
     if (!data.players) errors.players = "This field can't be blank";
-    if (!data.publisher) errors.publisher = "This field can't be blank";
+    if (!data.description) errors.description = "This field can't be blank";
     if (!data.thumbnail) errors.thumbnail = "This field can't be blank";
     if (data.price <= 0) errors.price = "Too cheap, don't you think?";
     if (data.duration <= 0) errors.duration = "Too short, isn't it?";
@@ -37,7 +39,7 @@ export default class GameForm extends Component {
     this.setState({ errors });
 
     if (Object.keys(errors).length === 0) {
-      console.log(this.state.data);
+      this.props.submit(this.state.data);
     }
   };
 
@@ -69,8 +71,8 @@ export default class GameForm extends Component {
     const { data, errors } = this.state;
     return (
       <form className="ui form" onSubmit={this.handleSubmit}>
-        <div class="ui grid">
-          <div class="twelve wide column">
+        <div className="ui grid">
+          <div className="twelve wide column">
             <div className={errors.name ? "field error" : "field"}>
               <label htmlFor="name">Game Title</label>
               <input
@@ -96,7 +98,7 @@ export default class GameForm extends Component {
               <FormInlineMessage content={errors.description} type="error" />
             </div>
           </div>
-          <div class="four wide column">
+          <div className="four wide column">
             <ReactImageFallback
               src={data.thumbnail}
               fallbackImage="http://via.placeholder.com/250x250"
@@ -204,8 +206,11 @@ GameForm.propTypes = {
       name: PropTypes.string.isRequired
     })
   ).isRequired,
-  cancel: PropTypes.func.isRequired
+  cancel: PropTypes.func.isRequired,
+  submit: PropTypes.func.isRequired
 };
 GameForm.defaultProps = {
   publishers: []
 };
+
+export default GameForm;

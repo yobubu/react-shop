@@ -13,7 +13,7 @@ const publishers = [
     _id: 2,
     name: "Rio Grande Games"
   }
-]
+];
 
 const games = [
   {
@@ -97,9 +97,17 @@ class App extends React.Component {
   showGameForm = () => this.setState({ showGameForm: true });
   hideGameForm = () => this.setState({ showGameForm: false });
 
-  render() {
+  addGame = game =>
+    this.setState({
+      games: this.sortGames([
+        ...this.state.games,
+        { ...game, _id: this.state.games.length + 1 }
+      ]),
+      showGameForm: false
+    });
 
-    const numberOfColumns = this.state.showGameForm ? 'ten' : 'sixteen';
+  render() {
+    const numberOfColumns = this.state.showGameForm ? "ten" : "sixteen";
 
     return (
       <div className="ui container">
@@ -108,8 +116,13 @@ class App extends React.Component {
         <div className="ui stackable grid">
           {this.state.showGameForm && (
             <div className="six wide column">
-              <GameForm publishers={publishers} cancel={this.hideGameForm} />
-            </div>)}
+              <GameForm
+                publishers={publishers}
+                cancel={this.hideGameForm}
+                submit={this.addGame}
+              />
+            </div>
+          )}
           <div className={`${numberOfColumns} wide column`}>
             <GamesList
               games={this.state.games}
@@ -117,17 +130,7 @@ class App extends React.Component {
               descriptionToggle={this.descriptionToggle}
             />
           </div>
-
-
-
-
-
-
         </div>
-
-
-        <br />
-
       </div>
     );
   }
