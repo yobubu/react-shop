@@ -204,7 +204,7 @@ class GameForm extends Component {
 
         <div className="ui fluid buttons">
           <button className="ui primary button" type="submit">
-            Create
+            Save
           </button>
           <div className="or" />
           <a className="ui button" onClick={this.props.cancel}>
