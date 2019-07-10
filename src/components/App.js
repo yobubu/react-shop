@@ -106,12 +106,10 @@ class App extends React.Component {
         <TopNavigation showGameForm={this.showGameForm} />
 
         <div className="ui stackable grid">
-
           {this.state.showGameForm && (
             <div className="six wide column">
               <GameForm publishers={publishers} cancel={this.hideGameForm} />
             </div>)}
-
           <div className={`${numberOfColumns} wide column`}>
             <GamesList
               games={this.state.games}
@@ -119,6 +117,12 @@ class App extends React.Component {
               descriptionToggle={this.descriptionToggle}
             />
           </div>
+
+
+
+
+
+
         </div>
 
 
