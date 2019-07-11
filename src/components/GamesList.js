@@ -2,7 +2,13 @@ import React from "react";
 import GameCard from "./GameCard";
 import PropTypes from "prop-types";
 
-const GamesList = ({ games, toggleFeatured, descriptionToggle, editGame }) => (
+const GamesList = ({
+  games,
+  toggleFeatured,
+  descriptionToggle,
+  editGame,
+  deleteGame
+}) => (
   <div className="ui four cards">
     {games.length === 0 ? (
       <div className="ui icon message">
@@ -21,6 +27,7 @@ const GamesList = ({ games, toggleFeatured, descriptionToggle, editGame }) => (
           descriptionToggle={descriptionToggle}
           gameID={game._id}
           editGame={editGame}
+          deleteGame={deleteGame}
         />
       ))
     )}
@@ -31,7 +38,8 @@ GamesList.propTypes = {
   games: PropTypes.arrayOf(PropTypes.object).isRequired,
   toggleFeatured: PropTypes.func.isRequired,
   descriptionToggle: PropTypes.func.isRequired,
-  editGame: PropTypes.func.isRequired
+  editGame: PropTypes.func.isRequired,
+  deleteGame: PropTypes.func.isRequired
 };
 GamesList.defaultProps = {
   games: []
