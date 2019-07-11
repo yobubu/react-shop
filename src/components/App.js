@@ -1,10 +1,24 @@
 import React from "react";
 import _orderBy from "lodash/orderBy";
+import TopNavigation from "./TopNavigation";
 import GamesList from "./GamesList";
+import GameForm from "./GameForm";
+
+const publishers = [
+  {
+    _id: 1,
+    name: "Days of Wonder"
+  },
+  {
+    _id: 2,
+    name: "Rio Grande Games"
+  }
+];
 
 const games = [
   {
     _id: 1,
+    publisher: 1,
     featured: true,
     name: "Monopoly",
     thumbnail:
@@ -18,6 +32,7 @@ const games = [
   },
   {
     _id: 2,
+    publisher: 2,
     featured: false,
     name: "Uno",
     thumbnail:
@@ -31,6 +46,7 @@ const games = [
   },
   {
     _id: 3,
+    publisher: 1,
     featured: false,
     name: "Scrabble",
     thumbnail:
@@ -46,7 +62,9 @@ const games = [
 
 class App extends React.Component {
   state = {
-    games: []
+    games: [],
+    showGameForm: false,
+    selectedGame: {}
   };
 
   componentDidMount() {
@@ -77,14 +95,64 @@ class App extends React.Component {
       )
     });
 
+  showGameForm = () => this.setState({ showGameForm: true, selectedGame: {} });
+  hideGameForm = () => this.setState({ showGameForm: false, selectedGame: {} });
+
+  saveGame = game => (game._id ? this.updateGame(game) : this.addGame(game));
+
+  addGame = game =>
+    this.setState({
+      games: this.sortGames([
+        ...this.state.games,
+        { ...game, _id: this.state.games.length + 1 }
+      ]),
+      showGameForm: false
+    });
+
+  updateGame = game =>
+    this.setState({
+      games: this.sortGames(
+        this.state.games.map(item => (item._id === game._id ? game : item))
+      ),
+      showGameForm: false
+    });
+
+  selectGameForEditing = game =>
+    this.setState({ selectedGame: game, showGameForm: true });
+
+  deletingGame = game =>
+    this.setState({
+      games: this.state.games.filter(item => item._id !== game._id)
+    });
+
   render() {
+    const numberOfColumns = this.state.showGameForm ? "ten" : "sixteen";
+
     return (
       <div className="ui container">
-        <GamesList
-          games={this.state.games}
-          toggleFeatured={this.toggleFeatured}
-          descriptionToggle={this.descriptionToggle}
-        />
+        <TopNavigation showGameForm={this.showGameForm} />
+
+        <div className="ui stackable grid">
+          {this.state.showGameForm && (
+            <div className="six wide column">
+              <GameForm
+                publishers={publishers}
+                cancel={this.hideGameForm}
+                submit={this.saveGame}
+                game={this.state.selectedGame}
+              />
+            </div>
+          )}
+          <div className={`${numberOfColumns} wide column`}>
+            <GamesList
+              games={this.state.games}
+              toggleFeatured={this.toggleFeatured}
+              descriptionToggle={this.descriptionToggle}
+              editGame={this.selectGameForEditing}
+              deleteGame={this.deletingGame}
+            />
+          </div>
+        </div>
       </div>
     );
   }
