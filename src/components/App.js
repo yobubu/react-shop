@@ -13,7 +13,7 @@ const publishers = [
     _id: 2,
     name: "Rio Grande Games"
   }
-]
+];
 
 const games = [
   {
@@ -63,7 +63,8 @@ const games = [
 class App extends React.Component {
   state = {
     games: [],
-    showGameForm: false
+    showGameForm: false,
+    selectedGame: {}
   };
 
   componentDidMount() {
@@ -94,12 +95,38 @@ class App extends React.Component {
       )
     });
 
-  showGameForm = () => this.setState({ showGameForm: true });
-  hideGameForm = () => this.setState({ showGameForm: false });
+  showGameForm = () => this.setState({ showGameForm: true, selectedGame: {} });
+  hideGameForm = () => this.setState({ showGameForm: false, selectedGame: {} });
+
+  saveGame = game => (game._id ? this.updateGame(game) : this.addGame(game));
+
+  addGame = game =>
+    this.setState({
+      games: this.sortGames([
+        ...this.state.games,
+        { ...game, _id: this.state.games.length + 1 }
+      ]),
+      showGameForm: false
+    });
+
+  updateGame = game =>
+    this.setState({
+      games: this.sortGames(
+        this.state.games.map(item => (item._id === game._id ? game : item))
+      ),
+      showGameForm: false
+    });
+
+  selectGameForEditing = game =>
+    this.setState({ selectedGame: game, showGameForm: true });
+
+  deletingGame = game =>
+    this.setState({
+      games: this.state.games.filter(item => item._id !== game._id)
+    });
 
   render() {
-
-    const numberOfColumns = this.state.showGameForm ? 'ten' : 'sixteen';
+    const numberOfColumns = this.state.showGameForm ? "ten" : "sixteen";
 
     return (
       <div className="ui container">
@@ -108,26 +135,24 @@ class App extends React.Component {
         <div className="ui stackable grid">
           {this.state.showGameForm && (
             <div className="six wide column">
-              <GameForm publishers={publishers} cancel={this.hideGameForm} />
-            </div>)}
+              <GameForm
+                publishers={publishers}
+                cancel={this.hideGameForm}
+                submit={this.saveGame}
+                game={this.state.selectedGame}
+              />
+            </div>
+          )}
           <div className={`${numberOfColumns} wide column`}>
             <GamesList
               games={this.state.games}
               toggleFeatured={this.toggleFeatured}
               descriptionToggle={this.descriptionToggle}
+              editGame={this.selectGameForEditing}
+              deleteGame={this.deletingGame}
             />
           </div>
-
-
-
-
-
-
         </div>
-
-
-        <br />
-
       </div>
     );
   }
