@@ -18,7 +18,8 @@ const initialData = {
 class GameForm extends Component {
   state = {
     data: initialData,
-    errors: {}
+    errors: {},
+    loading: false
   };
 
   componentDidMount() {
@@ -55,7 +56,12 @@ class GameForm extends Component {
     this.setState({ errors });
 
     if (Object.keys(errors).length === 0) {
-      this.props.submit(this.state.data);
+      this.setState({ loading: true });
+      this.props
+        .submit(this.state.data)
+        .catch(err =>
+          this.setState({ errors: err.response.data.errors, loading: false })
+        );
     }
   };
 
@@ -84,9 +90,10 @@ class GameForm extends Component {
     });
 
   render() {
-    const { data, errors } = this.state;
+    const { data, errors, loading } = this.state;
+    const formClassNames = loading ? "ui form loading" : "ui form";
     return (
-      <form className="ui form" onSubmit={this.handleSubmit}>
+      <form className={formClassNames} onSubmit={this.handleSubmit}>
         <div className="ui grid">
           <div className="twelve wide column">
             <div className={errors.name ? "field error" : "field"}>
@@ -225,7 +232,7 @@ GameForm.propTypes = {
   cancel: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   game: PropTypes.shape({
-    _id: PropTypes.string.isRequired,
+    //_id: PropTypes.string.isRequired,
     name: PropTypes.string,
     thumbnail: PropTypes.string,
     players: PropTypes.string,
