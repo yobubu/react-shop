@@ -1,6 +1,7 @@
 import React from "react";
 import _orderBy from "lodash/orderBy";
 import _find from "lodash/find";
+import { Route } from "react-router-dom";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
 import api from "../api";
@@ -19,7 +20,6 @@ const publisher = [
 class GamesPage extends React.Component {
   state = {
     games: [],
-    showGameForm: false,
     selectedGame: {},
     loading: true
   };
@@ -55,9 +55,6 @@ class GamesPage extends React.Component {
       )
     });
 
-  showGameForm = () => this.setState({ showGameForm: true, selectedGame: {} });
-  hideGameForm = () => this.setState({ showGameForm: false, selectedGame: {} });
-
   saveGame = game => (game._id ? this.updateGame(game) : this.addGame(game));
 
   addGame = gameData =>
@@ -89,21 +86,25 @@ class GamesPage extends React.Component {
     );
 
   render() {
-    const numberOfColumns = this.state.showGameForm ? "ten" : "sixteen";
+    const numberOfColumns =
+      this.props.location.pathname === "/games" ? "sixteen" : "ten";
 
     return (
       <div className="ui container">
         <div className="ui stackable grid">
-          {this.state.showGameForm && (
-            <div className="six wide column">
-              <GameForm
-                publisher={publisher}
-                cancel={this.hideGameForm}
-                submit={this.saveGame}
-                game={this.state.selectedGame}
-              />
-            </div>
-          )}
+          <Route
+            path="/games/new"
+            render={() => (
+              <div className="six wide column">
+                <GameForm
+                  publisher={publisher}
+                  submit={this.saveGame}
+                  game={{}}
+                />
+              </div>
+            )}
+          />
+
           <div className={`${numberOfColumns} wide column`}>
             {this.state.loading ? (
               <div className="ui icon message">
