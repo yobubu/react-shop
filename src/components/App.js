@@ -67,9 +67,7 @@ class App extends React.Component {
     selectedGame: {}
   };
 
-  componentDidMount() {
-    axios.get("/api/unsafegames");
-  }
+  componentDidMount() {}
 
   sortGames(games) {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
