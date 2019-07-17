@@ -1,5 +1,6 @@
 import React from "react";
 import _orderBy from "lodash/orderBy";
+import axios from "axios";
 import TopNavigation from "./TopNavigation";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
@@ -68,7 +69,7 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({ games: this.sortGames(games) });
+    axios.get("/api/unsafegames");
   }
 
   sortGames(games) {
