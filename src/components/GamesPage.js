@@ -20,7 +20,6 @@ const publisher = [
 class GamesPage extends React.Component {
   state = {
     games: [],
-    selectedGame: {},
     loading: true
   };
 
@@ -75,9 +74,6 @@ class GamesPage extends React.Component {
       })
     );
 
-  selectGameForEditing = game =>
-    this.setState({ selectedGame: game, showGameForm: true });
-
   deletingGame = game =>
     api.games.delete(game).then(() =>
       this.setState({
@@ -105,6 +101,23 @@ class GamesPage extends React.Component {
             )}
           />
 
+          <Route
+            path="/games/edit/:_id"
+            render={props => (
+              <div className="six wide column">
+                <GameForm
+                  publisher={publisher}
+                  submit={this.saveGame}
+                  game={
+                    _find(this.state.games, {
+                      _id: props.match.params._id
+                    }) || {}
+                  }
+                />
+              </div>
+            )}
+          />
+
           <div className={`${numberOfColumns} wide column`}>
             {this.state.loading ? (
               <div className="ui icon message">
@@ -119,7 +132,6 @@ class GamesPage extends React.Component {
                 games={this.state.games}
                 toggleFeatured={this.toggleFeatured}
                 descriptionToggle={this.descriptionToggle}
-                editGame={this.selectGameForEditing}
                 deleteGame={this.deletingGame}
               />
             )}

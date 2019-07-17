@@ -19,7 +19,6 @@ class GameCard extends React.Component {
       toggleFeatured,
       descriptionToggle,
       gameID,
-      editGame,
       deleteGame
     } = this.props;
     return (
@@ -70,12 +69,12 @@ class GameCard extends React.Component {
             </div>
           ) : (
             <div className="ui two buttons">
-              <a
+              <Link
+                to={`/games/edit/${game._id}`}
                 className="ui basic green button"
-                onClick={() => editGame(game)}
               >
                 <i className="ui icon edit" />
-              </a>
+              </Link>
               <a
                 className="ui red basic button"
                 onClick={this.showConfirmation}
@@ -102,7 +101,6 @@ GameCard.propTypes = {
   }).isRequired,
   toggleFeatured: PropTypes.func.isRequired,
   descriptionToggle: PropTypes.func.isRequired,
-  editGame: PropTypes.func.isRequired,
   deleteGame: PropTypes.func.isRequired
 };
 
