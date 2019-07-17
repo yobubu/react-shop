@@ -5,13 +5,13 @@ import GamesList from "./GamesList";
 import GameForm from "./GameForm";
 import api from "../api";
 
-const publishers = [
+const publisher = [
   {
-    _id: 1,
+    _id: "1",
     name: "Days of Wonder"
   },
   {
-    _id: 2,
+    _id: "2",
     name: "Rio Grande Games"
   }
 ];
@@ -58,14 +58,13 @@ class App extends React.Component {
 
   saveGame = game => (game._id ? this.updateGame(game) : this.addGame(game));
 
-  addGame = game =>
-    this.setState({
-      games: this.sortGames([
-        ...this.state.games,
-        { ...game, _id: this.state.games.length + 1 }
-      ]),
-      showGameForm: false
-    });
+  addGame = gameData =>
+    api.games.create(gameData).then(game =>
+      this.setState({
+        games: this.sortGames([...this.state.games, game]),
+        showGameForm: false
+      })
+    );
 
   updateGame = game =>
     this.setState({
@@ -94,7 +93,7 @@ class App extends React.Component {
           {this.state.showGameForm && (
             <div className="six wide column">
               <GameForm
-                publishers={publishers}
+                publisher={publisher}
                 cancel={this.hideGameForm}
                 submit={this.saveGame}
                 game={this.state.selectedGame}
