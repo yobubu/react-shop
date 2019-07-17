@@ -2,7 +2,10 @@ Hello,
 
 My name is Paweł and this is my project to practice JavaScript FullStack Developer skills.
 
-This is the FrontEnd part. You can find BackEnd in 'bgshop-api' folder in the main repository account.
+This is the FrontEnd part. You can find BackEnd in 'practice-react-api' folder in the main repository account.
+
+It is also needed to start mongoDB to get it worked all together. Soon application will be deployed online so it will
+available to check it live.
 
 ## Available Scripts
 
