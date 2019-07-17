@@ -54,7 +54,10 @@ class GamesPage extends React.Component {
       )
     });
 
-  saveGame = game => (game._id ? this.updateGame(game) : this.addGame(game));
+  saveGame = game =>
+    (game._id ? this.updateGame(game) : this.addGame(game)).then(() =>
+      this.props.history.push("/games")
+    );
 
   addGame = gameData =>
     api.games.create(gameData).then(game =>
