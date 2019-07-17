@@ -1,5 +1,6 @@
 import React from "react";
 import _orderBy from "lodash/orderBy";
+import _find from "lodash/find";
 import TopNavigation from "./TopNavigation";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
@@ -33,14 +34,13 @@ class App extends React.Component {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
   }
 
-  toggleFeatured = gameID =>
-    this.setState({
-      games: this.sortGames(
-        this.state.games.map(game =>
-          gameID === game._id ? { ...game, featured: !game.featured } : game
-        )
-      )
+  toggleFeatured = gameID => {
+    const game = _find(this.state.games, { _id: gameID });
+    return this.updateGame({
+      ...game,
+      featured: !game.featured
     });
+  };
 
   descriptionToggle = gameID =>
     this.setState({
@@ -66,13 +66,15 @@ class App extends React.Component {
       })
     );
 
-  updateGame = game =>
-    this.setState({
-      games: this.sortGames(
-        this.state.games.map(item => (item._id === game._id ? game : item))
-      ),
-      showGameForm: false
-    });
+  updateGame = gameData =>
+    api.games.update(gameData).then(game =>
+      this.setState({
+        games: this.sortGames(
+          this.state.games.map(item => (item._id === game._id ? game : item))
+        ),
+        showGameForm: false
+      })
+    );
 
   selectGameForEditing = game =>
     this.setState({ selectedGame: game, showGameForm: true });
