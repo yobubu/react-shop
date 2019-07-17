@@ -5,7 +5,6 @@ import ReactImageFallback from "react-image-fallback";
 import FormInlineMessage from "./FormInlineMessage";
 
 const initialData = {
-  _id: null,
   name: "",
   description: "",
   price: 0,
@@ -19,7 +18,8 @@ const initialData = {
 class GameForm extends Component {
   state = {
     data: initialData,
-    errors: {}
+    errors: {},
+    loading: false
   };
 
   componentDidMount() {
@@ -56,7 +56,12 @@ class GameForm extends Component {
     this.setState({ errors });
 
     if (Object.keys(errors).length === 0) {
-      this.props.submit(this.state.data);
+      this.setState({ loading: true });
+      this.props
+        .submit(this.state.data)
+        .catch(err =>
+          this.setState({ errors: err.response.data.errors, loading: false })
+        );
     }
   };
 
@@ -85,9 +90,10 @@ class GameForm extends Component {
     });
 
   render() {
-    const { data, errors } = this.state;
+    const { data, errors, loading } = this.state;
+    const formClassNames = loading ? "ui form loading" : "ui form";
     return (
-      <form className="ui form" onSubmit={this.handleSubmit}>
+      <form className={formClassNames} onSubmit={this.handleSubmit}>
         <div className="ui grid">
           <div className="twelve wide column">
             <div className={errors.name ? "field error" : "field"}>
@@ -185,21 +191,21 @@ class GameForm extends Component {
           <label htmlFor="featured">Featured?</label>
         </div>
 
-        <div className={errors.publishers ? "field error" : "field"}>
-          <label>Publishers</label>
+        <div className={errors.publisher ? "field error" : "field"}>
+          <label>Publisher</label>
           <select
-            name="publishers"
+            name="publisher"
             value={data.publisher}
             onChange={this.handleNumberChange}
           >
             <option value="0">Choose Publisher</option>
-            {this.props.publishers.map(publisher => (
+            {this.props.publisher.map(publisher => (
               <option value={publisher._id} key={publisher._id}>
                 {publisher.name}
               </option>
             ))}
           </select>
-          <FormInlineMessage content={errors.publishers} type="error" />
+          <FormInlineMessage content={errors.publisher} type="error" />
         </div>
 
         <div className="ui fluid buttons">
@@ -219,13 +225,14 @@ class GameForm extends Component {
 GameForm.propTypes = {
   publishers: PropTypes.arrayOf(
     PropTypes.shape({
-      _id: PropTypes.number.isRequired,
+      _id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired
     })
   ).isRequired,
   cancel: PropTypes.func.isRequired,
   submit: PropTypes.func.isRequired,
   game: PropTypes.shape({
+    //_id: PropTypes.string.isRequired,
     name: PropTypes.string,
     thumbnail: PropTypes.string,
     players: PropTypes.string,
