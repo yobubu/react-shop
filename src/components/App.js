@@ -1,6 +1,5 @@
 import React from "react";
 import _orderBy from "lodash/orderBy";
-import axios from "axios";
 import TopNavigation from "./TopNavigation";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
