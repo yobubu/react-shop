@@ -3,6 +3,7 @@ import _orderBy from "lodash/orderBy";
 import TopNavigation from "./TopNavigation";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
+import api from "../api";
 
 const publishers = [
   {
@@ -68,12 +69,12 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-+    api.games
-+      .fetchAll()
-+      .then(games =>
-+        this.setState({ games: this.sortGames(games), loading: false })
-+      );
-+  }
+    api.games
+      .fetchAll()
+      .then(games =>
+        this.setState({ games: this.sortGames(games), loading: false })
+      );
+  }
 
   sortGames(games) {
     return _orderBy(games, ["featured", "name"], ["desc", "asc"]);
