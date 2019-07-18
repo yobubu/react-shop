@@ -37,7 +37,7 @@ const TopNavigation = ({ isAuthenticated, logout }) => (
 );
 
 TopNavigation.propTypes = {
-  isAuthenticated: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
   logout: PropTypes.func.isRequired
 };
 

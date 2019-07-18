@@ -4,11 +4,12 @@ import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
 import GamesPage from "./GamesPage";
 import ShowGamePage from "./ShowGamePage";
+import SignupPage from "./SignupPage.js";
 
 class App extends Component {
   state = {
     user: {
-      token: "dummy"
+      token: null
     }
   };
 
@@ -23,6 +24,7 @@ class App extends Component {
 
         <Route path="/" exact component={HomePage} />
         <Route path="/games" component={GamesPage} />
+        <Route path="/signup" component={SignupPage} />
         <Route path="/game/:_id" exact component={ShowGamePage} />
       </div>
     );

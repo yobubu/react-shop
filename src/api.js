@@ -12,5 +12,8 @@ export default {
         .put(`/api/unsafegames/${game._id}`, { game })
         .then(res => res.data.game),
     delete: game => axios.delete(`/api/unsafegames/${game._id}`)
+  },
+  users: {
+    create: user => axios.post(`/api/users`, { user })
   }
 };
