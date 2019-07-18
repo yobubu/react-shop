@@ -14,6 +14,8 @@ export default {
     delete: game => axios.delete(`/api/unsafegames/${game._id}`)
   },
   users: {
-    create: user => axios.post(`/api/users`, { user })
+    create: user => axios.post(`/api/users`, { user }),
+    login: credentials =>
+      axios.post("/api/auth", { credentials }).then(res => res.data.token)
   }
 };

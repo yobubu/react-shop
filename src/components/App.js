@@ -5,6 +5,7 @@ import TopNavigation from "./TopNavigation";
 import GamesPage from "./GamesPage";
 import ShowGamePage from "./ShowGamePage";
 import SignupPage from "./SignupPage.js";
+import LoginPage from "./LoginPage.js";
 
 class App extends Component {
   state = {
@@ -43,6 +44,7 @@ class App extends Component {
             <SignupPage {...props} setMessage={this.setMessage} />
           )}
         />
+        <Route path="/login" component={LoginPage} />
         <Route path="/game/:_id" exact component={ShowGamePage} />
       </div>
     );
