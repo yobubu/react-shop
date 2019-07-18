@@ -1,7 +1,7 @@
 import React from "react";
 import _orderBy from "lodash/orderBy";
 import _find from "lodash/find";
-import { Route } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
 import api from "../api";
@@ -91,35 +91,41 @@ class GamesPage extends React.Component {
     return (
       <div className="ui container">
         <div className="ui stackable grid">
-          <Route
-            path="/games/new"
-            render={() => (
-              <div className="six wide column">
-                <GameForm
-                  publisher={publisher}
-                  submit={this.saveGame}
-                  game={{}}
-                />
-              </div>
-            )}
-          />
+          {this.props.user.role === "admin" ? (
+            <div>
+              <Route
+                path="/games/new"
+                render={() => (
+                  <div className="six wide column">
+                    <GameForm
+                      publisher={publisher}
+                      submit={this.saveGame}
+                      game={{}}
+                    />
+                  </div>
+                )}
+              />
 
-          <Route
-            path="/games/edit/:_id"
-            render={props => (
-              <div className="six wide column">
-                <GameForm
-                  publisher={publisher}
-                  submit={this.saveGame}
-                  game={
-                    _find(this.state.games, {
-                      _id: props.match.params._id
-                    }) || {}
-                  }
-                />
-              </div>
-            )}
-          />
+              <Route
+                path="/games/edit/:_id"
+                render={props => (
+                  <div className="six wide column">
+                    <GameForm
+                      publisher={publisher}
+                      submit={this.saveGame}
+                      game={
+                        _find(this.state.games, {
+                          _id: props.match.params._id
+                        }) || {}
+                      }
+                    />
+                  </div>
+                )}
+              />
+            </div>
+          ) : (
+            <Route path="/games/*" render={() => <Redirect to="/games" />} />
+          )}
 
           <div className={`${numberOfColumns} wide column`}>
             {this.state.loading ? (
