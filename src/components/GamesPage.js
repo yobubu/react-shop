@@ -1,10 +1,11 @@
 import React from "react";
+import PropTypes from "prop-types";
 import _orderBy from "lodash/orderBy";
 import _find from "lodash/find";
-import { Route, Redirect } from "react-router-dom";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
 import api from "../api";
+import AdminRoute from "./AdminROute";
 
 const publisher = [
   {
@@ -91,41 +92,37 @@ class GamesPage extends React.Component {
     return (
       <div className="ui container">
         <div className="ui stackable grid">
-          {this.props.user.role === "admin" ? (
-            <div>
-              <Route
-                path="/games/new"
-                render={() => (
-                  <div className="six wide column">
-                    <GameForm
-                      publisher={publisher}
-                      submit={this.saveGame}
-                      game={{}}
-                    />
-                  </div>
-                )}
-              />
+          <AdminRoute
+            path="/games/new"
+            user={this.props.user}
+            render={() => (
+              <div className="six wide column">
+                <GameForm
+                  publisher={publisher}
+                  submit={this.saveGame}
+                  game={{}}
+                />
+              </div>
+            )}
+          />
 
-              <Route
-                path="/games/edit/:_id"
-                render={props => (
-                  <div className="six wide column">
-                    <GameForm
-                      publisher={publisher}
-                      submit={this.saveGame}
-                      game={
-                        _find(this.state.games, {
-                          _id: props.match.params._id
-                        }) || {}
-                      }
-                    />
-                  </div>
-                )}
-              />
-            </div>
-          ) : (
-            <Route path="/games/*" render={() => <Redirect to="/games" />} />
-          )}
+          <AdminRoute
+            path="/games/edit/:_id"
+            user={this.props.user}
+            render={props => (
+              <div className="six wide column">
+                <GameForm
+                  publisher={publisher}
+                  submit={this.saveGame}
+                  game={
+                    _find(this.state.games, {
+                      _id: props.match.params._id
+                    }) || {}
+                  }
+                />
+              </div>
+            )}
+          />
 
           <div className={`${numberOfColumns} wide column`}>
             {this.state.loading ? (
@@ -150,5 +147,12 @@ class GamesPage extends React.Component {
     );
   }
 }
+
+GamesPage.defaultProps = {
+  user: PropTypes.shape({
+    token: PropTypes.string,
+    role: PropTypes.string.isRequired
+  }).isRequired
+};
 
 export default GamesPage;
