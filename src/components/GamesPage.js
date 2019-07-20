@@ -5,7 +5,7 @@ import _find from "lodash/find";
 import GamesList from "./GamesList";
 import GameForm from "./GameForm";
 import api from "../api";
-import AdminRoute from "./AdminROute";
+import AdminRoute from "./AdminRoute";
 
 const publisher = [
   {

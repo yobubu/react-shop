@@ -48,7 +48,7 @@ class App extends Component {
     this.setState({
       user: {
         token,
-        role: jwtDecode(token.user.role)
+        role: jwtDecode(token).user.role
       }
     });
     localStorage.bgshopToken = token;
