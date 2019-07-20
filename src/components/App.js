@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
 import GamesPage from "./GamesPage";
@@ -26,7 +27,12 @@ class App extends Component {
 
   componentDidMount() {
     if (localStorage.bgshopToken) {
-      this.setState({ user: { token: localStorage.bgshopToken } });
+      this.setState({
+        user: {
+          token: localStorage.bgshopToken,
+          role: jwtDecode(localStorage.bgshopToken).user.role
+        }
+      });
       setAuthorizationHeader(localStorage.bgshopToken);
     }
   }
@@ -34,12 +40,17 @@ class App extends Component {
   setMessage = message => this.setState({ message });
 
   logout = () => {
-    this.setState({ user: { token: null } });
+    this.setState({ user: { token: null, role: "user" } });
     setAuthorizationHeader();
     localStorage.removeItem("bgshopToken");
   };
   login = token => {
-    this.setState({ user: { token } });
+    this.setState({
+      user: {
+        token,
+        role: jwtDecode(token.user.role)
+      }
+    });
     localStorage.bgshopToken = token;
     setAuthorizationHeader(token);
   };
