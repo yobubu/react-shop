@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Price from "./Price";
 
 const GameDetails = ({ game }) => (
   <div>
@@ -27,7 +28,9 @@ const GameDetails = ({ game }) => (
           </tbody>
         </table>
 
-        <p className="ui green huge label">$ {game.price}</p>
+        <p className="ui green huge label">
+          <Price cents={game.price} />
+        </p>
       </div>
     </div>
   </div>
