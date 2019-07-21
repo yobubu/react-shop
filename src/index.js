@@ -26,17 +26,12 @@ app.use("/api/authgames", authgames);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
 
-mongodb.MongoClient.connect(
-  `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${
-    process.env.DB_NAME
-  }`,
-  (err, db) => {
-    app.set("db", db);
+mongodb.MongoClient.connect(`${process.env.DB_CONNECTION}`, (err, db) => {
+  app.set("db", db);
 
-    app.get("/*", (req, res) => {
-      res.sendFile(path.join(__dirname, "./index.html"));
-    });
+  app.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "./index.html"));
+  });
 
-    app.listen(2370, () => console.log("Running on localhost:2370"));
-  }
-);
+  app.listen(2370, () => console.log("Running on localhost:2370"));
+});
