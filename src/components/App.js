@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { Button, Header, Image, Modal, times, Icon } from "semantic-ui-react";
 import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
 import AboutMe from "./AboutMe";
@@ -23,7 +24,8 @@ class App extends Component {
       token: null,
       role: "user"
     },
-    message: ""
+    message: "",
+    modalIsOpen: false
   };
 
   componentDidMount() {
@@ -35,8 +37,12 @@ class App extends Component {
         }
       });
       setAuthorizationHeader(localStorage.bgshopToken);
+      this.setState({
+        modalIsOpen: true
+      });
     }
   }
+  componentWillMount() {}
 
   setMessage = message => this.setState({ message });
 
@@ -50,11 +56,15 @@ class App extends Component {
       user: {
         token,
         role: jwtDecode(token).user.role
-      }
+      },
+      modal: null
     });
     localStorage.bgshopToken = token;
     setAuthorizationHeader(token);
   };
+
+  closeModal = () => this.setState({ modalIsOpen: !this.state.modalIsOpen });
+
   render() {
     return (
       <div className="ui container">
@@ -63,7 +73,6 @@ class App extends Component {
           logout={this.logout}
           isAdmin={!!this.state.user.token && this.state.user.role === "admin"}
         />
-
         {this.state.message && (
           <div className="ui info message">
             <i
@@ -73,7 +82,6 @@ class App extends Component {
             {this.state.message}
           </div>
         )}
-
         <Route path="/" exact component={HomePage} />
         <Route path="/me" exact component={AboutMe} />
         <Route
@@ -91,6 +99,32 @@ class App extends Component {
           render={props => <LoginPage {...props} login={this.login} />}
         />
         <Route path="/game/:_id" exact component={ShowGamePage} />
+        <Modal open={this.state.modalIsOpen}>
+          <Modal.Header>
+            <span>Welcome!</span>
+            <Button attached="right" onClick={this.closeModal}>
+              <Icon name="times" color="red" />
+            </Button>
+            <div />
+          </Modal.Header>
+
+          <Modal.Content image>
+            <Image
+              wrapped
+              size="medium"
+              src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
+            />
+            <Modal.Description>
+              <Header>Default Profile Image</Header>
+              <p>
+                We've found the following gravatar image associated with your
+                e-mail address.
+              </p>
+              <p>Is it okay to use this photo?</p>
+              <Button onClick={this.closeModal}>Close Modal</Button>
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }
