@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from "react";
 import PropTypes from "prop-types";
-import Price from "./price";
+import Price from "./Price";
 import Featured from "./Featured";
 import { Link } from "react-router-dom";
 
@@ -60,7 +60,9 @@ class GameCard extends React.Component {
       <div className="ui card">
         {game.descriptionVisible ? (
           <div className="image">
-            <Price cents={game.price} />
+            <div className="ui green ribbon label">
+              <Price cents={game.price} />
+            </div>
             <Featured
               featured={game.featured}
               toggleFeatured={toggleFeatured}

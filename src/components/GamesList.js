@@ -9,7 +9,7 @@ const GamesList = ({
   user,
   deleteGame
 }) => (
-  <div className="ui four cards">
+  <div className="doubling stackable four cards ui grid container">
     {games.length === 0 ? (
       <div className="ui icon message">
         <i className="icon info" />

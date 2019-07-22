@@ -4,6 +4,7 @@ import axios from "axios";
 import jwtDecode from "jwt-decode";
 import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
+import AboutMe from "./AboutMe";
 import GamesPage from "./GamesPage";
 import ShowGamePage from "./ShowGamePage";
 import SignupPage from "./SignupPage.js";
@@ -48,7 +49,7 @@ class App extends Component {
     this.setState({
       user: {
         token,
-        role: jwtDecode(token.user.role)
+        role: jwtDecode(token).user.role
       }
     });
     localStorage.bgshopToken = token;
@@ -74,6 +75,7 @@ class App extends Component {
         )}
 
         <Route path="/" exact component={HomePage} />
+        <Route path="/me" exact component={AboutMe} />
         <Route
           path="/games"
           render={props => <GamesPage {...props} user={this.state.user} />}
