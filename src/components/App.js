@@ -102,10 +102,12 @@ class App extends Component {
         <Modal open={this.state.modalIsOpen}>
           <Modal.Header>
             <span>Welcome!</span>
-            <Button attached="right" onClick={this.closeModal}>
-              <Icon name="times" color="red" />
-            </Button>
-            <div />
+            <Button
+              icon="times"
+              floated="right"
+              size="mini"
+              onClick={this.closeModal}
+            />
           </Modal.Header>
 
           <Modal.Content image>
