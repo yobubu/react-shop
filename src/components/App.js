@@ -26,7 +26,7 @@ class App extends Component {
       role: "user"
     },
     message: "",
-    modalIsOpen: false
+    modalIsOpen: true
   };
 
   componentDidMount() {
