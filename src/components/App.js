@@ -10,6 +10,7 @@ import GamesPage from "./GamesPage";
 import ShowGamePage from "./ShowGamePage";
 import SignupPage from "./SignupPage.js";
 import LoginPage from "./LoginPage.js";
+import ModalPhoto from "../media/img/modal.png";
 
 const setAuthorizationHeader = (token = null) => {
   if (token) {
@@ -111,19 +112,19 @@ class App extends Component {
           </Modal.Header>
 
           <Modal.Content image>
-            <Image
-              wrapped
-              size="medium"
-              src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
-            />
+            <Image wrapped size="medium" src={ModalPhoto} />
             <Modal.Description>
-              <Header>Default Profile Image</Header>
+              <Header>Thank you for coming to my app</Header>
+              <p>Please read first about the features implemented.</p>
+              <p>Later try to find some good vibes for yourself :)</p>
               <p>
-                We've found the following gravatar image associated with your
-                e-mail address.
+                I will answer all your question about my skills with pleasure so
+                don't forget to contact me after that :)
               </p>
-              <p>Is it okay to use this photo?</p>
-              <Button onClick={this.closeModal}>Close Modal</Button>
+              <p floated="right">Paweł</p>
+              <Button positive floated="right" onClick={this.closeModal}>
+                Explore
+              </Button>
             </Modal.Description>
           </Modal.Content>
         </Modal>
