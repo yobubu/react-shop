@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { Button, Header, Image, Modal, times, Icon } from "semantic-ui-react";
 import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
 import AboutMe from "./AboutMe";
@@ -9,6 +10,7 @@ import GamesPage from "./GamesPage";
 import ShowGamePage from "./ShowGamePage";
 import SignupPage from "./SignupPage.js";
 import LoginPage from "./LoginPage.js";
+import ModalPhoto from "../media/img/modal.png";
 
 const setAuthorizationHeader = (token = null) => {
   if (token) {
@@ -23,7 +25,8 @@ class App extends Component {
       token: null,
       role: "user"
     },
-    message: ""
+    message: "",
+    modalIsOpen: false
   };
 
   componentDidMount() {
@@ -35,8 +38,12 @@ class App extends Component {
         }
       });
       setAuthorizationHeader(localStorage.bgshopToken);
+      this.setState({
+        modalIsOpen: true
+      });
     }
   }
+  componentWillMount() {}
 
   setMessage = message => this.setState({ message });
 
@@ -50,11 +57,15 @@ class App extends Component {
       user: {
         token,
         role: jwtDecode(token).user.role
-      }
+      },
+      modal: null
     });
     localStorage.bgshopToken = token;
     setAuthorizationHeader(token);
   };
+
+  closeModal = () => this.setState({ modalIsOpen: !this.state.modalIsOpen });
+
   render() {
     return (
       <div className="ui container">
@@ -63,7 +74,6 @@ class App extends Component {
           logout={this.logout}
           isAdmin={!!this.state.user.token && this.state.user.role === "admin"}
         />
-
         {this.state.message && (
           <div className="ui info message">
             <i
@@ -73,7 +83,6 @@ class App extends Component {
             {this.state.message}
           </div>
         )}
-
         <Route path="/" exact component={HomePage} />
         <Route path="/me" exact component={AboutMe} />
         <Route
@@ -91,6 +100,34 @@ class App extends Component {
           render={props => <LoginPage {...props} login={this.login} />}
         />
         <Route path="/game/:_id" exact component={ShowGamePage} />
+        <Modal open={this.state.modalIsOpen}>
+          <Modal.Header>
+            <span>Welcome!</span>
+            <Button
+              icon="times"
+              floated="right"
+              size="mini"
+              onClick={this.closeModal}
+            />
+          </Modal.Header>
+
+          <Modal.Content image>
+            <Image wrapped size="medium" src={ModalPhoto} />
+            <Modal.Description>
+              <Header>Thank you for coming to my app</Header>
+              <p>Please read first about the features implemented.</p>
+              <p>Later try to find some good vibes for yourself :)</p>
+              <p>
+                I will answer all your question about my skills with pleasure so
+                don't forget to contact me after that :)
+              </p>
+              <p floated="right">Paweł</p>
+              <Button positive floated="right" onClick={this.closeModal}>
+                Explore
+              </Button>
+            </Modal.Description>
+          </Modal.Content>
+        </Modal>
       </div>
     );
   }
