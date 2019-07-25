@@ -14,14 +14,7 @@ class GameCard extends React.Component {
   hideConfirmation = () => this.setState({ showConfirmation: false });
 
   render() {
-    const {
-      game,
-      toggleFeatured,
-      descriptionToggle,
-      gameID,
-      deleteGame,
-      user
-    } = this.props;
+    const { game, toggleFeatured, deleteGame, user } = this.props;
     const adminActions = (
       <div className="extra content">
         {this.state.showConfirmation ? (
@@ -58,21 +51,17 @@ class GameCard extends React.Component {
     );
     return (
       <div className="ui card">
-        {game.descriptionVisible ? (
-          <div className="image">
-            <div className="ui green ribbon label">
-              <Price cents={game.price} />
-            </div>
-            <Featured
-              featured={game.featured}
-              toggleFeatured={toggleFeatured}
-              gameID={game._id}
-            />
-            <img src={game.thumbnail} alt="Game cover" />
+        <div className="image">
+          <div className="ui green ribbon label">
+            <Price cents={game.price} />
           </div>
-        ) : (
-          <span> {game.description} </span>
-        )}
+          <Featured
+            featured={game.featured}
+            toggleFeatured={toggleFeatured}
+            gameID={game._id}
+          />
+          <img src={game.thumbnail} alt="Game cover" />
+        </div>
 
         <div className="content">
           <Link to={`/game/${game._id}`} className="header">
@@ -81,9 +70,9 @@ class GameCard extends React.Component {
           <i className="icon users" /> {game.players}&nbsp;
           <i className="icon wait" /> {game.duration} min.
           <span className="right floated">
-            <a onClick={() => descriptionToggle(gameID)}>
+            <Link to={`/game/${game._id}`}>
               <i className="eye icon" />
-            </a>
+            </Link>
           </span>
         </div>
         {user.token && user.role === "user" && addToCart}
@@ -104,7 +93,6 @@ GameCard.propTypes = {
     description: PropTypes.string.isRequired
   }).isRequired,
   toggleFeatured: PropTypes.func.isRequired,
-  descriptionToggle: PropTypes.func.isRequired,
   deleteGame: PropTypes.func.isRequired,
   user: PropTypes.shape({
     token: PropTypes.string,
