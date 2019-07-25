@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { Button, Header, Image, Modal, times, Icon } from "semantic-ui-react";
+import { Button, Header, Image, Modal } from "semantic-ui-react";
 import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
 import AboutMe from "./AboutMe";
@@ -26,7 +26,7 @@ class App extends Component {
       role: "user"
     },
     message: "",
-    modalIsOpen: true
+    modalIsOpen: false
   };
 
   componentDidMount() {
