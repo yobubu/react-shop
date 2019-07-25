@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
-import { Button, Header, Image, Modal } from "semantic-ui-react";
 import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
 import AboutMe from "./AboutMe";
@@ -10,7 +9,7 @@ import GamesPage from "./GamesPage";
 import ShowGamePage from "./ShowGamePage";
 import SignupPage from "./SignupPage.js";
 import LoginPage from "./LoginPage.js";
-import ModalPhoto from "../media/img/modal.png";
+import ModalPage from "./ModalPage";
 
 const setAuthorizationHeader = (token = null) => {
   if (token) {
@@ -97,34 +96,7 @@ class App extends Component {
           render={props => <LoginPage {...props} login={this.login} />}
         />
         <Route path="/game/:_id" exact component={ShowGamePage} />
-        <Modal open={modalIsOpen} onClose={this.closeModal}>
-          <Modal.Header>
-            <span>Welcome!</span>
-            <Button
-              icon="times"
-              floated="right"
-              size="mini"
-              onClick={this.closeModal}
-            />
-          </Modal.Header>
-
-          <Modal.Content image>
-            <Image wrapped size="medium" src={ModalPhoto} />
-            <Modal.Description>
-              <Header>Thank you for coming to my app</Header>
-              <p>Please read first about the features implemented.</p>
-              <p>Later try to find some good vibes for yourself :)</p>
-              <p>
-                I will answer all your question about my skills with pleasure so
-                don't forget to contact me after that :)
-              </p>
-              <p floated="right">Paweł</p>
-              <Button positive floated="right" onClick={this.closeModal}>
-                Explore
-              </Button>
-            </Modal.Description>
-          </Modal.Content>
-        </Modal>
+        <ModalPage open={modalIsOpen} onClose={this.closeModal} />
       </div>
     );
   }
