@@ -38,12 +38,8 @@ class App extends Component {
         }
       });
       setAuthorizationHeader(localStorage.bgshopToken);
-      this.setState({
-        modalIsOpen: true
-      });
     }
   }
-  componentWillMount() {}
 
   setMessage = message => this.setState({ message });
 
@@ -64,9 +60,10 @@ class App extends Component {
     setAuthorizationHeader(token);
   };
 
-  closeModal = () => this.setState({ modalIsOpen: !this.state.modalIsOpen });
+  closeModal = () => this.setState({ modalIsOpen: false });
 
   render() {
+    const { modalIsOpen } = this.state;
     return (
       <div className="ui container">
         <TopNavigation
@@ -100,7 +97,7 @@ class App extends Component {
           render={props => <LoginPage {...props} login={this.login} />}
         />
         <Route path="/game/:_id" exact component={ShowGamePage} />
-        <Modal open={this.state.modalIsOpen}>
+        <Modal open={modalIsOpen} onClose={this.closeModal}>
           <Modal.Header>
             <span>Welcome!</span>
             <Button
