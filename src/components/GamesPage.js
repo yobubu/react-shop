@@ -44,17 +44,6 @@ class GamesPage extends React.Component {
     });
   };
 
-  descriptionToggle = gameID =>
-    this.setState({
-      games: this.sortGames(
-        this.state.games.map(game =>
-          gameID === game._id
-            ? { ...game, descriptionVisible: !game.descriptionVisible }
-            : game
-        )
-      )
-    });
-
   saveGame = game =>
     (game._id ? this.updateGame(game) : this.addGame(game)).then(() =>
       this.props.history.push("/games")
@@ -137,7 +126,6 @@ class GamesPage extends React.Component {
               <GamesList
                 games={this.state.games}
                 toggleFeatured={this.toggleFeatured}
-                descriptionToggle={this.descriptionToggle}
                 deleteGame={this.deletingGame}
                 user={this.props.user}
               />

@@ -2,13 +2,7 @@ import React from "react";
 import GameCard from "./GameCard";
 import PropTypes from "prop-types";
 
-const GamesList = ({
-  games,
-  toggleFeatured,
-  descriptionToggle,
-  user,
-  deleteGame
-}) => (
+const GamesList = ({ games, toggleFeatured, user, deleteGame }) => (
   <div className="doubling stackable four cards ui grid container">
     {games.length === 0 ? (
       <div className="ui icon message">
@@ -24,7 +18,6 @@ const GamesList = ({
           game={game}
           key={game._id}
           toggleFeatured={toggleFeatured}
-          descriptionToggle={descriptionToggle}
           gameID={game._id}
           deleteGame={deleteGame}
           user={user}
