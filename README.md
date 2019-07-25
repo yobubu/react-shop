@@ -2,10 +2,11 @@ Hello,
 
 My name is Paweł and this is my project to practice JavaScript FullStack Developer skills.
 
+Master is online here: https://hire.me.fraczyk.eu/ 
+
 This is the FrontEnd part. You can find BackEnd in 'practice-react-api' folder in the main repository account.
 
-It is also needed to start mongoDB to get it worked all together. Soon application will be deployed online so it will
-available to check it live.
+It is also needed to start mongoDB to get it worked all together. 
 
 ## Available Scripts
 
