@@ -46,7 +46,9 @@ class GameCard extends React.Component {
 
     const addToCart = (
       <div className="extra content">
-        <a className="ui green basic button">Add to Cart</a>
+        <a className="ui green basic button" data-tooltip="Coming up soon :)">
+          Add to Cart
+        </a>
       </div>
     );
     return (

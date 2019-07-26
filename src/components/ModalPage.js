@@ -1,6 +1,5 @@
 import React from "react";
 import { Button, Header, Image, Modal } from "semantic-ui-react";
-import ModalPhoto from "../media/img/modal.png";
 
 const ModalPage = ({ open, onClose }) => (
   <div>
@@ -16,7 +15,7 @@ const ModalPage = ({ open, onClose }) => (
       </Modal.Header>
 
       <Modal.Content image>
-        <Image wrapped size="medium" src={ModalPhoto} />
+        <Image wrapped size="medium" src="/media/img/modal.png" />
         <Modal.Description>
           <Header>Thank you for coming to my app</Header>
           <p>Please read first about the features implemented.</p>
