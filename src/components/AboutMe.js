@@ -1,4 +1,5 @@
 import React from "react";
+import AboutMePhoto from "../media/img/aboutme.jpg";
 import YouTube from "react-youtube";
 
 const AboutMe = () => (
@@ -7,7 +8,7 @@ const AboutMe = () => (
       <div className="ui stackable grid">
         <div className="ui card four wide column">
           <div className="ui image">
-            <img src="/media/img/aboutme.jpg" alt="" />
+            <img src={AboutMePhoto} alt="" />
           </div>
           <div className="content">
             <div className="header">Paweł Frączyk</div>
