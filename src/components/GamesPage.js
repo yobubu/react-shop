@@ -75,7 +75,7 @@ class GamesPage extends React.Component {
     );
 
   addToCart = ({ user, game }) => {
-    api.users.addToCart({ user, game });
+    api.users.addToCart({ user, game }).then(cart => console.log(cart));
   };
 
   render() {
