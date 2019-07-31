@@ -52,8 +52,7 @@ class App extends Component {
       user: {
         token,
         role: jwtDecode(token).user.role
-      },
-      modal: null
+      }
     });
     localStorage.bgshopToken = token;
     setAuthorizationHeader(token);

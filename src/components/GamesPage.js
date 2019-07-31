@@ -74,6 +74,10 @@ class GamesPage extends React.Component {
       })
     );
 
+  addToCart = ({ user, game }) => {
+    api.users.addToCart(user, game);
+  };
+
   render() {
     const numberOfColumns =
       this.props.location.pathname === "/games" ? "sixteen" : "ten";
@@ -128,6 +132,7 @@ class GamesPage extends React.Component {
                 toggleFeatured={this.toggleFeatured}
                 deleteGame={this.deletingGame}
                 user={this.props.user}
+                addToCart={this.addToCart}
               />
             )}
           </div>
