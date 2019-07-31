@@ -9,6 +9,7 @@ import games from "./routes/games";
 import authgames from "./routes/authgames";
 import users from "./routes/users";
 import auth from "./routes/auth";
+import cart from "./routes/cart";
 
 dotenv.config({
   path: path.join(__dirname, ".env")
@@ -25,6 +26,7 @@ app.use("/api/games", games);
 app.use("/api/authgames", authgames);
 app.use("/api/users", users);
 app.use("/api/auth", auth);
+app.use("/api/cart", cart);
 
 mongodb.MongoClient.connect(`${process.env.DB_CONNECTION}`, (err, db) => {
   app.set("db", db);
