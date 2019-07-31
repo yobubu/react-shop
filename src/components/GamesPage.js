@@ -75,7 +75,7 @@ class GamesPage extends React.Component {
     );
 
   addToCart = ({ user, game }) => {
-    api.users.addToCart(user, game);
+    api.users.addToCart({ user, game });
   };
 
   render() {
@@ -144,6 +144,7 @@ class GamesPage extends React.Component {
 
 GamesPage.defaultProps = {
   user: PropTypes.shape({
+    _id: PropTypes.string,
     token: PropTypes.string,
     role: PropTypes.string.isRequired
   }).isRequired

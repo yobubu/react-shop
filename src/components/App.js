@@ -21,6 +21,7 @@ const setAuthorizationHeader = (token = null) => {
 class App extends Component {
   state = {
     user: {
+      _id: null,
       token: null,
       role: "user"
     },
@@ -32,6 +33,7 @@ class App extends Component {
     if (localStorage.bgshopToken) {
       this.setState({
         user: {
+          _id: jwtDecode(localStorage.bgshopToken).user._id,
           token: localStorage.bgshopToken,
           role: jwtDecode(localStorage.bgshopToken).user.role
         }
@@ -43,13 +45,14 @@ class App extends Component {
   setMessage = message => this.setState({ message });
 
   logout = () => {
-    this.setState({ user: { token: null, role: "user" } });
+    this.setState({ user: { _id: null, token: null, role: "user" } });
     setAuthorizationHeader();
     localStorage.removeItem("bgshopToken");
   };
   login = token => {
     this.setState({
       user: {
+        _id: jwtDecode(token).user._id,
         token,
         role: jwtDecode(token).user.role
       }

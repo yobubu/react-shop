@@ -33,6 +33,7 @@ GamesList.propTypes = {
   toggleFeatured: PropTypes.func.isRequired,
   deleteGame: PropTypes.func.isRequired,
   user: PropTypes.shape({
+    _id: PropTypes.string,
     token: PropTypes.string,
     role: PropTypes.string.isRequired
   }).isRequired
