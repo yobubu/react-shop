@@ -74,10 +74,6 @@ class GamesPage extends React.Component {
       })
     );
 
-  addToCart = ({ user, game }) => {
-    api.users.addToCart({ user, game }).then(cart => console.log(cart));
-  };
-
   render() {
     const numberOfColumns =
       this.props.location.pathname === "/games" ? "sixteen" : "ten";
@@ -132,7 +128,7 @@ class GamesPage extends React.Component {
                 toggleFeatured={this.toggleFeatured}
                 deleteGame={this.deletingGame}
                 user={this.props.user}
-                addToCart={this.addToCart}
+                addToCart={this.props.addToCart}
               />
             )}
           </div>
@@ -141,7 +137,9 @@ class GamesPage extends React.Component {
     );
   }
 }
-
+GamesPage.propTypes = {
+  addToCart: PropTypes.func.isRequired
+};
 GamesPage.defaultProps = {
   user: PropTypes.shape({
     _id: PropTypes.string,

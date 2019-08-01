@@ -23,6 +23,9 @@ const TopNavigation = ({ isAuthenticated, logout, isAdmin }) => (
     )}
     {isAuthenticated ? (
       <div className="right menu">
+        <NavLink exact to="/cart" className="item">
+          <i className="icon shopping cart" />
+        </NavLink>
         <a onClick={logout} className="item">
           Logout
         </a>

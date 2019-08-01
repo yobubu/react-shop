@@ -2,14 +2,16 @@ import React, { Component } from "react";
 import { Route } from "react-router-dom";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import api from "../api";
 import HomePage from "./HomePage";
 import TopNavigation from "./TopNavigation";
 import AboutMe from "./AboutMe";
 import GamesPage from "./GamesPage";
 import ShowGamePage from "./ShowGamePage";
-import SignupPage from "./SignupPage.js";
+import SignupPage from "./SignupPage";
 import LoginPage from "./LoginPage.js";
 import ModalPage from "./ModalPage";
+import ShoppingCart from "./ShoppingCart";
 
 const setAuthorizationHeader = (token = null) => {
   if (token) {
@@ -23,7 +25,8 @@ class App extends Component {
     user: {
       _id: null,
       token: null,
-      role: "user"
+      role: "user",
+      cart: []
     },
     message: "",
     modalIsOpen: true
@@ -35,7 +38,8 @@ class App extends Component {
         user: {
           _id: jwtDecode(localStorage.bgshopToken).user._id,
           token: localStorage.bgshopToken,
-          role: jwtDecode(localStorage.bgshopToken).user.role
+          role: jwtDecode(localStorage.bgshopToken).user.role,
+          cart: []
         }
       });
       setAuthorizationHeader(localStorage.bgshopToken);
@@ -63,6 +67,12 @@ class App extends Component {
 
   closeModal = () => this.setState({ modalIsOpen: false });
 
+  addToCart = ({ user, game }) => {
+    api.users
+      .addToCart({ user, game })
+      .then(cart => this.setState({ user: { cart, ...user } }));
+  };
+
   render() {
     const { modalIsOpen } = this.state;
     return (
@@ -85,7 +95,13 @@ class App extends Component {
         <Route path="/me" exact component={AboutMe} />
         <Route
           path="/games"
-          render={props => <GamesPage {...props} user={this.state.user} />}
+          render={props => (
+            <GamesPage
+              {...props}
+              user={this.state.user}
+              addToCart={this.addToCart}
+            />
+          )}
         />
         <Route
           path="/signup"
@@ -96,6 +112,10 @@ class App extends Component {
         <Route
           path="/login"
           render={props => <LoginPage {...props} login={this.login} />}
+        />
+        <Route
+          path="/cart"
+          render={props => <ShoppingCart {...props} user={this.state.user} />}
         />
         <Route path="/game/:_id" exact component={ShowGamePage} />
         <ModalPage open={modalIsOpen} onClose={this.closeModal} />
