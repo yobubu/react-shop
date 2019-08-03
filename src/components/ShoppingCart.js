@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import ShoppingCartItem from "./ShoppingCartItem";
 
 const ShoppingCart = ({ user }) => (
   <div className="doubling stackable four cards ui grid container">
@@ -12,7 +13,14 @@ const ShoppingCart = ({ user }) => (
         </div>
       </div>
     ) : (
-      console.log(user.cart[5])
+      user.cart.map(game => (
+        <ShoppingCartItem
+          game={game}
+          key={game._id}
+          gameID={game._id}
+          user={user}
+        />
+      ))
     )}
   </div>
 );

@@ -39,7 +39,7 @@ class App extends Component {
           _id: jwtDecode(localStorage.bgshopToken).user._id,
           token: localStorage.bgshopToken,
           role: jwtDecode(localStorage.bgshopToken).user.role,
-          cart: []
+          cart: jwtDecode(localStorage.bgshopToken).user.cart
         }
       });
       setAuthorizationHeader(localStorage.bgshopToken);
@@ -49,7 +49,7 @@ class App extends Component {
   setMessage = message => this.setState({ message });
 
   logout = () => {
-    this.setState({ user: { _id: null, token: null, role: "user" } });
+    this.setState({ user: { _id: null, token: null, role: "user", cart: [] } });
     setAuthorizationHeader();
     localStorage.removeItem("bgshopToken");
   };
@@ -58,7 +58,8 @@ class App extends Component {
       user: {
         _id: jwtDecode(token).user._id,
         token,
-        role: jwtDecode(token).user.role
+        role: jwtDecode(token).user.role,
+        cart: jwtDecode(token).user.cart
       }
     });
     localStorage.bgshopToken = token;
@@ -70,7 +71,7 @@ class App extends Component {
   addToCart = ({ user, game }) => {
     api.users
       .addToCart({ user, game })
-      .then(cart => this.setState({ user: { cart, ...user } }));
+      .then(cart => Object.assign(user, { cart: cart.cart }));
   };
 
   render() {
