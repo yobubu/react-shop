@@ -21,8 +21,7 @@ router.post("/", (req, res) => {
             user: {
               _id: doc._id,
               email: doc.email,
-              role: doc.role,
-              cart: doc.cart
+              role: doc.role
             }
           },
           process.env.JWT_SECRET
