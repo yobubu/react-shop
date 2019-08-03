@@ -10,7 +10,7 @@ class ShoppingCart extends React.Component {
   };
   componentDidMount() {
     api.users
-      .fetchCart(this.props.user._id)
+      .fetchCart(this.props.match.params._id)
       .then(cart => this.setState({ cartItems: cart.cart, loading: false }));
   }
   render() {

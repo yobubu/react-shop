@@ -26,7 +26,7 @@ class ShoppingCartItem extends React.Component {
         <div className="ui content container">
           <Link to={`/game/${game._id}`}>{game.name}</Link>
 
-          {user.token && user.role === "user" && addToCartButton}
+          {/* {user.token && user.role === "user" && addToCartButton} */}
         </div>
       </div>
     );
