@@ -16,6 +16,9 @@ export default {
   users: {
     create: user => axios.post(`/api/users`, { user }),
     login: credentials =>
-      axios.post("/api/auth", { credentials }).then(res => res.data.token)
+      axios.post("/api/auth", { credentials }).then(res => res.data.token),
+    addToCart: ({ user, game }) =>
+      axios.put("/api/cart/", { user, game }).then(res => res.data.cart),
+    fetchCart: id => axios.get(`/api/cart/${id}`).then(res => res.data.cart)
   }
 };

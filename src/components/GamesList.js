@@ -2,7 +2,7 @@ import React from "react";
 import GameCard from "./GameCard";
 import PropTypes from "prop-types";
 
-const GamesList = ({ games, toggleFeatured, user, deleteGame }) => (
+const GamesList = ({ games, toggleFeatured, user, deleteGame, addToCart }) => (
   <div className="doubling stackable four cards ui grid container">
     {games.length === 0 ? (
       <div className="ui icon message">
@@ -21,6 +21,7 @@ const GamesList = ({ games, toggleFeatured, user, deleteGame }) => (
           gameID={game._id}
           deleteGame={deleteGame}
           user={user}
+          addToCart={addToCart}
         />
       ))
     )}
@@ -32,6 +33,7 @@ GamesList.propTypes = {
   toggleFeatured: PropTypes.func.isRequired,
   deleteGame: PropTypes.func.isRequired,
   user: PropTypes.shape({
+    _id: PropTypes.string,
     token: PropTypes.string,
     role: PropTypes.string.isRequired
   }).isRequired

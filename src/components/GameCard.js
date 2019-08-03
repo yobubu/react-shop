@@ -14,7 +14,7 @@ class GameCard extends React.Component {
   hideConfirmation = () => this.setState({ showConfirmation: false });
 
   render() {
-    const { game, toggleFeatured, deleteGame, user } = this.props;
+    const { game, toggleFeatured, deleteGame, user, addToCart } = this.props;
     const adminActions = (
       <div className="extra content">
         {this.state.showConfirmation ? (
@@ -44,9 +44,13 @@ class GameCard extends React.Component {
       </div>
     );
 
-    const addToCart = (
+    const addToCartButton = (
       <div className="extra content">
-        <a className="ui green basic button" data-tooltip="Coming up soon :)">
+        <a
+          className="ui green basic button"
+          data-tooltip="Finally working :)"
+          onClick={() => addToCart({ user, game })}
+        >
           Add to Cart
         </a>
       </div>
@@ -77,7 +81,7 @@ class GameCard extends React.Component {
             </Link>
           </span>
         </div>
-        {user.token && user.role === "user" && addToCart}
+        {user.token && user.role === "user" && addToCartButton}
         {user.token && user.role === "admin" && adminActions}
       </div>
     );

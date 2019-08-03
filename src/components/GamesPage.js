@@ -128,6 +128,7 @@ class GamesPage extends React.Component {
                 toggleFeatured={this.toggleFeatured}
                 deleteGame={this.deletingGame}
                 user={this.props.user}
+                addToCart={this.props.addToCart}
               />
             )}
           </div>
@@ -136,9 +137,12 @@ class GamesPage extends React.Component {
     );
   }
 }
-
+GamesPage.propTypes = {
+  addToCart: PropTypes.func.isRequired
+};
 GamesPage.defaultProps = {
   user: PropTypes.shape({
+    _id: PropTypes.string,
     token: PropTypes.string,
     role: PropTypes.string.isRequired
   }).isRequired
