@@ -24,8 +24,10 @@ const ModalPage = ({ open, onClose }) => (
             updating and removing games.
           </p>
           <p>
-            Later try to sign up and login as regular user. At this moment I'm
-            working on shopping cart that will be avaiable for users.
+            Later try to sign up and login as regular user. At this moment you
+            can browse games and add them to the shoppping cart. I'm working on
+            quantity in store & cart so after adding twice the same game it
+            won't be displayed two times on list.
           </p>
           <p>
             I will answer all your question about my skills with pleasure so
