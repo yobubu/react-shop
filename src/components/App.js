@@ -12,6 +12,7 @@ import SignupPage from "./SignupPage";
 import LoginPage from "./LoginPage.js";
 import ModalPage from "./ModalPage";
 import ShoppingCart from "./ShoppingCart";
+import UserRoute from "./UserRoute";
 
 const setAuthorizationHeader = (token = null) => {
   if (token) {
@@ -110,8 +111,9 @@ class App extends Component {
           path="/login"
           render={props => <LoginPage {...props} login={this.login} />}
         />
-        <Route
+        <UserRoute
           path="/cart/:_id"
+          user={this.state.user}
           render={props => (
             <ShoppingCart
               {...props}
