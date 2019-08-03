@@ -8,13 +8,14 @@ class ShoppingCartItem extends React.Component {
     inCart: 1
   };
 
-  onclick(type) {
-    this.setState(prevState => {
-      return {
-        inCart: type == "add" ? prevState.inCart + 1 : prevState.inCart - 1
-      };
-    });
-  }
+  decrementInCart = () => {
+    this.setState({ inCart: this.state.inCart - 1 });
+  };
+
+  incrementInCart = () => {
+    this.setState({ inCart: this.state.inCart + 1 });
+  };
+
   render() {
     const { game, user } = this.props;
 
@@ -28,17 +29,19 @@ class ShoppingCartItem extends React.Component {
         <div className="ui content container">
           <Link to={`/game/${game._id}`}>{game.name}</Link>
           <div className="right floated">
-            Quantity: {this.state.inCart}
-            <input
-              type="button"
-              onClick={this.onclick.bind(this, "add")}
-              value="+"
-            />
-            <input
-              type="button"
-              onClick={this.onclick.bind(this, "sub")}
-              value="-"
-            />
+            <button
+              className="circular ui button"
+              onClick={this.decrementInCart}
+            >
+              -
+            </button>
+            {this.state.inCart}
+            <button
+              className="circular ui button"
+              onClick={this.incrementInCart}
+            >
+              +
+            </button>
           </div>
         </div>
       </div>
