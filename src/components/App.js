@@ -25,8 +25,7 @@ class App extends Component {
     user: {
       _id: null,
       token: null,
-      role: "user",
-      cart: []
+      role: "user"
     },
     message: "",
     modalIsOpen: true
@@ -38,8 +37,7 @@ class App extends Component {
         user: {
           _id: jwtDecode(localStorage.bgshopToken).user._id,
           token: localStorage.bgshopToken,
-          role: jwtDecode(localStorage.bgshopToken).user.role,
-          cart: jwtDecode(localStorage.bgshopToken).user.cart
+          role: jwtDecode(localStorage.bgshopToken).user.role
         }
       });
       setAuthorizationHeader(localStorage.bgshopToken);
@@ -49,7 +47,7 @@ class App extends Component {
   setMessage = message => this.setState({ message });
 
   logout = () => {
-    this.setState({ user: { _id: null, token: null, role: "user", cart: [] } });
+    this.setState({ user: { _id: null, token: null, role: "user" } });
     setAuthorizationHeader();
     localStorage.removeItem("bgshopToken");
   };
@@ -58,8 +56,7 @@ class App extends Component {
       user: {
         _id: jwtDecode(token).user._id,
         token,
-        role: jwtDecode(token).user.role,
-        cart: jwtDecode(token).user.cart
+        role: jwtDecode(token).user.role
       }
     });
     localStorage.bgshopToken = token;
@@ -69,9 +66,7 @@ class App extends Component {
   closeModal = () => this.setState({ modalIsOpen: false });
 
   addToCart = ({ user, game }) => {
-    api.users
-      .addToCart({ user, game })
-      .then(cart => Object.assign(user, { cart: cart.cart }));
+    api.users.addToCart({ user, game });
   };
 
   render() {
@@ -82,6 +77,7 @@ class App extends Component {
           isAuthenticated={!!this.state.user.token}
           logout={this.logout}
           isAdmin={!!this.state.user.token && this.state.user.role === "admin"}
+          user={this.state.user}
         />
         {this.state.message && (
           <div className="ui info message">
@@ -115,8 +111,14 @@ class App extends Component {
           render={props => <LoginPage {...props} login={this.login} />}
         />
         <Route
-          path="/cart"
-          render={props => <ShoppingCart {...props} user={this.state.user} />}
+          path="/cart/:_id"
+          render={props => (
+            <ShoppingCart
+              {...props}
+              user={this.state.user}
+              addToCart={this.addToCart}
+            />
+          )}
         />
         <Route path="/game/:_id" exact component={ShowGamePage} />
         <ModalPage open={modalIsOpen} onClose={this.closeModal} />

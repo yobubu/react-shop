@@ -13,8 +13,7 @@ const initialData = {
   players: "",
   featured: false,
   publisher: 0,
-  thumbnail: "",
-  descriptionVisible: true
+  thumbnail: ""
 };
 class GameForm extends Component {
   state = {

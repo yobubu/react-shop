@@ -48,7 +48,7 @@ class GameCard extends React.Component {
       <div className="extra content">
         <a
           className="ui green basic button"
-          data-tooltip="Coming up soon :)"
+          data-tooltip="Finally working :)"
           onClick={() => addToCart({ user, game })}
         >
           Add to Cart

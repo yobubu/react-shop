@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { NavLink } from "react-router-dom";
 
-const TopNavigation = ({ isAuthenticated, logout, isAdmin }) => (
+const TopNavigation = ({ isAuthenticated, logout, isAdmin, user }) => (
   <div className="ui secondary pointing menu">
     <NavLink exact to="/" className="item">
       Main
@@ -23,7 +23,7 @@ const TopNavigation = ({ isAuthenticated, logout, isAdmin }) => (
     )}
     {isAuthenticated ? (
       <div className="right menu">
-        <NavLink exact to="/cart" className="item">
+        <NavLink exact to={`/cart/${user._id}`} className="item">
           <i className="icon shopping cart" />
         </NavLink>
         <a onClick={logout} className="item">

@@ -3,53 +3,37 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
-class GameCard extends React.Component {
-  state = {
-    showConfirmation: false
-  };
-
-  showConfirmation = () => this.setState({ showConfirmation: true });
-  hideConfirmation = () => this.setState({ showConfirmation: false });
-
+class ShoppingCartItem extends React.Component {
   render() {
     const { game, user, addToCart } = this.props;
 
     const addToCartButton = (
-      <div className="extra content">
-        <a
-          className="ui green basic button"
-          data-tooltip="Coming up soon :)"
-          onClick={() => addToCart({ user, game })}
-        >
-          Add to Cart
-        </a>
-      </div>
+      <a
+        className="mini ui green basic right floated button"
+        data-tooltip="Finally working :)"
+        onClick={() => addToCart({ user, game })}
+      >
+        Add to Cart
+      </a>
     );
     return (
-      <div className="ui card">
-        <div className="image">
-          <img src={game.thumbnail} alt="Game cover" />
-        </div>
+      <div className="ui item">
+        <img
+          className="mini ui avatar image"
+          src={game.thumbnail}
+          alt="Game cover"
+        />
+        <div className="ui content container">
+          <Link to={`/game/${game._id}`}>{game.name}</Link>
 
-        <div className="content">
-          <Link to={`/game/${game._id}`} className="header">
-            {game.name}
-          </Link>
-          <i className="icon users" /> {game.players}&nbsp;
-          <i className="icon wait" /> {game.duration} min.
-          <span className="right floated">
-            <Link to={`/game/${game._id}`}>
-              <i className="eye icon" />
-            </Link>
-          </span>
+          {user.token && user.role === "user" && addToCartButton}
         </div>
-        {user.token && user.role === "user" && addToCartButton}
       </div>
     );
   }
 }
 
-GameCard.propTypes = {
+ShoppingCartItem.propTypes = {
   game: PropTypes.shape({
     name: PropTypes.string.isRequired,
     thumbnail: PropTypes.string.isRequired,
@@ -65,4 +49,4 @@ GameCard.propTypes = {
   }).isRequired
 };
 
-export default GameCard;
+export default ShoppingCartItem;
