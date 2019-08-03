@@ -70,16 +70,18 @@ class GameCard extends React.Component {
         </div>
 
         <div className="content">
-          <Link to={`/game/${game._id}`} className="header">
-            {game.name}
-          </Link>
+          <div className="header">
+            <Link to={`/game/${game._id}`}>{game.name}</Link>
+            <span className="right floated">
+              <Link to={`/game/${game._id}`}>
+                <i className="eye icon" />
+                &nbsp;
+              </Link>
+              <i className="warehouse icon" /> {game.stock}
+            </span>
+          </div>
           <i className="icon users" /> {game.players}&nbsp;
           <i className="icon wait" /> {game.duration} min.
-          <span className="right floated">
-            <Link to={`/game/${game._id}`}>
-              <i className="eye icon" />
-            </Link>
-          </span>
         </div>
         {user.token && user.role === "user" && addToCartButton}
         {user.token && user.role === "admin" && adminActions}
