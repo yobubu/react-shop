@@ -4,18 +4,20 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 class ShoppingCartItem extends React.Component {
-  render() {
-    const { game, user, addToCart } = this.props;
+  state = {
+    inCart: 1
+  };
 
-    const addToCartButton = (
-      <a
-        className="mini ui green basic right floated button"
-        data-tooltip="Finally working :)"
-        onClick={() => addToCart({ user, game })}
-      >
-        Add to Cart
-      </a>
-    );
+  onclick(type) {
+    this.setState(prevState => {
+      return {
+        inCart: type == "add" ? prevState.inCart + 1 : prevState.inCart - 1
+      };
+    });
+  }
+  render() {
+    const { game, user } = this.props;
+
     return (
       <div className="ui item">
         <img
@@ -25,8 +27,19 @@ class ShoppingCartItem extends React.Component {
         />
         <div className="ui content container">
           <Link to={`/game/${game._id}`}>{game.name}</Link>
-
-          {/* {user.token && user.role === "user" && addToCartButton} */}
+          <div className="right floated">
+            Quantity: {this.state.inCart}
+            <input
+              type="button"
+              onClick={this.onclick.bind(this, "add")}
+              value="+"
+            />
+            <input
+              type="button"
+              onClick={this.onclick.bind(this, "sub")}
+              value="-"
+            />
+          </div>
         </div>
       </div>
     );
