@@ -7,13 +7,13 @@ const router = express.Router();
 
 router.put("/", authenticate, userOnly, (req, res) => {
   const _id = req.body.user._id;
-  const gameId = req.body.game._id;
+  const game = req.body.game;
   const db = req.app.get("db");
 
   db.collection("users").findOneAndUpdate(
     { _id: new mongodb.ObjectId(_id) },
     {
-      $push: { cart: gameId }
+      $push: { cart: game }
     },
     (err, r) => {
       if (err) {
