@@ -8,10 +8,21 @@ const AboutMe = () => (
       <div className="ui stackable grid">
         <div className="ui card four wide column">
           <div className="ui image">
-            <img src={AboutMePhoto} alt="" />
+            <img src={AboutMePhoto} alt="Hire me Paweł Frączyk" />
           </div>
           <div className="content">
-            <div className="header">Paweł Frączyk</div>
+            <div className="header">
+              Paweł Frączyk
+              <a href="https://www.linkedin.com/in/pawel-fraczyk/">
+                <i class="right floated linkedin icon" />
+              </a>
+              <a href="https://m.me/pozzeetywny">
+                <i class="right floated facebook messenger icon" />
+              </a>
+              <a href="tel:+48790290124">
+                <i class="right floated phone icon" />
+              </a>
+            </div>
             <div className="meta">
               <span className="date">Gdynia, Poland</span>
             </div>
