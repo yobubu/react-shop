@@ -21,24 +21,35 @@ class ShoppingCartItem extends React.Component {
 
     return (
       <div className="ui item">
-        <img
-          className="tiny ui avatar image"
-          src={game.thumbnail}
-          alt="Game cover"
-        />
-        <div className="ui container">
-          <Link to={`/game/${game._id}`}>{game.name}</Link>
-          <div className="right floated">
+        <div className="ui four column middle aligned grid container">
+          <div className="two wide column">
+            <img
+              className="tiny ui avatar image"
+              src={game.thumbnail}
+              alt="Game cover"
+            />
+          </div>
+          <div className="column">
+            <Link to={`/game/${game._id}`}>{game.name}</Link>
+          </div>
+          <div className="column">
             <i className="minus icon" onClick={this.decrementInCart} />
             {this.state.inCart}
             <i className="plus icon" onClick={this.incrementInCart} />
+          </div>
+          <div className="column right floated">
             <a
               className="ui red basic button"
               onClick={() => removeFromCart({ user, game })}
             >
               <i className="ui icon trash" />
             </a>
-            <button>Update cart</button>
+            <button
+              className="ui green basic button"
+              data-tooltip="In progress :)"
+            >
+              Update
+            </button>
           </div>
         </div>
       </div>
