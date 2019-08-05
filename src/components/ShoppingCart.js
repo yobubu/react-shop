@@ -5,16 +5,21 @@ import api from "../api";
 
 class ShoppingCart extends React.Component {
   state = {
-    cartItems: [],
-    loading: true
+    cartItems: []
   };
 
   componentDidMount() {
     api.users
       .fetchCart(this.props.match.params._id)
-      .then(cart => this.setState({ cartItems: cart.cart, loading: false }));
+      .then(cart => this.setState({ cartItems: cart.cart }));
   }
 
+  removeFromCart = ({ user, game }) => {
+    api.users.removeFromCart({ user, game });
+    api.users
+      .fetchCart(this.props.match.params._id)
+      .then(cart => this.setState({ cartItems: cart.cart }));
+  };
   render() {
     const { user, addToCart } = this.props;
 
@@ -24,6 +29,7 @@ class ShoppingCart extends React.Component {
 
     return (
       <div className="doubling stackable four cards ui grid container">
+        <h1>Your shopping cart</h1>
         {this.state.cartItems.length === 0 ? (
           <div className="ui icon message">
             <i className="icon info" />
@@ -34,7 +40,6 @@ class ShoppingCart extends React.Component {
           </div>
         ) : (
           <div className="ui container">
-            <h1>Your shopping cart</h1>
             <div className="ui large alligned animated divided list">
               {FilteredCart.map(game => (
                 <ShoppingCartItem
@@ -42,6 +47,7 @@ class ShoppingCart extends React.Component {
                   key={game._id}
                   user={user}
                   addToCart={addToCart}
+                  removeFromCart={this.removeFromCart}
                 />
               ))}
             </div>

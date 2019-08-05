@@ -14,7 +14,8 @@ const initialData = {
   featured: false,
   publisher: 0,
   thumbnail: "",
-  stock: 0
+  stock: 0,
+  inCart: 1
 };
 class GameForm extends Component {
   state = {

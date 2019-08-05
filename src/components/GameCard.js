@@ -70,7 +70,7 @@ class GameCard extends React.Component {
         </div>
 
         <div className="content">
-          <div className="header">
+          <div className="content">
             <Link to={`/game/${game._id}`}>{game.name}</Link>
             <span className="right floated">
               <Link to={`/game/${game._id}`}>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 class ShoppingCartItem extends React.Component {
   state = {
-    inCart: 1
+    inCart: this.props.game.inCart
   };
 
   decrementInCart = () => {
@@ -17,31 +17,28 @@ class ShoppingCartItem extends React.Component {
   };
 
   render() {
-    const { game, user } = this.props;
+    const { game, user, removeFromCart } = this.props;
 
     return (
       <div className="ui item">
         <img
-          className="mini ui avatar image"
+          className="tiny ui avatar image"
           src={game.thumbnail}
           alt="Game cover"
         />
-        <div className="ui content container">
+        <div className="ui container">
           <Link to={`/game/${game._id}`}>{game.name}</Link>
           <div className="right floated">
-            <button
-              className="circular ui button"
-              onClick={this.decrementInCart}
-            >
-              -
-            </button>
+            <i className="minus icon" onClick={this.decrementInCart} />
             {this.state.inCart}
-            <button
-              className="circular ui button"
-              onClick={this.incrementInCart}
+            <i className="plus icon" onClick={this.incrementInCart} />
+            <a
+              className="ui red basic button"
+              onClick={() => removeFromCart({ user, game })}
             >
-              +
-            </button>
+              <i className="ui icon trash" />
+            </a>
+            <button>Update cart</button>
           </div>
         </div>
       </div>

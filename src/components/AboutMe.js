@@ -14,13 +14,13 @@ const AboutMe = () => (
             <div className="header">
               Paweł Frączyk
               <a href="https://www.linkedin.com/in/pawel-fraczyk/">
-                <i class="right floated linkedin icon" />
+                <i className="right floated linkedin icon" />
               </a>
               <a href="https://m.me/pozzeetywny">
-                <i class="right floated facebook messenger icon" />
+                <i className="right floated facebook messenger icon" />
               </a>
               <a href="tel:+48790290124">
-                <i class="right floated phone icon" />
+                <i className="right floated phone icon" />
               </a>
             </div>
             <div className="meta">
