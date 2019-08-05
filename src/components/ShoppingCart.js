@@ -5,19 +5,31 @@ import api from "../api";
 
 class ShoppingCart extends React.Component {
   state = {
-    cartItems: [],
-    loading: true
+    cartItems: []
   };
+
   componentDidMount() {
     api.users
       .fetchCart(this.props.match.params._id)
-      .then(cart => this.setState({ cartItems: cart.cart, loading: false }));
+      .then(cart => this.setState({ cartItems: cart.cart }));
   }
+
+  removeFromCart = ({ user, game }) => {
+    api.users.removeFromCart({ user, game });
+    api.users
+      .fetchCart(this.props.match.params._id)
+      .then(cart => this.setState({ cartItems: cart.cart }));
+  };
   render() {
     const { user, addToCart } = this.props;
 
+    const FilteredCart = this.state.cartItems.filter(
+      (s => ({ _id }) => !s.has(_id) && s.add(_id))(new Set())
+    );
+
     return (
       <div className="doubling stackable four cards ui grid container">
+        <h1>Your shopping cart</h1>
         {this.state.cartItems.length === 0 ? (
           <div className="ui icon message">
             <i className="icon info" />
@@ -28,15 +40,14 @@ class ShoppingCart extends React.Component {
           </div>
         ) : (
           <div className="ui container">
-            <h1>Your shopping cart</h1>
             <div className="ui large alligned animated divided list">
-              {this.state.cartItems.map(game => (
+              {FilteredCart.map(game => (
                 <ShoppingCartItem
                   game={game}
                   key={game._id}
-                  gameID={game._id}
                   user={user}
                   addToCart={addToCart}
+                  removeFromCart={this.removeFromCart}
                 />
               ))}
             </div>

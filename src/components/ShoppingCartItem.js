@@ -4,29 +4,53 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 class ShoppingCartItem extends React.Component {
-  render() {
-    const { game, user, addToCart } = this.props;
+  state = {
+    inCart: this.props.game.inCart
+  };
 
-    const addToCartButton = (
-      <a
-        className="mini ui green basic right floated button"
-        data-tooltip="Finally working :)"
-        onClick={() => addToCart({ user, game })}
-      >
-        Add to Cart
-      </a>
-    );
+  decrementInCart = () => {
+    this.setState({ inCart: Math.max(this.state.inCart - 1, 0) });
+  };
+
+  incrementInCart = () => {
+    this.setState({ inCart: this.state.inCart + 1 });
+  };
+
+  render() {
+    const { game, user, removeFromCart } = this.props;
+
     return (
       <div className="ui item">
-        <img
-          className="mini ui avatar image"
-          src={game.thumbnail}
-          alt="Game cover"
-        />
-        <div className="ui content container">
-          <Link to={`/game/${game._id}`}>{game.name}</Link>
-
-          {/* {user.token && user.role === "user" && addToCartButton} */}
+        <div className="ui four column middle aligned grid container">
+          <div className="two wide column">
+            <img
+              className="tiny ui avatar image"
+              src={game.thumbnail}
+              alt="Game cover"
+            />
+          </div>
+          <div className="column">
+            <Link to={`/game/${game._id}`}>{game.name}</Link>
+          </div>
+          <div className="column">
+            <i className="minus icon" onClick={this.decrementInCart} />
+            {this.state.inCart}
+            <i className="plus icon" onClick={this.incrementInCart} />
+          </div>
+          <div className="column right floated">
+            <a
+              className="ui red basic button"
+              onClick={() => removeFromCart({ user, game })}
+            >
+              <i className="ui icon trash" />
+            </a>
+            <button
+              className="ui green basic button"
+              data-tooltip="In progress :)"
+            >
+              Update
+            </button>
+          </div>
         </div>
       </div>
     );

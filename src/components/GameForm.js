@@ -13,7 +13,9 @@ const initialData = {
   players: "",
   featured: false,
   publisher: 0,
-  thumbnail: ""
+  thumbnail: "",
+  stock: 0,
+  inCart: 1
 };
 class GameForm extends Component {
   state = {
@@ -46,6 +48,7 @@ class GameForm extends Component {
     if (!data.thumbnail) errors.thumbnail = "This field can't be blank";
     if (data.price <= 0) errors.price = "Too cheap, don't you think?";
     if (data.duration <= 0) errors.duration = "Too short, isn't it?";
+    if (data.stock < 0) errors.stock = "Do you own me some games?";
 
     return errors;
   }
@@ -144,7 +147,7 @@ class GameForm extends Component {
           <FormInlineMessage content={errors.thumbnail} type="error" />
         </div>
 
-        <div className="three fields">
+        <div className="two fields">
           <div className={errors.price ? "field error" : "field"}>
             <label htmlFor="price">Price (in cents) </label>
             <input
@@ -167,6 +170,8 @@ class GameForm extends Component {
             />
             <FormInlineMessage content={errors.duration} type="error" />
           </div>
+        </div>
+        <div className="two fields">
           <div className={errors.players ? "field error" : "field"}>
             <label htmlFor="players">Number of players</label>
             <input
@@ -177,6 +182,17 @@ class GameForm extends Component {
               onChange={this.handleStringChange}
             />
             <FormInlineMessage content={errors.players} type="error" />
+          </div>
+          <div className={errors.stock ? "field error" : "field"}>
+            <label htmlFor="stock">Quantity in stock</label>
+            <input
+              type="number"
+              id="stock"
+              name="stock"
+              value={data.stock}
+              onChange={this.handleNumberChange}
+            />
+            <FormInlineMessage content={errors.stock} type="error" />
           </div>
         </div>
 
