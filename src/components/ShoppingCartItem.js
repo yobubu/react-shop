@@ -9,7 +9,7 @@ class ShoppingCartItem extends React.Component {
   };
 
   decrementInCart = () => {
-    this.setState({ inCart: this.state.inCart - 1 });
+    this.setState({ inCart: Math.max(this.state.inCart - 1, 0) });
   };
 
   incrementInCart = () => {
