@@ -21,7 +21,7 @@
   "dependencies": {
     "@types/mongoose": "^5.2.18",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "bcrypt": "^3.0.6",
+    "bcryptjs": "^2.4.3",
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",

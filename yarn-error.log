@@ -2,7 +2,7 @@ Arguments:
   /usr/local/bin/node /usr/local/Cellar/yarn/1.16.0/libexec/bin/yarn.js install
 
 PATH: 
-  /Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/pawelfraczyk/anaconda3/bin:/Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin
+  /Users/pawelfraczyk/.rvm/gems/ruby-2.6.3/bin:/Users/pawelfraczyk/.rvm/gems/ruby-2.6.3@global/bin:/Users/pawelfraczyk/.rvm/rubies/ruby-2.6.3/bin:/Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:/opt/X11/bin:~/.dotnet/tools:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/pawelfraczyk/.rvm/gems/ruby-2.6.3/bin:/Users/pawelfraczyk/.rvm/gems/ruby-2.6.3@global/bin:/Users/pawelfraczyk/.rvm/rubies/ruby-2.6.3/bin:/Users/pawelfraczyk/anaconda3/bin:/Users/pawelfraczyk/.jenv/shims:/Users/pawelfraczyk/.jenv/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/Users/pawelfraczyk/.rvm/bin
 
 Yarn version: 
   1.16.0
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: EACCES: permission denied, mkdir '/Users/pawelfraczyk/Music/React/bgshop-api/node_modules/import-fresh/node_modules'
+  Error: EACCES: permission denied, mkdir '/Users/pawelfraczyk/Music/React/bgshop-api/node_modules/node-pre-gyp/node_modules/nopt'
 
 npm manifest: 
   {
@@ -23,7 +23,8 @@ npm manifest:
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-      "start": "nodemon --exec babel-node -- src/index.js"
+      "start": "nodemon --exec babel-node -- src/index.js",
+      "build": "babel src --out-dir ./build"
     },
     "devDependencies": {
       "babel-cli": "^6.26.0",
@@ -39,7 +40,7 @@ npm manifest:
     "dependencies": {
       "@types/mongoose": "^5.2.18",
       "babel-plugin-transform-object-rest-spread": "^6.26.0",
-      "bcrypt": "^3.0.6",
+      "bcryptjs": "^2.4.3",
       "bluebird": "^3.5.2",
       "body-parser": "^1.18.3",
       "dotenv": "^6.0.0",
@@ -1014,6 +1015,11 @@ Lockfile:
     dependencies:
       nan "2.13.2"
       node-pre-gyp "0.12.0"
+  
+  bcryptjs@^2.4.3:
+    version "2.4.3"
+    resolved "https://registry.yarnpkg.com/bcryptjs/-/bcryptjs-2.4.3.tgz#9ab5627b93e60621ff7cdac5da9733027df1d0cb"
+    integrity sha1-mrVie5PmBiH/fNrF2pczAn3x0Ms=
   
   binary-extensions@^1.0.0:
     version "1.13.1"
