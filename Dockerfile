@@ -8,4 +8,4 @@ COPY package.json /srv/app/bgshop
 ADD . /srv/app/bgshop
 RUN yarn install
 EXPOSE 3000
-CMD yarn start
+CMD yarn build
