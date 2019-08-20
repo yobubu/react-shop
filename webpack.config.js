@@ -12,9 +12,6 @@ module.exports = {
         }]
     },
     devServer: {
-        allowedHosts: [
-            'fraczyk.eu',
-            'k8s.fraczyk.eu'
-        ]
+        host: '0.0.0.0'
     }
 };
