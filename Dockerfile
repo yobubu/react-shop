@@ -6,6 +6,7 @@ WORKDIR /app/bgshop
 COPY package.json .
 RUN yarn install
 COPY . ./
+COPY webpack.config.js ./node_modules/webpack-dev-server/client/
 
 EXPOSE 3000
 CMD ["yarn", "start"]
