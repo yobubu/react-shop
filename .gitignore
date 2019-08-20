@@ -25,3 +25,4 @@ yarn-error.log*
 
 # Exclude .devspace generated files
 .devspace/
+nginx.conf

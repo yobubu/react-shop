@@ -12,4 +12,4 @@ spec:
       - path: /
         backend:
           serviceName: bgshop
-          servicePort: 5000
+          servicePort: 80

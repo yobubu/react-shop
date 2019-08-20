@@ -1,14 +1,6 @@
-FROM node:10.16.0-alpine
+FROM nginx:1.15.2-alpine
 
-RUN mkdir -p /srv/app/bgshop
-WORKDIR /srv/app/bgshop
-
-COPY package.json /srv/app/bgshop
-
-RUN yarn install
-
-COPY . ./
-RUN yarn build
-RUN yarn global add serve
-EXPOSE 5000
-CMD ["serve", "-s", "build"]
+COPY ./build /var/www
+COPY nginx.conf /etc/nginx/nginx.conf
+EXPOSE 80
+ENTRYPOINT ["nginx","-g","daemon off;"]
