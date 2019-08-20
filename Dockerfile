@@ -1,6 +1,11 @@
-FROM nginx:1.15.2-alpine
+FROM node:10.16.0-alpine
 
-COPY ./build /var/www
-COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-ENTRYPOINT ["nginx","-g","daemon off;"]
+RUN mkdir -p /app/bgshop
+WORKDIR /app/bgshop
+
+COPY package.json .
+RUN yarn install
+COPY . ./
+
+EXPOSE 3000
+CMD ["yarn", "start"]

@@ -19,12 +19,12 @@
     "validator": "^11.1.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start && node_modules/.bin/webpack-dev-server --host 0.0.0.0",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:2370",
+  "proxy": "http://bgshop-api:2370",
   "eslintConfig": {
     "extends": "react-app"
   },

@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 .gitignore
+.dockerignore
 # testing
 /coverage
 
@@ -25,4 +26,4 @@ yarn-error.log*
 
 # Exclude .devspace generated files
 .devspace/
-nginx.conf
+
