@@ -8,6 +8,7 @@ COPY package.json /srv/app/bgshop
 RUN yarn install
 
 COPY . ./
-
-EXPOSE 3000
-CMD ["yarn", "start"]
+RUN yarn build
+RUN yarn global add serve
+EXPOSE 5000
+CMD ["serve", "-s", "build"]

@@ -5,8 +5,8 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-  - port: 3000
-    targetPort: 3000
+  - port: 5000
+    targetPort: 5000
   selector:
     app: bgshop
 ---
@@ -28,4 +28,4 @@ spec:
       - name: bgshop
         image: pawelfraczyk/bgshop:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 5000
