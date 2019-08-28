@@ -25,7 +25,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "test/test.js",
+    "test": "./test/test.js",
     "eject": "react-scripts eject"
   },
   "proxy": "http://bgshop-api:2370",
