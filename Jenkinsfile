@@ -7,8 +7,8 @@ node {
     }
     stage('test') {
         nodejs(nodeJSInstallationName: 'nodejs') {
-            sh 'yarn install'
-            sh 'yarn test'
+            sh 'npm install --only=dev'
+            sh 'npm test'
         }
     }
     stage('docker build/push') {

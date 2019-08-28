@@ -20,12 +20,12 @@
     "validator": "^11.1.0"
   },
   "devDependencies": {
-    "mocha": "6.2.0"
+    "mocha": "^6.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "scripts/test",
+    "test": "mocha",
     "eject": "react-scripts eject"
   },
   "proxy": "http://bgshop-api:2370",
