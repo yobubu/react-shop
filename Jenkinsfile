@@ -12,7 +12,7 @@ node {
         }
     }
     stage('docker build/push') {
-        docker.withRegistry('https://index.docker.io.v1/', 'dockerhub') {
+        docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
             def app = docker.build("pawelfraczyk/bgshop:${commit_id}", '.').push()
         }
     }
