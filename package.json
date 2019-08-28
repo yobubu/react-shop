@@ -19,6 +19,9 @@
     "semantic-ui-react": "^0.87.3",
     "validator": "^11.1.0"
   },
+  "devDependencies": {
+    "mocha": "6.2.0"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

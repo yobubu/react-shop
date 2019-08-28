@@ -6,7 +6,7 @@ WORKDIR /app/bgshop
 COPY package.json ./
 RUN yarn install
 
-COPY . ./
+COPY . /app/bgshop
 
 EXPOSE 3000
 CMD ["yarn", "start"]
