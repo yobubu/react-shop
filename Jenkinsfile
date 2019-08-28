@@ -32,8 +32,8 @@ node {
     def content = '${JELLY_SCRIPT,template="html"}'
 
     // send slack notification
-    slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
-    
+    slackSend (baseUrl: "https://hooks.slack.com/services/", color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
     // send email
     if(to != null && !to.isEmpty()) {
         emailext(body: content, mimeType: 'text/html',
