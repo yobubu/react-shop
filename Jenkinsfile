@@ -7,7 +7,7 @@ node {
     }
     stage('test') {
         nodejs(nodeJSInstallationName: 'nodejs') {
-            sh 'yarn install --only=dev'
+            sh 'yarn install'
             sh 'yarn test'
         }
     }
