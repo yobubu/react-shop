@@ -31,6 +31,9 @@ node {
     def subject = "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} ${currentBuild.result}"
     def content = '${JELLY_SCRIPT,template="html"}'
 
+    // send slack notification
+    slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+    
     // send email
     if(to != null && !to.isEmpty()) {
         emailext(body: content, mimeType: 'text/html',
