@@ -20,14 +20,11 @@ const ModalPage = ({ open, onClose }) => (
         <Modal.Description>
           <Header>Thank you for coming to my app</Header>
           <p>
-            Please watch first video about the admin priviliges of adding,
-            updating and removing games.
+            This website was developed by myself using JS & React.
           </p>
           <p>
-            Later try to sign up and login as regular user. At this moment you
-            can browse games and add them to the shoppping cart. I'm working on
-            quantity in store & cart so after adding twice the same game it
-            won't be displayed two times on list.
+            I also practice automation tools in DevOps culture within. You can
+            check my repo in BitBucket to check Jenkinsfile and DockerFile.
           </p>
           <p>
             I will answer all your question about my skills with pleasure so
