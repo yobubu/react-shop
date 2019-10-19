@@ -7,17 +7,37 @@ services:
     ports:
       - "80:80"
     networks:
-      main:
+      bgshop_net:
 
   bgshop-api:
     container_name: bgshop-api
     image: pawelfraczyk/bgshop-api
     restart: always
-    env_file: ../practice-react-api/src/.env
+    env_file: .env
+    environment:
+      - MONGO_USER=$MONGO_USER
+      - MONGO_PASS=$MONGO_PASS
+      - MONGO_HOST=mongo
+      - MONGO_PORT=$MONGO_PORT
+      - MONGO_DB=$MONGO_DB
     ports:
       - "2370:2370"
     networks:
-      main:
+      bgshop_net:
+    command: ./wait-for.sh mongo:27017 -- yarn start
+  
+  mongo:
+    container_name: mongo
+    image: mongo
+    restart: always
+    env_file: .env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$MONGO_USER
+      - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASS
+    ports:
+      - "27017:27017"
+    networks:
+      bgshop_net:
 
 networks:
-  main:
+  bgshop_net:

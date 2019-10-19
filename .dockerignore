@@ -6,3 +6,4 @@ Dockerrun.aws.json
 hello-k8s.yaml
 hello-k8s-ingress.yaml
 yarn.lock
+.env
