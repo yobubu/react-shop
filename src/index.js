@@ -28,7 +28,15 @@ app.use("/api/users", users);
 app.use("/api/auth", auth);
 app.use("/api/cart", cart);
 
-mongodb.MongoClient.connect(`${process.env.DB_CONNECTION}`, (err, db) => {
+const {
+  MONGO_USER,
+  MONGO_PASS,
+  MONGO_HOST,
+  MONGO_PORT,
+  MONGO_DB
+} = process.env;
+
+mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`, (err, db) => {
   app.set("db", db);
 
   app.get("/*", (req, res) => {
