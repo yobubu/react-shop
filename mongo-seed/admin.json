@@ -1,0 +1,7 @@
+{
+	"_id":{"$oid":"5d3a07836250df41032df90d"},
+	"email": "admin@admin.com",
+	"password": "$2b$10$p8YQtJBXaA.eJqTjTW8uC..HVN2WXxY61XZ5nhDJXOCILk3b01jlG",
+	"role": "admin",
+	"cart": []
+}

@@ -1,0 +1,24 @@
+{
+	"_id":{"$oid":"5d604cec67b5a05fe4a5187b"},
+	"name": "Sample Game",
+	"description": "Sample game is a word game in which two to four players score points by placing tiles bearing a single letter onto a board divided into a 15×15 grid of squares. The tiles must form words that, in crossword fashion, read left to right in rows or downward in columns, and be included in a standard dictionary or lexicon.\n\nThe name is a trademark of Mattel in most of the world, but of Hasbro, Inc. in the United States and Canada. The game is sold in 121 countries and is available in 29 languages; approximately 150 million sets have been sold worldwide and roughly one-third of American and half of British homes have a Scrabble set. There are around 4,000 Scrabble clubs around the world.",
+	"price": {
+		"$numberInt": "1200"
+	},
+	"duration": {
+		"$numberInt": "60"
+	},
+	"players": "4-5",
+	"featured": false,
+	"publisher": {
+		"$numberInt": "1"
+	},
+	"thumbnail": "https://matmaigry.pl/userdata/gfx/60de7a5275cbfb859d1254b3d32e0e58.jpg",
+	"descriptionVisible": true,
+	"stock": {
+		"$numberInt": "19"
+	},
+	"inCart": {
+		"$numberInt": "1"
+	}
+}

@@ -5,7 +5,7 @@ services:
     image: pawelfraczyk/bgshop
     restart: always
     ports:
-      - "80:80"
+      - "80:3000"
     networks:
       bgshop_net:
 
@@ -24,7 +24,8 @@ services:
       - "2370:2370"
     networks:
       bgshop_net:
-    command: ./wait-for.sh mongo:27017 -- yarn start
+    depends_on:
+      - mongo
   
   mongo:
     container_name: mongo
@@ -38,6 +39,13 @@ services:
       - "27017:27017"
     networks:
       bgshop_net:
+  mongo_seed:
+    container_name: mongo_seed
+    build: mongo-seed/.
+    networks:
+      bgshop_net:
+    depends_on:
+      - mongo
 
 networks:
   bgshop_net:
