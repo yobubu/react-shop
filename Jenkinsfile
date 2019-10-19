@@ -14,16 +14,16 @@ node {
         sh "git rev-parse --short HEAD > .git/commit-id"
         commit_id = readFile('.git/commit-id').trim()
     }
-    stage('failing-test') {
-        println('Now test stage will fail!')
-        sh 'exit 1'
-    }
-    // stage('test') {
-    //     nodejs(nodeJSInstallationName: 'nodejs') {
-    //         sh 'npm install --only=dev'
-    //         sh 'npm test'
-    //     }
+    //stage('failing-test') {
+    //    println('Now test stage will fail!')
+    //    sh 'exit 1'
     // }
+    stage('test') {
+        nodejs(nodeJSInstallationName: 'nodejs') {
+            sh 'npm install --only=dev'
+            sh 'npm test'
+        }
+    }
     } catch(e) {
     // mark build as failed
     currentBuild.result = "FAILURE";

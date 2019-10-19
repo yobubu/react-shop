@@ -1,1 +1,8 @@
 .git/
+node_modules
+Dockerfile
+Jenkinsfile
+Dockerrun.aws.json
+hello-k8s.yaml
+hello-k8s-ingress.yaml
+yarn.lock

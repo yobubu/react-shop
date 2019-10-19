@@ -1,0 +1,32 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "containerDefinitions": [
+      {
+        "name": "bgshop",
+        "image": "pawelfraczyk/bgshop",
+        "environment": [
+          {
+            "name": "Bgshop",
+            "value": "Front"
+          }
+        ],
+        "essential": true,
+        "memory": 256,
+        "portMappings": [
+          {
+            "hostPort": 80,
+            "containerPort": 3000
+          }
+        ],
+        "links": [
+            "bgshop-api"
+        ]
+      },
+      {
+        "name": "bgshop-api",
+        "image": "pawelfraczyk/bgshop-api",
+        "essential": true,
+        "memory": 256
+      }
+    ]
+  }

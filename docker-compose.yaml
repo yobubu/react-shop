@@ -1,0 +1,23 @@
+version: "3.7"
+services: 
+  bgshop: 
+    container_name: bgshop
+    image: pawelfraczyk/bgshop
+    restart: always
+    ports:
+      - "80:80"
+    networks:
+      main:
+
+  bgshop-api:
+    container_name: bgshop-api
+    image: pawelfraczyk/bgshop-api
+    restart: always
+    env_file: ../practice-react-api/src/.env
+    ports:
+      - "2370:2370"
+    networks:
+      main:
+
+networks:
+  main:
