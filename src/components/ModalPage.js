@@ -24,8 +24,15 @@ const ModalPage = ({ open, onClose }) => (
           </p>
           <p>
             I also practice automation tools in DevOps culture within. You can
-            check my repo in BitBucket to check Jenkinsfile and DockerFile.
-          </p>
+            check my repo in BitBucket to check Jenkinsfile and DockerFile. You can also
+            clone the repo and run this app in localhost using Docker Compose file. It will
+            run also mongodb container with init data of sample game and admin account to 
+            create more games in shop.</p>
+            <p>
+            (credentials: admin@admin.com pass: adminadmin)</p>
+            <p><a href="https://bitbucket.org/pozzee/practice-react/">
+            BitBucket repo
+          </a></p>
           <p>
             I will answer all your question about my skills with pleasure so
             don't forget to contact me after that :)

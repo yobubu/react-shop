@@ -39,6 +39,7 @@ services:
       - "27017:27017"
     networks:
       bgshop_net:
+        
   mongo_seed:
     container_name: mongo_seed
     build: mongo-seed/.
