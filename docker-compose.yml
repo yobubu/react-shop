@@ -2,10 +2,11 @@ version: "3.7"
 services: 
   bgshop: 
     container_name: bgshop
-    image: pawelfraczyk/bgshop
+    build: .
+    #image: pawelfraczyk/bgshop
     restart: always
     ports:
-      - "80:3000"
+      - "80:80"
     networks:
       bgshop_net:
 
