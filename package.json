@@ -4,10 +4,13 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node -r esm src/index.js",
+    "start": "nodemon --exec babel-node -- src/index.js",
     "build": "babel src --out-dir ./build"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^10.0.1",
+    "babel-preset-env": "^1.7.0",
     "eslint": "^5.6.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.14.0",
@@ -22,7 +25,6 @@
     "bluebird": "^3.5.2",
     "body-parser": "^1.18.3",
     "dotenv": "^6.0.0",
-    "esm": "^3.2.25",
     "express": "^4.16.3",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
