@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "nnode -r esm server.js",
+    "start": "node -r esm src/index.js",
     "build": "babel src --out-dir ./build"
   },
   "devDependencies": {
