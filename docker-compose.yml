@@ -2,8 +2,9 @@ version: "3.7"
 services: 
   client: 
     container_name: client
-    build: .
-    #image: pawelfraczyk/bgshop
+    build:
+      context: ./client
+      dockerfile: Dockerfile
     restart: always
     ports:
       - "3000:3000"
@@ -12,7 +13,9 @@ services:
 
   api:
     container_name: api
-    image: pawelfraczyk/bgshop-api
+    build:
+      context: ./api
+      dockerfile: Dockerfile
     restart: always
     env_file: .env
     environment:
@@ -42,6 +45,7 @@ services:
       bgshop_net:
 
   nginx:
+    container_name: nginx
     restart: always
     build:
       dockerfile: Dockerfile.dev
