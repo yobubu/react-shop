@@ -1,16 +1,17 @@
 version: "3.7"
 services: 
-  bgshop: 
-    container_name: bgshop
-    image: pawelfraczyk/bgshop
+  client: 
+    container_name: client
+    build: .
+    #image: pawelfraczyk/bgshop
     restart: always
     ports:
-      - "80:3000"
+      - "3000:3000"
     networks:
       bgshop_net:
 
-  bgshop-api:
-    container_name: bgshop-api
+  api:
+    container_name: api
     image: pawelfraczyk/bgshop-api
     restart: always
     env_file: .env
@@ -37,6 +38,19 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=$MONGO_PASS
     ports:
       - "27017:27017"
+    networks:
+      bgshop_net:
+
+  nginx:
+    restart: always
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - client
+      - api
     networks:
       bgshop_net:
         

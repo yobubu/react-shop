@@ -25,12 +25,11 @@
     "mocha": "^6.2.0"
   },
   "scripts": {
-    "start": "node server.js",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "mocha",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://bgshop-api:2370",
   "eslintConfig": {
     "extends": "react-app"
   },
