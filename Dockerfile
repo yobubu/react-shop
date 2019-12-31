@@ -1,11 +1,11 @@
-FROM node:10.16.0-alpine
+FROM node:alpine3.10
 
 RUN mkdir -p /app/bgshop-api
 WORKDIR /app/bgshop-api
 
 COPY package.json .
 RUN yarn install
-COPY . ./
+COPY . .
 
 EXPOSE 2370
-CMD yarn start
+CMD ["yarn", "start"]
