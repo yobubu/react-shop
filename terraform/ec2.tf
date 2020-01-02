@@ -1,6 +1,12 @@
+data "template_file" "init" {
+  template = "${file("${path.module}/templates/init.tpl")}"
+}
+
 resource "aws_instance" "code_deploy_ec2" {
   ami           = "ami-0d4c3eabb9e72650a"
   instance_type = "t2.micro"
+  iam_instance_profile = aws_iam_instance_profile.ec2_instance_profile.name
+  user_data = data.template_file.init.rendered
 
   tags = {
     Name = "CodeDeployEc2"

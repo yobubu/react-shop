@@ -1,21 +1,7 @@
 resource "aws_iam_role" "codedeploy_service_role" {
   name = "codedeploy-service-role"
 
-  assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Sid": "",
-      "Effect": "Allow",
-      "Principal": {
-        "Service": "codedeploy.amazonaws.com"
-      },
-      "Action": "sts:AssumeRole"
-    }
-  ]
-}
-EOF
+  assume_role_policy = file("${path.module}/iam-policies/codedeploy-service-role.json")
 }
 
 resource "aws_iam_role_policy_attachment" "bgshop_AWSCodeDeployRole" {
@@ -31,6 +17,7 @@ resource "aws_codedeploy_deployment_group" "bgshop_deploy_group" {
   app_name              = aws_codedeploy_app.bgshop_app.name
   deployment_group_name = "bgshop-deploy-group"
   service_role_arn      = aws_iam_role.codedeploy_service_role.arn
+  deployment_config_name = "CodeDeployDefault.OneAtATime"
 
   ec2_tag_set {
     ec2_tag_filter {
@@ -40,9 +27,7 @@ resource "aws_codedeploy_deployment_group" "bgshop_deploy_group" {
     }
 
   }
-
-  auto_rollback_configuration {
-    enabled = true
-    events  = ["DEPLOYMENT_FAILURE"]
-  }
+  depends_on = [
+    aws_codedeploy_app.bgshop_app
+  ]
 }
