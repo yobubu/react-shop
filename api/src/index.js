@@ -36,7 +36,7 @@ const {
   MONGO_DB
 } = process.env;
 
-mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`, (err, db) => {
+mongodb.MongoClient.connect(`mongodb://sammy:dummy@mongo:27017/test?authSource=admin`, (err, db) => {
   app.set("db", db);
 
   app.get("/*", (req, res) => {
