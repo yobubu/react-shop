@@ -17,7 +17,7 @@ jobs:
           bundle-key: codedeploy/$CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM
       - aws-code-deploy/deploy-bundle:
           application-name: bgshop-app
-          deployment-group: calluna-ci-pf-sandbox-staging-main_app-group
+          deployment-group: bgshop-deploy-group
           bundle-bucket: bgshop-codedeploy-bucket
           bundle-key: codedeploy/$CIRCLE_PROJECT_REPONAME-$CIRCLE_BUILD_NUM
 

@@ -12,9 +12,7 @@ resource "aws_s3_bucket" "bgshop_codedeploy_bucket" {
     prevent_destroy = false
   }
 
-  tags {
+  tags = {
     Name      = "S3 Bgshop CodeDeploy Bucket"
-    Terraform = true
-    Calluna   = true
   }
 }
