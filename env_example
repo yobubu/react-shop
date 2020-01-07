@@ -1,0 +1,11 @@
+# These variables will be used in:
+#   - api service to connect mongodb
+#   - docker-compose file to create admin user and pass vars to api service
+# variables should be stored in AWS SSM Parameter Store with path /bgshop/
+
+JWT_SECRET=gerg45yg34vdrbgt # need to create token for the user
+MONGO_USER=sammy
+MONGO_PASS=dummy
+MONGO_DB=test
+MONGO_HOST=mongo #should be the same like name of mongo service in docker-compose
+MONGO_PORT=27017
