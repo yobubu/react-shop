@@ -11,6 +11,8 @@ resource "aws_instance" "code_deploy_ec2" {
   tags = {
     Name = "CodeDeployEc2"
   }
+
+  depends_on = [aws_iam_instance_profile.ec2_instance_profile]
 }
 
 resource "aws_iam_role" "ec2_instance_role" {

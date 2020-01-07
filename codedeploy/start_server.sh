@@ -29,8 +29,9 @@ INSTANCE_NAME="CodeDeployEc2"
 
 # Environment variables retrieved from System Manager / Parameter Store
 REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r ".region")
-VARS=$(aws --region $REGION ssm get-parameters-by-path --recursive --path /bgshop/${INSTANCE_NAME}/staging --with-decryption | jq -r '.Parameters | .[] | .Name + "=" + .Value' | sed -e s#/bgshop/${INSTANCE_NAME}/staging/##g)
+VARS=$(aws --region $REGION ssm get-parameters-by-path --recursive --path /bgshop/ --with-decryption | jq -r '.Parameters | .[] | .Name + "=" + .Value' | sed -e s#/bgshop/##g)
 for envvar in ${VARS}; do
+  echo $envvar >> .env;
   export $envvar;
 done
 cd /opt/codedeploy-agent/deployment-root/${DEPLOYMENT_GROUP_ID}/${DEPLOYMENT_ID}/deployment-archive

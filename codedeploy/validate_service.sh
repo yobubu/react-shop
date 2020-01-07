@@ -15,7 +15,7 @@ set -u
 
 # This simple script should reflect the deployed app setup and healthcheck URL.
 
-INTERVAL=2
+INTERVAL=5
 CHECK=1
 CHECKS_NUM=3
 URL="http://0.0.0.0:80"
