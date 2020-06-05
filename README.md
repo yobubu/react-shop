@@ -5,7 +5,3 @@ Currently I'm working on the CI/CD with CircleCi and AWS CodeDeploy which is wor
 CircleCi - building history: https://circleci.com/gh/pawelfraczyk/react-shop
 
 
-TODO in upcoming week (05.01 - 12.01.2020)
-- DONE - make ssm agent working to get credentials from AWS SM Parameter Store
-- remove mongo seed and use volume instead
-- create production env in Dockerfiles
