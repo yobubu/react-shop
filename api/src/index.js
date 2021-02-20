@@ -16,6 +16,20 @@ dotenv.config({
 });
 const app = express();
 
+app.use((req, res, next) => {
+  res.append('Access-Control-Allow-Origin', ['*']);
+  res.append('Access-Control-Allow-Credentials', 'true');
+  res.append(
+    'Access-Control-Allow-Methods',
+    'GET, POST, OPTIONS, PUT, PATCH, DELETE'
+  );
+  res.append(
+    'Access-Control-Allow-Headers',
+    'authorization, Access-Control-Allow-Headers, Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers'
+  );
+  next();
+});
+
 app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(bodyParser.json());
 
