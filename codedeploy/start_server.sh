@@ -38,6 +38,7 @@ for envvar in ${VARS}; do
 done
 
 COMPOSE="docker-compose -p ${APPLICATION_NAME} -f docker-compose.yml"
+${COMPOSE} pull api
 ${COMPOSE} up -d api
 # Remove unused data, do not prompt for confirmation
 docker image prune -f

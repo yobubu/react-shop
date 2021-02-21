@@ -17,8 +17,8 @@ build api:
     - pip install awscli
   script:
     - $(aws ecr get-login --no-include-email --region eu-west-1)
-    - docker build -t $ECR_REGISTRY:$CI_COMMIT_REF_NAME-$CI_JOB_ID -f api/Dockerfile ./api
-    - docker push $ECR_REGISTRY:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+    - docker build -t $ECR_REGISTRY:$CI_COMMIT_REF_NAME-$CI_JOB_ID -t $ECR_REGISTRY:latest -f api/Dockerfile ./api
+    - docker push $ECR_REGISTRY
   only:
     - develop
 
