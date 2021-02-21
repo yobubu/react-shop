@@ -18,7 +18,7 @@ set -u
 INTERVAL=5
 CHECK=1
 CHECKS_NUM=3
-URL="http://localhost:2370/api"
+URL="http://localhost:2370"
 
 while [ ${CHECK} -le ${CHECKS_NUM} ]; do
   CLI_HEALTH_CHECK=$(curl -w "%{http_code}" -o /dev/null -s ${URL})
