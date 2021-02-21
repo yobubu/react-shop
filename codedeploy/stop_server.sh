@@ -32,11 +32,9 @@ set -x
 # See: appspec.yml for more details.
 
 # Replace "your_instance_name" with name of your instance
-INSTANCE_NAME="CodeDeployEc2"
-
 DIR=$(cat /opt/codedeploy-agent/deployment-root/deployment-instructions/${DEPLOYMENT_GROUP_ID}_most_recent_install)
 cd $DIR/deployment-archive
-COMPOSE="docker-compose -p ${INSTANCE_NAME} -f docker-compose.yml"
+COMPOSE="docker-compose -p ${APPLICATION_NAME} -f docker-compose.yml"
 ${COMPOSE} down | true
 
 # NOTE:
