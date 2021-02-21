@@ -1,0 +1,71 @@
+stages:
+  - build api
+  - deploy api
+  - build client
+  - deploy client
+
+build api:
+  stage: build api
+  environment:
+    name: staging
+  image: docker:19.03
+  services:
+    - docker:19.03-dind
+  before_script:
+    - export
+    - apk add --no-cache python3 py-pip
+    - pip install -U pip
+    - pip install awscli
+  script:
+    - $(aws ecr get-login --no-include-email --region eu-west-1)
+    - docker build -t $ECR_REGISTRY:$CI_COMMIT_REF_NAME-$CI_JOB_ID .
+    - docker push $ECR_REGISTRY:$CI_COMMIT_REF_NAME-$CI_JOB_ID
+  only:
+    - develop
+
+deploy api:
+  stage: deploy api
+  environment:
+    name: staging
+  image: python:latest
+  before_script:
+    - export
+    - apt-get update
+    - pip install -U pip
+    - pip install awscli
+    - chmod +x ./deploy.sh
+  script:
+    - ./deploy.sh
+  only:
+    - develop  
+
+build client:
+  stage: build client
+  environment: 
+    name: staging
+  image: node:12-alpine
+  before_script:
+    - export
+  script:
+    - cd client
+    - yarn install
+    - yarn build
+  artifacts:
+    paths:
+      - ./client/build
+  only:
+    - develop
+
+deploy client:
+  stage: deploy client
+  environment: 
+    name: staging
+  image: python:latest
+  before_script:
+    - export
+  script:
+    - pip install awscli
+    - cd ./client/build
+    - aws s3 sync . s3://$AWS_S3_WEB_BUCKET/
+  only:
+    - develop
