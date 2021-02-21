@@ -10,7 +10,8 @@ x-env-aliases:
     MONGO_PASS: "${MONGO_PASS:-dummy}"
     MONGO_HOST: "${MONGO_HOST:-mongo}"
     MONGO_PORT: "${MONGO_PORT:-27017}"
-    MONGO_DB: "${MONGO_DB:-test}"
+    MONGO_DB: "${MONGO_DB:-shop}"
+    JWT_SECRET: "${JWT_SECRET:-randomstring}"
 
 networks:
   bgshop_net: {}
