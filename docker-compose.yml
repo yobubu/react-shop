@@ -4,7 +4,7 @@ x-env-aliases:
   - &DEFAULT_ARGS
     NODE_TAG: "${NODE_TAG:-10-alpine}"
     NGINX_TAG: "${NGINX_TAG:-stable-alpine}"
-    REACT_APP_BASE_URL: "${REACT_APP_BASE_URL:-https://api.shop.devops.codes}"
+    REACT_APP_BASE_URL: "${REACT_APP_BASE_URL:-https://backend.shop.devops.codes}"
   - &DEFAULT_BACKEND_ENVS
     MONGO_USER: "${MONGO_USER:-sammy}"
     MONGO_PASS: "${MONGO_PASS:-dummy}"

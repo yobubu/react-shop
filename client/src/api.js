@@ -1,4 +1,12 @@
 import axios from "axios";
+import dotenv from "dotenv";
+import path from "path";
+
+dotenv.config({
+  path: path.join(__dirname, ".env")
+});
+
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 export default {
   games: {

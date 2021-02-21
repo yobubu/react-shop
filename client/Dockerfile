@@ -11,7 +11,7 @@ COPY package.json yarn.lock ./
 RUN yarn
 COPY . .
 
-ARG REACT_APP_BASE_URL="https://api.shop.devops.codes"
+ARG REACT_APP_BASE_URL="https://backend.shop.devops.codes"
 ENV REACT_APP_BASE_URL="${REACT_APP_BASE_URL}"
 
 RUN yarn build
