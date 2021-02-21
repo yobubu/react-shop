@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import path from "path";
 import dotenv from "dotenv";
+import * as fs from 'fs';
 import mongodb from "mongodb";
 import unsafegames from "./routes/unsafegames";
 import unsafepublishers from "./routes/unsafepublishers";
@@ -50,12 +51,24 @@ const {
   MONGO_DB
 } = process.env;
 
-mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`, (err, db) => {
-  app.set("db", db);
+//Specify the Amazon DocumentDB cert
+var ca = [fs.readFileSync(__dirname + "/rds-combined-ca-bundle.pem")];
 
-  app.get("/*", (req, res) => {
-    res.sendFile(path.join(__dirname, "./index.html"));
+mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?ssl=true&replicaSet=rs0&readPreference=secondaryPreferred`,
+  {
+    sslValidate: true,
+    sslCA: ca,
+    useNewUrlParser: true
+  },
+  (err, db) => {
+    if (err)
+      throw err;
+
+    app.set("db", db);
+
+    app.get("/*", (req, res) => {
+      res.sendFile(path.join(__dirname, "./index.html"));
+    });
+
+    app.listen(2370, () => console.log("Running on localhost:2370"));
   });
-
-  app.listen(2370, () => console.log("Running on localhost:2370"));
-});
