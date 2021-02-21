@@ -15,9 +15,9 @@ set -u
 
 # This simple script should reflect the deployed app setup and healthcheck URL.
 
-INTERVAL=5
+INTERVAL=10
 CHECK=1
-CHECKS_NUM=3
+CHECKS_NUM=5
 URL="http://localhost:2370"
 
 while [ ${CHECK} -le ${CHECKS_NUM} ]; do

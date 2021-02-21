@@ -12,7 +12,6 @@ build api:
   services:
     - docker:19.03-dind
   before_script:
-    - export
     - apk add --no-cache python3 py-pip
     - pip install -U pip
     - pip install awscli
@@ -29,7 +28,6 @@ deploy api:
     name: staging
   image: python:latest
   before_script:
-    - export
     - apt-get update
     - pip install -U pip
     - pip install awscli
