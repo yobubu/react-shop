@@ -1,25 +1,24 @@
 stages:
-  - build
+  - build api
+  - build client
   - test
   - deploy api
   - deploy client
 
 build api:
-  stage: build
+  stage: build api
   environment:
     name: staging
-  image: 
-    name: amazon/aws-cli
-    entrypoint: [""]
+  image: docker:19.03
   services:
-    - docker:dind
+    - docker:19.03-dind
   before_script:
-    - amazon-linux-extras install docker
-    - aws --version
-    - docker --version
+    - apk add --no-cache python3 py-pip
+    - pip install -U pip
+    - pip install awscli
   script:
-    - aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY
-    - docker build -t $ECR_REGISTRY/$PROJECT_NAME:$CI_COMMIT_REF_NAME-$CI_JOB_ID -t $ECR_REGISTRY/$PROJECT_NAME:latest -f api/Dockerfile ./api
+    - $(aws ecr get-login --no-include-email --region eu-west-1)
+    - docker build -t $ECR_REGISTRY/$PROJECT_NAME:$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA -t $ECR_REGISTRY/$PROJECT_NAME:latest -f api/Dockerfile ./api
     - docker push $ECR_REGISTRY/$PROJECT_NAME
   only:
     - develop
@@ -29,7 +28,9 @@ deploy api:
   stage: deploy api
   environment:
     name: staging
-  image: registry.gitlab.com/gitlab-org/cloud-deploy/aws-base:latest 
+  image: 
+    name: amazon/aws-cli
+    entrypoint: [""]
   before_script:
     - chmod +x ./deploy.sh
   script:
@@ -38,7 +39,7 @@ deploy api:
     - develop  
 
 build client:
-  stage: build
+  stage: build client
   environment: 
     name: staging
   image: node:10-alpine
@@ -70,19 +71,17 @@ test api:
   stage: test
   environment:
     name: staging
-  image: 
-    name: amazon/aws-cli
-    entrypoint: [""]
+  image: docker:19.03
   services:
-    - docker:dind
+    - docker:19.03-dind
   before_script:
-    - amazon-linux-extras install docker
-    - aws --version
-    - docker --version
+    - apk add --no-cache python3 py-pip
+    - pip install -U pip
+    - pip install awscli
   script:
     - docker-compose up -d mongo mongo_seed
-    - aws ecr get-login-password | docker login --username AWS --password-stdin $ECR_REGISTRY
-    - IMAGE_TAG=$CI_COMMIT_REF_NAME-$CI_JOB_ID docker-compose pull api
+    - $(aws ecr get-login --no-include-email --region eu-west-1)
+    - IMAGE_TAG=$CI_COMMIT_REF_NAME-CI_COMMIT_SHORT_SHA docker-compose pull api
     - docker-compose up -d api
     - curl localhost:2370/api/authgames | grep "Sample Game"
   only:
@@ -93,11 +92,9 @@ test client:
   stage: test
   environment:
     name: staging
-  image: 
-    name: amazon/aws-cli
-    entrypoint: [""]
+  image: docker:19.03
   services:
-    - docker:dind
+    - docker:19.03-dind
   script:
     - docker-compose up -d web
     - curl -I localhost:9090 | grep "HTTP/1.1 200 OK"
