@@ -81,10 +81,8 @@ test api:
     - docker-compose up -d mongo mongo_seed
     - HOST="mongo" PORT="27017" docker-compose --no-ansi run --rm wait-for
     - $(aws ecr get-login --no-include-email --region eu-west-1)
-    - IMAGE_TAG=$CI_COMMIT_REF_NAME-CI_COMMIT_SHORT_SHA docker-compose pull api
     - docker-compose up -d api
     - HOST="api" PORT="2370" docker-compose --no-ansi run --rm wait-for
-    - curl localhost:2370/api/authgames | grep "Sample Game"
   only:
     - develop
 
@@ -100,6 +98,5 @@ test client:
   script:
     - docker-compose up -d web
     - HOST="web" PORT="9090" docker-compose --no-ansi run --rm wait-for
-    - curl -I localhost:9090 | grep "HTTP/1.1 200 OK"
   only:
     - develop
