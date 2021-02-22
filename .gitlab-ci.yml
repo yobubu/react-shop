@@ -97,6 +97,6 @@ test client:
     - apk add --no-cache curl docker-compose
   script:
     - docker-compose up -d web
-    - HOST="web" PORT="9090" docker-compose --no-ansi run --rm wait-for
+    - HOST="web" PORT="80" docker-compose --no-ansi run --rm wait-for
   only:
     - develop

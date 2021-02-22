@@ -89,6 +89,7 @@ services:
               if nc -w 3 -z -v ${HOST:-mongo} ${PORT:-27017}; then
                 exit 0;
               fi
+              echo "Connecting.."
               sleep 1
           done
           echo "Could not establish tcp connection to ${HOST:-mongo}:${PORT:-27017}"
