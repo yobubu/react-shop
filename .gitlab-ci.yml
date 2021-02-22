@@ -28,11 +28,11 @@ deploy api:
   stage: deploy api
   environment:
     name: staging
-  image: 
-    name: amazon/aws-cli
-    entrypoint: [""]
+  image: python:latest
   before_script:
-    - aws configure
+    - apt-get update
+    - pip install -U pip
+    - pip install awscli
     - chmod +x ./deploy.sh
   script:
     - ./deploy.sh
@@ -58,11 +58,11 @@ deploy client:
   stage: deploy client
   environment: 
     name: staging
-  image: 
-    name: amazon/aws-cli
-    entrypoint: [""]
+  image: python:latest
   before_script:
-    - aws configure
+    - apt-get update
+    - pip install -U pip
+    - pip install awscli
   script:
     - cd ./client/build
     - aws s3 sync . s3://$AWS_S3_WEB_BUCKET/
