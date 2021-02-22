@@ -6,9 +6,7 @@ resource "aws_s3_bucket" "custom_bucket" {
     enabled = var.custom_bucket_versioning_enabled
   }
 
-  lifecycle {
-    prevent_destroy = false
-  }
+  force_destroy = true
 
   tags = {
     Project     = var.project

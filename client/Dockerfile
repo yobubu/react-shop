@@ -16,7 +16,7 @@ ENV REACT_APP_BASE_URL="${REACT_APP_BASE_URL}"
 
 RUN yarn build
 
-FROM nginx:stable-alpine
+FROM nginx:stable-alpine as Web
 
 COPY docker/nginx /etc/nginx
 RUN rm -rf /usr/share/nginx/html/*

@@ -8,8 +8,7 @@ x-env-aliases:
   - &DEFAULT_BACKEND_ENVS
     MONGO_USER: "${MONGO_USER:-sammy}"
     MONGO_PASS: "${MONGO_PASS:-dummy}"
-    MONGO_HOST: "${MONGO_HOST:-mongo}"
-    MONGO_PORT: "${MONGO_PORT:-27017}"
+    MONGO_CONN_STRING: "${MONGO_CONN_STRING:-mongo:27017/shop?authSource=admin}"
     MONGO_DB: "${MONGO_DB:-shop}"
     JWT_SECRET: "${JWT_SECRET:-randomstring}"
 
@@ -46,7 +45,7 @@ services:
 
   api:
     container_name: api
-    image: ${ECR_REGISTRY}:latest
+    image: ${ECR_REGISTRY}/${PROJECT_NAME:-toptal-task}:${IMAGE_TAG:-latest}
     build:
       context: ./api
       dockerfile: Dockerfile
@@ -60,11 +59,11 @@ services:
   
   mongo:
     container_name: mongo
-    image: mongo
+    image: mongo:3.6
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: sammy
-      MONGO_INITDB_ROOT_PASSWORD: dummy
+      MONGO_INITDB_ROOT_PASSWORD: dummysammy
     ports:
       - "27017:27017"
     networks:

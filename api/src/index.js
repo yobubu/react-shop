@@ -48,13 +48,14 @@ const {
   MONGO_PASS,
   MONGO_HOST,
   MONGO_PORT,
-  MONGO_DB
+  MONGO_DB,
+  MONGO_CONN_STRING
 } = process.env;
 
 //Specify the Amazon DocumentDB cert
 var ca = [fs.readFileSync(__dirname + "/rds-combined-ca-bundle.pem")];
 
-mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/?ssl=true&replicaSet=rs0&readPreference=secondaryPreferred`,
+mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_CONN_STRING}`,
   {
     sslValidate: true,
     sslCA: ca,

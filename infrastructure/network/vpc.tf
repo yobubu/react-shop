@@ -13,6 +13,7 @@ module "vpc" {
   single_nat_gateway   = true
   enable_dns_support   = true
   enable_dns_hostnames = true
+  enable_s3_endpoint   = true
 
   tags = merge(var.default_tags)
 }
