@@ -7,7 +7,7 @@ x-env-aliases:
     REACT_APP_BASE_URL: "${REACT_APP_BASE_URL:-https://backend.shop.devops.codes}"
   - &DEFAULT_BACKEND_ENVS
     MONGO_USER: "${MONGO_USER:-sammy}"
-    MONGO_PASS: "${MONGO_PASS:-dummy}"
+    MONGO_PASS: "${MONGO_PASS:-dummysammy}"
     MONGO_CONN_STRING: "${MONGO_CONN_STRING:-mongo:27017/shop?authSource=admin}"
     MONGO_DB: "${MONGO_DB:-shop}"
     JWT_SECRET: "${JWT_SECRET:-randomstring}"
