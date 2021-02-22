@@ -1,7 +1,8 @@
 stages:
   - build api
   - build client
-  - test
+  - test api
+  - test client
   - deploy api
   - deploy client
 
@@ -66,7 +67,7 @@ deploy client:
     - develop
 
 test api:
-  stage: test
+  stage: test api
   environment:
     name: staging
   image: docker:19.03
@@ -76,6 +77,8 @@ test api:
     - apk add --no-cache python3 py-pip
     - pip install -U pip
     - pip install awscli
+    - curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+    - chmod +x /usr/bin/docker-compose
   script:
     - docker-compose up -d mongo mongo_seed
     - $(aws ecr get-login --no-include-email --region eu-west-1)
@@ -86,12 +89,15 @@ test api:
     - develop
 
 test client:
-  stage: test
+  stage: test client
   environment:
     name: staging
   image: docker:19.03
   services:
     - docker:19.03-dind
+  before_script:
+    - curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+    - chmod +x /usr/bin/docker-compose
   script:
     - docker-compose up -d web
     - curl -I localhost:9090 | grep "HTTP/1.1 200 OK"
