@@ -32,6 +32,7 @@ deploy api:
     name: amazon/aws-cli
     entrypoint: [""]
   before_script:
+    - aws configure
     - chmod +x ./deploy.sh
   script:
     - ./deploy.sh
@@ -60,6 +61,8 @@ deploy client:
   image: 
     name: amazon/aws-cli
     entrypoint: [""]
+  before_script:
+    - aws configure
   script:
     - cd ./client/build
     - aws s3 sync . s3://$AWS_S3_WEB_BUCKET/
