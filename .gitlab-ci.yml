@@ -22,7 +22,6 @@ build api:
     - docker push $ECR_REGISTRY/$PROJECT_NAME
   only:
     - develop
-    - merge_requests
 
 deploy api:
   stage: deploy api
@@ -52,7 +51,6 @@ build client:
       - ./client/build
   only:
     - develop
-    - merge_requests
 
 deploy client:
   stage: deploy client
@@ -86,7 +84,6 @@ test api:
     - curl localhost:2370/api/authgames | grep "Sample Game"
   only:
     - develop
-    - merge_requests
 
 test client:
   stage: test
@@ -98,3 +95,5 @@ test client:
   script:
     - docker-compose up -d web
     - curl -I localhost:9090 | grep "HTTP/1.1 200 OK"
+  only:
+    - develop
