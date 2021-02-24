@@ -62,6 +62,13 @@ resource "aws_security_group" "backend_instances_behind_alb" {
     cidr_blocks = ["10.0.0.0/16"]
   }
 
+  ingress {
+    from_port = 8080
+    to_port   = 8080
+    protocol  = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
   egress {
     from_port   = var.security_group_backend_ec2_out_from_port
     to_port     = var.security_group_backend_ec2_out_to_port

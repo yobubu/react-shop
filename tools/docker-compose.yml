@@ -21,12 +21,6 @@ services:
     volumes:
       - prometheus_data:/prometheus
       - prometheus_config:/fragments/
-      - ${PWD}/config/targets/prometheus.json:/etc/prometheus/targets/prometheus.json
-      - ${PWD}/config/targets/grafana.json:/etc/prometheus/targets/grafana.json
-      - ${PWD}/config/targets/node-exporter.json:/etc/prometheus/targets/node-exporter.json
-      - ${PWD}/config/targets/graylog.json:/etc/prometheus/targets/graylog.json
-      - ${PWD}/config/targets/mongo.json:/etc/prometheus/targets/mongo.json
-      - ${PWD}/config/targets/elasticsearch.json:/etc/prometheus/targets/elasticsearch.json
     command:
       - '--config.file=/fragments/complete/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -42,7 +36,7 @@ services:
       - ${PWD}/config/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
     environment:
       # TODO with SSM parameter store
-      - GF_SECURITY_ADMIN_PASSWORD=secret
+      - GF_SECURITY_ADMIN_PASSWORD=$GF_SECURITY_ADMIN_PASSWORD
 
   config-concat:
     image: deanwilson/promconf-concat:0.1.0
@@ -92,15 +86,10 @@ services:
   graylog:
     image: graylog/graylog:4.0
     environment:
-      # CHANGE ME (must be at least 16 characters)!
-      # TODO with parameter store
       #- GRAYLOG_PASSWORD_SECRET=somepasswordpepper
       # Password: admin
       #- GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
       - GRAYLOG_HTTP_EXTERNAL_URI=$GRAYLOG_HTTP_EXTERNAL_URI
-      - GRAYLOG_CONTENT_PACKS_DIR=data/contentpacks
-      - GRAYLOG_CONTENT_PACKS_LOADER_ENABLED=true
-      - GRAYLOG_CONTENT_PACKS_AUTO_INSTALL=udp-input-graylog.json
     entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
     volumes:
       - ${PWD}/config/graylog:/usr/share/graylog/data/contentpacks
@@ -113,11 +102,36 @@ services:
     ports:
       # Graylog web interface and REST API
       - 9000:9000
-      # Syslog TCP
-      - 1514:1514
-      # Syslog UDP
-      - 1514:1514/udp
-      # GELF TCP
-      - 12201:12201
       # GELF UDP
       - 12201:12201/udp
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    container_name: cadvisor
+    ports:
+    - 8080:8080
+    volumes:
+    - /:/rootfs:ro
+    - /var/run:/var/run:rw
+    - /sys:/sys:ro
+    - /var/lib/docker/:/var/lib/docker:ro
+    networks:
+      tools:
+
+  wait-for:
+    image: busybox:latest
+    entrypoint: ["sh", "-c"]
+    networks:
+      tools:
+    command:
+      - |
+          END_TIME=$$(( $$(date +%s) + 60 ));
+          while [ $$(date +%s) -lt $$END_TIME ]; do
+              if nc -w 3 -z -v ${HOST:-graylog} ${PORT:-9000}; then
+                exit 0;
+              fi
+              echo "Waiting for ${HOST:-graylog} to be up and running.."
+              sleep 1
+          done
+          echo "Could not establish tcp connection to ${HOST:-graylog}:${PORT:-9000}"
+          exit 1;

@@ -7,17 +7,22 @@ set -u
 # Print a trace of simple commands
 set -x
 
-apt -y update
+f_preinstall() {
+  apt -y update
+  apt -y install awscli jq
+}
 
 f_installtools() {
-
-# Run prometheus-server, node-exporter, grafana
-# TODO remove duplicate metrics and add labels
+  REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r ".region")
+  VARS=$(aws --region $REGION ssm get-parameters-by-path --recursive --path /toptal-task/ --with-decryption | jq -r '.Parameters | .[] | .Name + "=" + .Value' | sed -e s#/toptal-task/##g)
+  for envvar in ${VARS}; do
+    echo $envvar >> .env;
+    export $envvar;
+  done
   git clone https://gitlab.com/pawelfraczyk/react-shop.git
   cd react-shop/tools
-  export EC2_PUBLIC_HOSTNAME=$(curl http://169.254.169.254/2020-10-27/meta-data/public-hostname)
-  export GRAYLOG_HTTP_EXTERNAL_URI=$(echo "http://$EC2_PUBLIC_HOSTNAME:9000/")
   docker-compose up -d
+
 }
 
 f_installdock() {
@@ -46,6 +51,7 @@ f_installdock() {
 }
 
 f_main() {
+  f_preinstall
   f_installdock
   f_installtools
 }

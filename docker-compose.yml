@@ -57,7 +57,7 @@ services:
     logging:
       driver: "gelf"
       options:
-        gelf-address: "udp://54.155.147.146:5555"
+        gelf-address: "udp://tools.shop.devops.codes:12201"
         tag: "bgshop-api"
     networks:
       bgshop_net:
@@ -89,7 +89,7 @@ services:
       bgshop_net:
     command:
       - |
-          END_TIME=$$(( $$(date +%s) + 30 ));
+          END_TIME=$$(( $$(date +%s) + 60 ));
           while [ $$(date +%s) -lt $$END_TIME ]; do
               if nc -w 3 -z -v ${HOST:-mongo} ${PORT:-27017}; then
                 exit 0;

@@ -1,14 +1,10 @@
-data "template_file" "user-data-ec2" {
-  template = file("${path.module}/templates/init.tpl")
-}
-
 ### Monitoring & Logging tools ###
 resource "aws_instance" "tools" {
   ami                  = data.aws_ami.amazon2-ami.id
   instance_type        = "t3.medium"
   iam_instance_profile = aws_iam_instance_profile.ec2-tools-profile.id
 
-  user_data = data.template_file.user-data-ec2.rendered
+  user_data = file("${path.module}/templates/init.sh")
 
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.tools-sg.id]
