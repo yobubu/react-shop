@@ -1,0 +1,19 @@
+# from base_prometheus.yml
+global:
+  scrape_interval: 15s
+
+# Load a directory of JSON configs
+scrape_configs:
+  - job_name: 'stub'  # This is a default value, it is mandatory.
+    file_sd_configs:
+      - files:
+        - /etc/prometheus/targets/*.json
+  - job_name: 'aws_nodes'
+    metrics_path: '/metrics'
+    ec2_sd_configs:
+      - region: 'eu-west-1'
+        port: 9100
+  - job_name: 'aws_containers'
+    ec2_sd_configs:
+      - region: 'eu-west-1'
+        port: 8080

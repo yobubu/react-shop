@@ -1,0 +1,123 @@
+version: "3.7"
+
+networks:
+  tools: {}
+
+volumes:
+  grafana_lib: {}
+  prometheus_data: {}
+  prometheus_config:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.19.0
+    ports:
+      - 9090:9090
+    networks:
+      tools:
+    volumes:
+      - prometheus_data:/prometheus
+      - prometheus_config:/fragments/
+      - ${PWD}/config/targets/prometheus.json:/etc/prometheus/targets/prometheus.json
+      - ${PWD}/config/targets/grafana.json:/etc/prometheus/targets/grafana.json
+      - ${PWD}/config/targets/node-exporter.json:/etc/prometheus/targets/node-exporter.json
+      - ${PWD}/config/targets/graylog.json:/etc/prometheus/targets/graylog.json
+      - ${PWD}/config/targets/mongo.json:/etc/prometheus/targets/mongo.json
+      - ${PWD}/config/targets/elasticsearch.json:/etc/prometheus/targets/elasticsearch.json
+    command:
+      - '--config.file=/fragments/complete/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+
+  grafana:
+    image: grafana/grafana:7.0.3
+    ports:
+      - "3000:3000"
+    networks:
+      tools:
+    volumes:
+      - grafana_lib:/var/lib/grafana
+      - ${PWD}/config/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+    environment:
+      # TODO with SSM parameter store
+      - GF_SECURITY_ADMIN_PASSWORD=secret
+
+  config-concat:
+    image: deanwilson/promconf-concat:0.1.0
+    volumes:
+      - prometheus_config:/fragments/
+      - ${PWD}/config/base_prometheus.yml:/base_prometheus.yml
+  
+  node-exporter:
+    image: prom/node-exporter:v0.18.1
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    networks:
+      tools:
+
+  mongo:
+    image: mongo:4.2
+    networks:
+      tools:
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch-oss:7.10.2
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=localhost
+      - network.host=0.0.0.0
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: 1g
+    networks:
+      tools:
+
+  graylog:
+    image: graylog/graylog:4.0
+    environment:
+      # CHANGE ME (must be at least 16 characters)!
+      # TODO with parameter store
+      #- GRAYLOG_PASSWORD_SECRET=somepasswordpepper
+      # Password: admin
+      #- GRAYLOG_ROOT_PASSWORD_SHA2=8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918
+      - GRAYLOG_HTTP_EXTERNAL_URI=$GRAYLOG_HTTP_EXTERNAL_URI
+      - GRAYLOG_CONTENT_PACKS_DIR=data/contentpacks
+      - GRAYLOG_CONTENT_PACKS_LOADER_ENABLED=true
+      - GRAYLOG_CONTENT_PACKS_AUTO_INSTALL=udp-input-graylog.json
+    entrypoint: /usr/bin/tini -- wait-for-it elasticsearch:9200 --  /docker-entrypoint.sh
+    volumes:
+      - ${PWD}/config/graylog:/usr/share/graylog/data/contentpacks
+    networks:
+      tools:
+    restart: always
+    depends_on:
+      - mongo
+      - elasticsearch
+    ports:
+      # Graylog web interface and REST API
+      - 9000:9000
+      # Syslog TCP
+      - 1514:1514
+      # Syslog UDP
+      - 1514:1514/udp
+      # GELF TCP
+      - 12201:12201
+      # GELF UDP
+      - 12201:12201/udp

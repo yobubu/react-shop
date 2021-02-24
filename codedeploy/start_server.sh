@@ -24,21 +24,21 @@ set -x
 
 # EC2s are configured with instance profile (a specific role) and all the required policies.
 
-# Replace "your_instance_name" with name of your instance.
-INSTANCE_NAME="CodeDeployEc2"
+# Login to ecr
+eval $(aws ecr get-login --no-include-email --region eu-west-1)
 
 # Environment variables retrieved from System Manager / Parameter Store
 cd /opt/codedeploy-agent/deployment-root/${DEPLOYMENT_GROUP_ID}/${DEPLOYMENT_ID}/deployment-archive
 
 REGION=$(curl -s 169.254.169.254/latest/dynamic/instance-identity/document | jq -r ".region")
-VARS=$(aws --region $REGION ssm get-parameters-by-path --recursive --path /bgshop/ --with-decryption | jq -r '.Parameters | .[] | .Name + "=" + .Value' | sed -e s#/bgshop/##g)
+VARS=$(aws --region $REGION ssm get-parameters-by-path --recursive --path /toptal-task/ --with-decryption | jq -r '.Parameters | .[] | .Name + "=" + .Value' | sed -e s#/toptal-task/##g)
 for envvar in ${VARS}; do
   echo $envvar >> .env;
   export $envvar;
 done
 
-COMPOSE="docker-compose -p ${INSTANCE_NAME} -f docker-compose.yml"
-${COMPOSE} build
-${COMPOSE} up -d
+COMPOSE="docker-compose -p ${APPLICATION_NAME} -f docker-compose.yml"
+${COMPOSE} pull api
+${COMPOSE} up -d api node-exporter cadvisor
 # Remove unused data, do not prompt for confirmation
 docker image prune -f
