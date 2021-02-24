@@ -27,3 +27,8 @@ output "aws_vps_availability_zones" {
   description = "List of Availability Zones used by VPC subnets"
   value       = local.aws_region_azs
 }
+
+output "aws_tools_public_ip" {
+  description = "Public IP of tools Ec2"
+  value       = aws_eip.tools.public_ip
+}

@@ -22,7 +22,9 @@ f_installtools() {
   git clone https://gitlab.com/pawelfraczyk/react-shop.git
   cd react-shop/tools
   docker-compose up -d
-
+  docker-compose up wait-for
+  chmod +x ./config/graylog/input.sh
+  ./config/graylog/input.sh
 }
 
 f_installdock() {
