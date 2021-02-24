@@ -9,20 +9,15 @@ set -x
 
 apt -y update
 
-f_installprom() {
+f_installtools() {
 
 # Run prometheus-server, node-exporter, grafana
 # TODO remove duplicate metrics and add labels
-  git clone https://github.com/deanwilson/docker-compose-prometheus.git
-  cd docker-compose-prometheus
-  cat <<EOF >> prometheus-server/config/base_prometheus.yml
-  - job_name: 'aws_nodes'
-    metrics_path: '/metrics'
-    ec2_sd_configs:
-      - region: 'eu-west-1'
-        port: 9100
-EOF
-  docker-compose -f prometheus-server/docker-compose.yaml -f node-exporter/docker-compose.yaml up -d
+  git clone https://gitlab.com/pawelfraczyk/react-shop.git
+  cd react-shop/tools
+  export EC2_PUBLIC_HOSTNAME=$(curl http://169.254.169.254/2020-10-27/meta-data/public-hostname)
+  export GRAYLOG_HTTP_EXTERNAL_URI=$(echo "http://$EC2_PUBLIC_HOSTNAME:9000/")
+  docker-compose up -d
 }
 
 f_installdock() {
@@ -53,7 +48,7 @@ f_installdock() {
 f_installgray() {
   docker run --link mongo --link elasticsearch \
     --name graylog \
-    -p 9000:9000 -p 12201:12201 -p 1514:1514 -p 5555:5555 \
+    -p 9000:9000 -p 12201:12201 -p 1514:1514 -p 5555:5555/udp \
     -e GRAYLOG_HTTP_EXTERNAL_URI="http://ec2-54-155-147-146.eu-west-1.compute.amazonaws.com:9000/" \
     -d graylog/graylog:4.0
 }
@@ -61,7 +56,6 @@ f_installgray() {
 f_main() {
   f_installdock
   f_installprom
-  f_installgray
 }
 
 f_main 2>&1 | tee -a ~/bootstrap.log

@@ -1,0 +1,8 @@
+[
+    {
+      "targets": [ "graylog:9000" ],
+      "labels": {
+        "job": "graylog"
+      }
+    }
+]

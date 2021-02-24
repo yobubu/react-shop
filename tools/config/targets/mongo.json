@@ -1,0 +1,8 @@
+[
+    {
+      "targets": [ "mongo:27017" ],
+      "labels": {
+        "job": "mongo"
+      }
+    }
+]
