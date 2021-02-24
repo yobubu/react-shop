@@ -7,70 +7,54 @@ set -u
 # Print a trace of simple commands
 set -x
 
+apt update
+
 f_installprom() {
 
-  useradd --no-create-home prometheus
-  mkdir /etc/prometheus
-  mkdir /var/lib/prometheus
-
-  wget https://github.com/prometheus/prometheus/releases/download/v2.19.0/prometheus-2.19.0.linux-amd64.tar.gz
-  tar xvfz prometheus-2.19.0.linux-amd64.tar.gz
-
-  cp prometheus-2.19.0.linux-amd64/prometheus /usr/local/bin
-  cp prometheus-2.19.0.linux-amd64/promtool /usr/local/bin/
-  cp -r prometheus-2.19.0.linux-amd64/consoles /etc/prometheus
-  cp -r prometheus-2.19.0.linux-amd64/console_libraries /etc/prometheus
-
-  cp prometheus-2.19.0.linux-amd64/promtool /usr/local/bin/
-  rm -rf prometheus-2.19.0.linux-amd64.tar.gz prometheus-2.19.0.linux-amd64
-
-  cat <<EOF >> /etc/systemd/system/prometheus.service
-[Unit]
-Description=Prometheus
-Wants=network-online.target
-After=network-online.target
-
-[Service]
-User=prometheus
-Group=prometheus
-Type=simple
-ExecStart=/usr/local/bin/prometheus \
-    --config.file /etc/prometheus/prometheus.yml \
-    --storage.tsdb.path /var/lib/prometheus/ \
-    --web.console.templates=/etc/prometheus/consoles \
-    --web.console.libraries=/etc/prometheus/console_libraries
-
-[Install]
-WantedBy=multi-user.target
-EOF
-  chown prometheus:prometheus /etc/prometheus
-  chown prometheus:prometheus /usr/local/bin/prometheus
-  chown prometheus:prometheus /usr/local/bin/promtool
-  chown -R prometheus:prometheus /etc/prometheus/consoles
-  chown -R prometheus:prometheus /etc/prometheus/console_libraries
-  chown -R prometheus:prometheus /var/lib/prometheus
-
-  systemctl daemon-reload
-  systemctl enable prometheus
-
-  cat <<EOF >> /etc/prometheus/prometheus.yml
-global:
-  scrape_interval: 1s
-  evaluation_interval: 1s
-
-scrape_configs:
-  - job_name: 'node'
+# Run prometheus-server, node-exporter, grafana
+# TODO remove duplicate metrics and add labels
+  git clone https://github.com/deanwilson/docker-compose-prometheus.git
+  cd docker-compose-prometheus
+  cat <<EOF >> prometheus-server/config/base_prometheus.yml
+  - job_name: 'aws_nodes'
+    metrics_path: '/metrics'
     ec2_sd_configs:
-      - region: eu-west-1
-        profile: ec2-tools-profile
-        role_arn: arn:aws:iam::088302454178:role/ec2-tools-role
+      - region: 'eu-west-1'
         port: 9100
 EOF
+  alias dc='docker-compose -f prometheus-server/docker-compose.yaml -f node-exporter/docker-compose.yaml'
+  dc up -d
+}
 
-  sudo systemctl restart prometheus
+f_installdock() {
+  #install docker
+  apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+  curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+  add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+  
+  apt-get update
+  apt-get install docker-ce docker-ce-cli containerd.io
+
+  #install docker-compose
+  if ! [ -x /usr/bin/docker-compose ]; then
+      curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
+      chmod +x /usr/bin/docker-compose
+  fi
+
+
 }
 
 f_main() {
+  f_installdock
   f_installprom
 }
 
