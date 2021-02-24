@@ -54,6 +54,11 @@ services:
       <<: *DEFAULT_BACKEND_ENVS
     ports:
       - "2370:2370"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://54.155.147.146:5555"
+        tag: "bgshop-api"
     networks:
       bgshop_net:
   

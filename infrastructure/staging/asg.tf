@@ -11,6 +11,7 @@ resource "aws_launch_template" "ec2_launch_template" {
 
     ebs {
       volume_size = var.ec2_lt_ebs_volume_size
+      volume_type = "gp3"
     }
   }
 

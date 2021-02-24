@@ -30,7 +30,7 @@ variable "asg_backend_spot_instance_pools" {
 
 variable "asg_backend_override_instance_type" {
   description = "This will override the instance_type parameter in the launch template."
-  default     = "t2.micro"
+  default     = "t3.micro"
 }
 
 variable "asg_backend_enabled_metrics" {

@@ -7,7 +7,7 @@ set -u
 # Print a trace of simple commands
 set -x
 
-apt update
+apt -y update
 
 f_installprom() {
 
@@ -22,13 +22,12 @@ f_installprom() {
       - region: 'eu-west-1'
         port: 9100
 EOF
-  alias dc='docker-compose -f prometheus-server/docker-compose.yaml -f node-exporter/docker-compose.yaml'
-  dc up -d
+  docker-compose -f prometheus-server/docker-compose.yaml -f node-exporter/docker-compose.yaml up -d
 }
 
 f_installdock() {
   #install docker
-  apt-get install \
+  apt-get -y install \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -41,21 +40,28 @@ f_installdock() {
    $(lsb_release -cs) \
    stable"
   
-  apt-get update
-  apt-get install docker-ce docker-ce-cli containerd.io
+  apt-get -y update
+  apt-get -y install docker-ce docker-ce-cli containerd.io
 
   #install docker-compose
   if ! [ -x /usr/bin/docker-compose ]; then
       curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/bin/docker-compose
       chmod +x /usr/bin/docker-compose
   fi
+}
 
-
+f_installgray() {
+  docker run --link mongo --link elasticsearch \
+    --name graylog \
+    -p 9000:9000 -p 12201:12201 -p 1514:1514 -p 5555:5555 \
+    -e GRAYLOG_HTTP_EXTERNAL_URI="http://ec2-54-155-147-146.eu-west-1.compute.amazonaws.com:9000/" \
+    -d graylog/graylog:4.0
 }
 
 f_main() {
   f_installdock
   f_installprom
+  f_installgray
 }
 
 f_main 2>&1 | tee -a ~/bootstrap.log
