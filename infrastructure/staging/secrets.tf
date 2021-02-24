@@ -26,3 +26,31 @@ resource "aws_ssm_parameter" "docdb_endpoint" {
 
   depends_on = [ aws_docdb_cluster.documentdb ]
 }
+
+resource "aws_ssm_parameter" "ecr_endpoint" {
+  name      = "/${var.project}/ECR_REGISTRY"
+  type      = "SecureString"
+  value     = split("/", aws_ecr_repository.ecr.repository_url)[0]
+  overwrite = true
+
+  tags = {
+    Project     = var.project
+    Environment = var.stage
+    Terraform   = true
+  }
+
+  depends_on = [ aws_ecr_repository.ecr ]
+}
+
+resource "aws_ssm_parameter" "project_name" {
+  name      = "/${var.project}/PROJECT_NAME"
+  type      = "SecureString"
+  value     = var.project
+  overwrite = true
+
+  tags = {
+    Project     = var.project
+    Environment = var.stage
+    Terraform   = true
+  }
+}
