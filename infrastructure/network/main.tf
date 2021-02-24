@@ -15,3 +15,7 @@ terraform {
     dynamodb_table = "toptal-task-tf-locks"
   }
 }
+
+provider "template" {
+  version = "~> 2.1"
+}

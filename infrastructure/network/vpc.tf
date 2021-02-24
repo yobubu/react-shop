@@ -15,5 +15,7 @@ module "vpc" {
   enable_dns_hostnames = true
   enable_s3_endpoint   = true
 
-  tags = merge(var.default_tags)
+  tags = merge(map(
+    "Name", "${var.project}-${var.environment}-vpc"
+  ), var.default_tags)
 }

@@ -40,5 +40,6 @@ done
 COMPOSE="docker-compose -p ${APPLICATION_NAME} -f docker-compose.yml"
 ${COMPOSE} pull api
 ${COMPOSE} up -d api
+${COMPOSE} up -d node-exporter
 # Remove unused data, do not prompt for confirmation
 docker image prune -f

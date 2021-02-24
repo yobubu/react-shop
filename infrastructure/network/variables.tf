@@ -35,9 +35,8 @@ variable "public_subnets" {
 variable "default_tags" {
   type = map(string)
   default = {
-    Name        = "vpc"
     Project     = "toptal-task"
-    Environment = "stage"
+    Environment = "global"
     Terraform   = true
   }
 }
