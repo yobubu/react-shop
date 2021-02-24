@@ -45,17 +45,9 @@ f_installdock() {
   fi
 }
 
-f_installgray() {
-  docker run --link mongo --link elasticsearch \
-    --name graylog \
-    -p 9000:9000 -p 12201:12201 -p 1514:1514 -p 5555:5555/udp \
-    -e GRAYLOG_HTTP_EXTERNAL_URI="http://ec2-54-155-147-146.eu-west-1.compute.amazonaws.com:9000/" \
-    -d graylog/graylog:4.0
-}
-
 f_main() {
   f_installdock
-  f_installprom
+  f_installtools
 }
 
 f_main 2>&1 | tee -a ~/bootstrap.log

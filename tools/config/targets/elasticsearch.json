@@ -1,8 +1,0 @@
-[
-    {
-      "targets": [ "elasticsearch:9200" ],
-      "labels": {
-        "job": "elasticsearch"
-      }
-    }
-]
