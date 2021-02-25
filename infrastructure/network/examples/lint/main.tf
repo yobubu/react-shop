@@ -7,5 +7,7 @@ provider "aws" {
 }
 
 module "test" {
-  source = "../../"
+  source  = "../../"
+  domain  = "example.com"
+  secrets = {}
 }

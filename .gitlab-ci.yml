@@ -2,11 +2,93 @@ cache:
   key: ${CI_COMMIT_REF_SLUG}
 
 stages:
+  - terraform global plan
+  - terraform global apply
+  - terraform staging plan
+  - terraform staging apply
   - build api
   - build client
   - test
   - deploy api
   - deploy client
+
+terraform global plan:
+  stage: terraform global plan
+  environment:
+    name: staging
+  image: 
+    name: hashicorp/terraform:0.13.5  
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  before_script:
+    - terraform --version
+    - cd infrastructure
+    - ./init_remote_backend.sh
+    - cd network
+    - rm -rf .terraform
+    - terraform init
+    - terraform validate
+    - make lint
+  script:
+    - terraform plan -out "network-plan"
+  artifacts:
+    paths:
+      - ./infrastructure/network/network-plan
+
+terraform global apply:
+  stage: terraform global apply
+  environment:
+    name: staging
+  image: 
+    name: hashicorp/terraform:0.13.5  
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  before_script:
+    - terraform --version
+  script:
+    - cd infrastructure/network
+    - terraform apply -input=false "network-plan"
+  when: manual
+
+terraform staging plan:
+  stage: terraform staging plan
+  environment:
+    name: staging
+  image: 
+    name: hashicorp/terraform:0.13.5  
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  before_script:
+    - terraform --version
+    - cd infrastructure/staging
+    - rm -rf .terraform
+    - terraform init
+    - terraform validate
+    - make lint
+  script:
+    - terraform plan -out "staging-plan"
+  artifacts:
+    paths:
+      - ./infrastructure/staging/staging-plan
+
+terraform staging apply:
+  stage: terraform staging apply
+  environment:
+    name: staging
+  image: 
+    name: hashicorp/terraform:0.13.5  
+    entrypoint:
+      - '/usr/bin/env'
+      - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+  before_script:
+    - terraform --version
+  script:
+    - cd infrastructure/staging
+    - terraform apply -input=false "staging-plan"
+  when: manual
 
 build api:
   stage: build api

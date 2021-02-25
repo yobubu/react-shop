@@ -24,7 +24,7 @@ resource "aws_ssm_parameter" "docdb_endpoint" {
     Terraform   = true
   }
 
-  depends_on = [ aws_docdb_cluster.documentdb ]
+  depends_on = [aws_docdb_cluster.documentdb]
 }
 
 resource "aws_ssm_parameter" "ecr_endpoint" {
@@ -39,7 +39,7 @@ resource "aws_ssm_parameter" "ecr_endpoint" {
     Terraform   = true
   }
 
-  depends_on = [ aws_ecr_repository.ecr ]
+  depends_on = [aws_ecr_repository.ecr]
 }
 
 resource "aws_ssm_parameter" "project_name" {
