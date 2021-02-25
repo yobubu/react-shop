@@ -24,6 +24,7 @@ terraform global plan:
   before_script:
     - terraform --version
     - cd infrastructure
+    - chmod +x ./init_remote_backend.sh
     - ./init_remote_backend.sh
     - cd network
     - rm -rf .terraform
