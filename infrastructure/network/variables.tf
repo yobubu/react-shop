@@ -42,9 +42,13 @@ variable "default_tags" {
 }
 
 variable "domain" {
-  default     = "shop.devops.codes"
   description = "Base domain for the project e.g. example.com"
   type        = string
+}
+
+variable "secrets" {
+  description = "Secrets uploaded to AWS Parameters Store"
+  type        = map
 }
 
 ###############################
