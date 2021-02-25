@@ -39,7 +39,6 @@ terraform global plan:
     - rm -rf .terraform
     - terraform init
     - terraform validate
-    - make lint
   script:
     - terraform plan -out "network-plan"
   artifacts:
@@ -67,7 +66,6 @@ terraform staging plan:
     - rm -rf .terraform
     - terraform init
     - terraform validate
-    - make lint
   script:
     - terraform plan -out "staging-plan"
   artifacts:
