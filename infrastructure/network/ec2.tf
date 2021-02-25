@@ -38,9 +38,39 @@ resource "aws_security_group" "tools-sg" {
   vpc_id      = module.vpc.vpc_id
 
   ingress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
+    from_port = 9000
+    to_port   = 9000
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+
+  ingress {
+    from_port = 3000
+    to_port   = 3000
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+
+  ingress {
+    from_port = 9090
+    to_port   = 9090
+    protocol  = "tcp"
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+
+  ingress {
+    from_port = 12201
+    to_port   = 12201
+    protocol  = "udp"
 
     cidr_blocks = [
       "0.0.0.0/0",
