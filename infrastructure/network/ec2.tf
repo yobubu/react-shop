@@ -12,6 +12,9 @@ resource "aws_instance" "tools" {
   root_block_device {
     volume_type = "gp3"
     volume_size = 60
+    tags = merge(map(
+    "Name", "${var.project}-${var.environment}-ec2-tools-vol"
+  ), var.default_tags)
   }
 
   tags = merge(map(
