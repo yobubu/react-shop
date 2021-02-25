@@ -23,13 +23,8 @@ const ModalPage = ({ open, onClose }) => (
             This website was developed by myself using JS & React.
           </p>
           <p>
-            I also practice automation tools in DevOps culture within. You can
-            check my repo in Github to check Jenkinsfile and DockerFile. You can also
-            clone the repo and run this app in localhost using Docker Compose file. It will
-            run also mongodb container with init data of sample game and admin account to 
-            create more games in shop.</p>
-            <p>
-            (credentials: admin@admin.com pass: adminadmin)</p>
+            This app was prepared to use Gitlab CI Pipelines. Infrastructure was done with
+            Terraform to deploy in AWS Cloud. More info you can find on my: 
             <p><a href="https://github.com/pawelfraczyk/react-shop">
             Github repo
           </a></p>
