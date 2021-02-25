@@ -25,7 +25,7 @@ services:
         <<: *DEFAULT_ARGS
       target: Yarn
     ports:
-      - "9090:3000"
+      - "8081:3000"
     command: start
     networks:
       bgshop_net:
@@ -39,7 +39,17 @@ services:
         <<: *DEFAULT_ARGS
       target: Web
     ports:
-      - "9090:80"
+      - "8082:80"
+    networks:
+      bgshop_net:
+
+  web-test: 
+    image: nginx:stable-alpine
+    container_name: web-test
+    ports:
+      - "8083:80"
+    volumes:
+      - ${PWD}/client/build:/usr/share/nginx/html
     networks:
       bgshop_net:
 

@@ -90,8 +90,8 @@ test:
         IMAGE_TAG=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
         docker-compose up -d api-test
     - HOST="api-test" PORT="2370" docker-compose --no-ansi run --rm wait-for
-    - docker-compose up -d web
-    - HOST="web" PORT="80" docker-compose --no-ansi run --rm wait-for
+    - docker-compose up -d web-test
+    - HOST="web-test" PORT="80" docker-compose --no-ansi run --rm wait-for
     - docker-compose down -v
     - docker image ls
   only:

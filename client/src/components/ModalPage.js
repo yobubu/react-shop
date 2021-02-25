@@ -20,7 +20,7 @@ const ModalPage = ({ open, onClose }) => (
         <Modal.Description>
           <Header>Thank you for coming to my app</Header>
           <p>
-            This website was developed by myself using JS & React.
+            This website was developed by myself using JS and React.
           </p>
           <p>
             This app was prepared to use Gitlab CI Pipelines. Infrastructure was done with
@@ -28,6 +28,7 @@ const ModalPage = ({ open, onClose }) => (
             <p><a href="https://github.com/pawelfraczyk/react-shop">
             Github repo
           </a></p>
+          </p>
           <p>
             I will answer all your question about my skills with pleasure so
             don't forget to contact me after that :)
