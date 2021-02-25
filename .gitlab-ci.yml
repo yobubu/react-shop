@@ -53,10 +53,14 @@ terraform global apply:
     name: staging
   before_script:
     - terraform --version
+    - cd infrastructure/network
+    - rm -rf .terraform
+    - terraform init
   script:
     - cd infrastructure/network
     - terraform apply -input=false "network-plan"
-  when: manual
+  dependencies:
+    - terraform global plan
 
 terraform staging plan:
   stage: terraform staging plan
@@ -81,10 +85,11 @@ terraform staging apply:
     name: staging
   before_script:
     - terraform --version
-  script:
     - cd infrastructure/staging
+    - rm -rf .terraform
+    - terraform init
+  script:
     - terraform apply -input=false "staging-plan"
-  when: manual
 
 build api:
   stage: build api
