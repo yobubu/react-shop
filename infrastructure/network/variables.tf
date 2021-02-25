@@ -42,7 +42,7 @@ variable "default_tags" {
 }
 
 variable "domain" {
-  default = "shop.devops.codes"
+  default     = "shop.devops.codes"
   description = "Base domain for the project e.g. example.com"
   type        = string
 }

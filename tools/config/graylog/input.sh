@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# TODO add credentials to SSM Parameter Store and put vars here
 if [ `curl -s -u admin:admin -H 'Content-Type: application/json' -X GET 'http://localhost:9000/api/system/inputs' | grep -c 'Standard GELF UDP input'` == 0 ]
 then
   curl -u admin:admin -H 'Content-Type: application/json' -X POST 'http://localhost:9000/api/system/inputs' -d '{
@@ -8,8 +8,6 @@ then
     "global": true,
     "configuration":   {
           "recv_buffer_size": 262144,
-          "tcp_keepalive": false,
-          "use_null_delimiter": true,
           "number_worker_threads": 2,
           "bind_address": "0.0.0.0",
           "decompress_size_limit": 8388608,

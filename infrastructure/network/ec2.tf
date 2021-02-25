@@ -61,3 +61,8 @@ resource "aws_security_group" "tools-sg" {
     Terraform   = true
   }
 }
+
+# Set default EBS encryption to the region
+resource "aws_ebs_encryption_by_default" "encryption" {
+  enabled = true
+}
