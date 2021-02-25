@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 aws deploy push --application-name $APPLICATION_NAME --s3-location s3://$AWS_S3_BUCKET/$APPLICATION_NAME/$CI_JOB_ID.zip
 ID=$(aws deploy create-deployment --application-name $APPLICATION_NAME --deployment-group-name $DEPLOYMENT_GROUP_NAME --s3-location bucket=$AWS_S3_BUCKET,key=$APPLICATION_NAME/$CI_JOB_ID.zip,bundleType=zip --output text --query '[deploymentId]')
