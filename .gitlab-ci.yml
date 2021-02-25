@@ -1,3 +1,6 @@
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+
 stages:
   - build api
   - build client
@@ -83,9 +86,13 @@ test:
     - docker-compose up -d mongo mongo_seed
     - HOST="mongo" PORT="27017" docker-compose --no-ansi run --rm wait-for
     - $(aws ecr get-login --no-include-email --region eu-west-1)
-    - docker-compose up -d api
+    - >-
+        IMAGE_TAG=$CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
+        docker-compose up -d api-test
     - HOST="api" PORT="2370" docker-compose --no-ansi run --rm wait-for
     - docker-compose up -d web
     - HOST="web" PORT="80" docker-compose --no-ansi run --rm wait-for
+    - docker-compose down -v
+    - docker image ls
   only:
     - develop

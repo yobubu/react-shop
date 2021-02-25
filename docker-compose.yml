@@ -61,6 +61,21 @@ services:
         tag: "bgshop-api"
     networks:
       bgshop_net:
+
+  api-test:
+    container_name: api-test
+    image: ${ECR_REGISTRY}/${PROJECT_NAME:-toptal-task}:${IMAGE_TAG:-latest}
+    environment:
+      <<: *DEFAULT_BACKEND_ENVS
+    ports:
+      - "2370:2370"
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://${GRAY_GELF_ADDRESS}:12201"
+        tag: "bgshop-api-test"
+    networks:
+      bgshop_net:
   
   mongo:
     container_name: mongo
