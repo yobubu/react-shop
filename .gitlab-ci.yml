@@ -40,6 +40,8 @@ terraform global plan:
     - terraform init
     - terraform validate
   script:
+    #TODO store secrets in pipeline variables and map to the file
+    - mv terraform.tfvars.example terraform.tfvars
     - terraform plan -out "network-plan"
   artifacts:
     paths:
@@ -67,6 +69,7 @@ terraform staging plan:
     - terraform init
     - terraform validate
   script:
+    - mv terraform.tfvars.example terraform.tfvars
     - terraform plan -out "staging-plan"
   artifacts:
     paths:
