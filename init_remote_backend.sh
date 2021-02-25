@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Print trace
 set -x -o errexit
