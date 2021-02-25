@@ -57,7 +57,7 @@ services:
     logging:
       driver: "gelf"
       options:
-        gelf-address: "udp://${GRAY_GELF_ADDRESS}:12201"
+        gelf-address: "udp://${GRAY_GELF_ADDRESS:-tools.shop.devops.codes}:12201"
         tag: "bgshop-api"
     networks:
       bgshop_net:
@@ -72,7 +72,7 @@ services:
     logging:
       driver: "gelf"
       options:
-        gelf-address: "udp://${GRAY_GELF_ADDRESS}:12201"
+        gelf-address: "udp://${GRAY_GELF_ADDRESS:-tools.shop.devops.codes}:12201"
         tag: "bgshop-api-test"
     networks:
       bgshop_net:

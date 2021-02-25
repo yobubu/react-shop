@@ -40,3 +40,4 @@ ${COMPOSE} down | true
 # NOTE:
 #   ${COMPOSE} down | true
 #   should always return an RC zero in order to avoid the ApplicationStop Hook failures; it's fairly safe and very simple.
+docker image prune -fa
