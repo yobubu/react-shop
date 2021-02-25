@@ -57,7 +57,6 @@ terraform global apply:
     - rm -rf .terraform
     - terraform init
   script:
-    - cd infrastructure/network
     - terraform apply -input=false "network-plan"
   dependencies:
     - terraform global plan
