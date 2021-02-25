@@ -23,10 +23,9 @@ terraform global plan:
       - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
   before_script:
     - terraform --version
-    - cd infrastructure
     - chmod +x ./init_remote_backend.sh
     - ./init_remote_backend.sh
-    - cd network
+    - cd infrastructure/network
     - rm -rf .terraform
     - terraform init
     - terraform validate
