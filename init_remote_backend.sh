@@ -27,7 +27,7 @@ f_backend() {
         --versioning-configuration Status=Enabled
 }
 
-if aws s3 ls | grep ${PROJECT_NAME}; then
+if aws s3 ls | grep "${PROJECT_NAME}-infrastructure"; then
     echo "State bucket already exists"
 else
     echo "Creating state Bucket and DynamoDB"

@@ -28,6 +28,8 @@ terraform global init:
     - chmod +x ./init_remote_backend.sh
   script:
     - ./init_remote_backend.sh
+  only:
+    - develop
 
 terraform global plan:
   stage: terraform global plan
@@ -46,6 +48,8 @@ terraform global plan:
   artifacts:
     paths:
       - ./infrastructure/network/network-plan
+  only:
+    - develop
 
 terraform global apply:
   stage: terraform global apply
@@ -60,7 +64,9 @@ terraform global apply:
     - terraform apply -input=false "network-plan"
   dependencies:
     - terraform global plan
-
+  only:
+    - develop
+  
 terraform staging plan:
   stage: terraform staging plan
   environment:
@@ -77,6 +83,8 @@ terraform staging plan:
   artifacts:
     paths:
       - ./infrastructure/staging/staging-plan
+  only:
+    - develop
 
 terraform staging apply:
   stage: terraform staging apply
@@ -89,6 +97,8 @@ terraform staging apply:
     - terraform init
   script:
     - terraform apply -input=false "staging-plan"
+  only:
+    - develop
 
 build api:
   stage: build api
