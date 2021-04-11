@@ -2,8 +2,8 @@ resource "aws_lb" "alb_backend_api" {
   name               = "backend-api-load-balancer"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = ["sg-003c309b32c12a97a"]
-  subnets            = ["subnet-0756b4357cd900d66","subnet-09945a26251949647","subnet-0aba583a7d29a94ed"]
+  security_groups    = [aws_security_group.alb_allow_http.id, aws_security_group.backend_allow_http.id]
+  subnets            = data.terraform_remote_state.network_remote_state.outputs.aws_vpc_public_subnets
 
   enable_deletion_protection = false
 
@@ -13,11 +13,11 @@ resource "aws_lb" "alb_backend_api" {
 }
 
 resource "aws_lb_target_group" "target_group_backend_api" {
-  name        = "backend-api-target-group"
-  port        = 80
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = "vpc-0f559810e7e2ba5e8"
+  name                 = "backend-api-target-group"
+  port                 = 80
+  protocol             = "HTTP"
+  target_type          = "ip"
+  vpc_id               = data.terraform_remote_state.network_remote_state.outputs.aws_vpc_id
   deregistration_delay = 10
 }
 

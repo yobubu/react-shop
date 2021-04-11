@@ -16,7 +16,7 @@
 	}],
 	"cpu": 256,
 	"family": "backend-api-task-def",
-	"memory": 1024,
+	"memory": 512,
 	"networkMode": "awsvpc",
 	"requiresCompatibilities": [
 		"FARGATE"
