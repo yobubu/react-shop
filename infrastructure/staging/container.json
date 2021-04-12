@@ -15,7 +15,7 @@
 		"protocol": "tcp"
 	}],
 	"cpu": 256,
-	"family": "backend-api-task-def",
+	"family": "${var.project}-${var.environment}-task-def",
 	"memory": 512,
 	"networkMode": "awsvpc",
 	"requiresCompatibilities": [

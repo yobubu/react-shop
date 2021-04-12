@@ -1,5 +1,5 @@
 resource "aws_lb" "alb_backend_api" {
-  name               = "backend-api-load-balancer"
+  name               = "${var.project}-${var.environment}-backend-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_allow_http.id, aws_security_group.backend_allow_http.id]
@@ -13,7 +13,7 @@ resource "aws_lb" "alb_backend_api" {
 }
 
 resource "aws_lb_target_group" "target_group_backend_api" {
-  name                 = "backend-api-target-group"
+  name                 = "${var.project}-${var.environment}-backend-tg"
   port                 = 80
   protocol             = "HTTP"
   target_type          = "ip"
