@@ -24,5 +24,5 @@ output "frontend_repository_url" {
 }
 output "documentdb_endpoint" {
   description = "The DNS address of the DocDB instance"
-  value = aws_docdb_cluster.docdb.endpoint
+  value = aws_docdb_cluster.documentdb.endpoint
 }
