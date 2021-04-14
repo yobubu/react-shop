@@ -1,0 +1,186 @@
+variables:
+  PROJECT_NAME: 'react-shop'
+  AWS_ECR_REGISTRY: '088302454178.dkr.ecr.ap-southeast-1.amazonaws.com'
+  AWS_S3_WEBSITE_BUCKET: ''
+  ECR_WEB_IMAGE: 'react-shop-dev-frontend-ecr'
+  ECR_API_IMAGE: 'react-shop-dev-backend-ecr'
+  IMAGE_TAG: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
+  
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+
+image: 
+  name: hashicorp/terraform:0.13.5  
+  entrypoint:
+    - '/usr/bin/env'
+    - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
+
+stages:
+  - terraform global init
+  - terraform global plan
+  - terraform global apply
+  - terraform staging plan
+  - terraform staging apply
+  - build api
+  - build client
+  - test
+  # - deploy api
+  # - deploy client
+
+terraform global init:
+  stage: terraform global init
+  environment:
+    name: staging
+  image: bentolor/docker-dind-awscli
+  before_script:
+    - chmod +x ./infrastructure/init-remote-backend.sh
+  script:
+    - ./infrastructure/init-remote-backend.sh
+
+terraform global plan:
+  stage: terraform global plan
+  environment:
+    name: staging
+  before_script:
+    - terraform --version
+    - cd infrastructure/global
+    - rm -rf .terraform
+    - terraform init
+    - terraform validate
+  script:
+    #TODO store secrets in pipeline variables and map to the file
+    - mv terraform.tfvars.example terraform.tfvars
+    - terraform plan -out "global-plan"
+  artifacts:
+    paths:
+      - ./infrastructure/global/global-plan
+
+terraform global apply:
+  stage: terraform global apply
+  environment:
+    name: staging
+  before_script:
+    - terraform --version
+    - cd infrastructure/global
+    - rm -rf .terraform
+    - terraform init
+  script:
+    - terraform apply -input=false "global-plan"
+  dependencies:
+    - terraform global plan
+  
+terraform staging plan:
+  stage: terraform staging plan
+  environment:
+    name: staging
+  before_script:
+    - terraform --version
+    - cd infrastructure/staging
+    - rm -rf .terraform
+    - terraform init
+    - terraform validate
+  script:
+    - mv terraform.tfvars.example terraform.tfvars
+    - terraform plan -out "staging-plan"
+  artifacts:
+    paths:
+      - ./infrastructure/staging/staging-plan
+
+terraform staging apply:
+  stage: terraform staging apply
+  environment:
+    name: staging
+  before_script:
+    - terraform --version
+    - cd infrastructure/staging
+    - rm -rf .terraform
+    - terraform init
+  script:
+    - terraform apply -input=false "staging-plan"
+
+build client:
+  stage: build client
+  environment: 
+    name: staging
+  image: bentolor/docker-dind-awscli
+  services:
+    - name: docker:dind
+  before_script:
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
+  script:
+    - cd client
+    - docker build -t $ECR_WEB:$IMAGE_TAG --target Yarn .
+    - docker tag $ECR_WEB:$IMAGE_TAG $AWS_ECR_REGISTRY/$ECR_WEB:$IMAGE_TAG
+    - docker push $AWS_ECR_REGISTRY/$ECR_WEB:$IMAGE_TAG
+    - docker create -it --name frontend-container $AWS_ECR_REGISTRY/$ECR_WEB:$IMAGE_TAG bash
+    - docker cp frontend-container:/app/bgshop/build $PWD
+  artifacts:
+    paths:
+      - ./client/build
+
+build api:
+  stage: build api
+  environment:
+    name: staging
+  image: bentolor/docker-dind-awscli
+  services:
+    - name: docker:dind 
+  before_script:
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
+  script:
+    - cd api
+    - docker build -t $ECR_API_IMAG:$IMAGE_TAG .
+    - docker tag $ECR_API_IMAG:$IMAGE_TAG $AWS_ECR_REGISTRY/$ECR_API_IMAG:$IMAGE_TAG
+    - docker push $AWS_ECR_REGISTRY/$ECR_API_IMAG:$IMAGE_TAG
+
+# deploy api:
+#   stage: deploy api
+#   environment:
+#     name: staging
+#   image: bentolor/docker-dind-awscli
+#   services:
+#     - name: docker:dind 
+#   before_script:
+#     - chmod +x ./deploy.sh
+#   script:
+#     - ./deploy.sh
+
+# deploy client:
+#   stage: deploy client
+#   environment: 
+#     name: staging
+#   image: bentolor/docker-dind-awscli
+#   services:
+#     - name: docker:dind 
+#   before_script:
+#     - cd ./client/build
+#   script:
+#     - aws s3 sync . s3://$AWS_S3_WEB_BUCKET/
+
+test:
+  stage: test
+  environment:
+    name: staging
+  image: bentolor/docker-dind-awscli
+  services:
+    - name: docker:dind 
+  before_script:
+    - docker info
+    - apk update
+    - apk upgrade
+    - apk add py-pip python3-dev libffi-dev openssl-dev gcc libc-dev rust cargo make sudo curl
+    - sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    - sudo chmod +x /usr/local/bin/docker-compose
+    - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
+  script:
+    - docker-compose up -d mongo mongo_seed
+    - HOST="mongo" PORT="27017" docker-compose --no-ansi run --rm wait-for
+    - >-
+        IMAGE_TAG=$IMAGE_TAG
+        docker-compose up -d api
+    - HOST="api" PORT="2370" docker-compose --no-ansi run --rm wait-for
+    - docker-compose up -d web-test
+    - HOST="web-test" PORT="80" docker-compose --no-ansi run --rm wait-for
+    - docker-compose down -v
+    - docker image ls

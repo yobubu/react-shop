@@ -1,0 +1,113 @@
+version: "3.7"
+
+x-env-aliases:
+  - &DEFAULT_ARGS
+    NODE_TAG: "${NODE_TAG:-10-alpine}"
+    NGINX_TAG: "${NGINX_TAG:-stable-alpine}"
+    REACT_APP_BASE_URL: "${REACT_APP_BASE_URL:-http://localhost:2370}"
+  - &DEFAULT_BACKEND_ENVS
+    MONGO_USER: "${MONGO_USER:-sammy}"
+    MONGO_PASS: "${MONGO_PASS:-dummysammy}"
+    MONGO_CONN_STRING: "${MONGO_CONN_STRING:-mongo:27017/shop?authSource=admin}"
+    MONGO_DB: "${MONGO_DB:-shop}"
+    JWT_SECRET: "${JWT_SECRET:-randomstring}"
+  - &DEFAULT_MONGO_ENVS
+    MONGO_INITDB_ROOT_USERNAME: "${MONGO_INITDB_ROOT_USERNAME:-sammy}"
+    MONGO_INITDB_ROOT_PASSWORD: "${MONGO_INITDB_ROOT_PASSWORD:-dummysammy}"
+
+networks:
+  bgshop_net: {}
+
+services: 
+  yarn: 
+    container_name: yarn
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        <<: *DEFAULT_ARGS
+      target: Yarn
+    ports:
+      - "8081:3000"
+    command: start
+    networks:
+      bgshop_net:
+
+  web: 
+    container_name: web
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      args:
+        <<: *DEFAULT_ARGS
+      target: Web
+    ports:
+      - "8082:80"
+    networks:
+      bgshop_net:
+
+  web-test: 
+    image: nginx:stable-alpine
+    container_name: web-test
+    ports:
+      - "8083:80"
+    volumes:
+      - ${PWD}/client/build:/usr/share/nginx/html
+    networks:
+      bgshop_net:
+
+  api:
+    container_name: api
+    image: ${AWS_ECR_REGISTRY:-088302454178.dkr.ecr.ap-southeast-1.amazonaws.com}/${ECR_API_IMAGE:-react-shop}:${IMAGE_TAG:-latest}
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      <<: *DEFAULT_BACKEND_ENVS
+    ports:
+      - "2370:2370"
+    # logging:
+    #   driver: "gelf"
+    #   options:
+    #     gelf-address: "udp://${GRAY_GELF_ADDRESS:-tools.shop.devops.codes}:12201"
+    #     tag: "bgshop-api"
+    networks:
+      bgshop_net:
+
+  mongo:
+    container_name: mongo
+    image: mongo:3.6
+    restart: always
+    environment:
+      <<: *DEFAULT_MONGO_ENVS
+    ports:
+      - "27017:27017"
+    networks:
+      bgshop_net:
+      
+  mongo_seed:
+    container_name: mongo_seed
+    build: mongo-seed/.
+    networks:
+      bgshop_net:
+    depends_on:
+      - mongo
+
+  wait-for:
+    image: busybox:latest
+    entrypoint: ["sh", "-c"]
+    networks:
+      bgshop_net:
+    command:
+      - |
+          END_TIME=$$(( $$(date +%s) + 60 ));
+          while [ $$(date +%s) -lt $$END_TIME ]; do
+              if nc -w 3 -z -v ${HOST:-mongo} ${PORT:-27017}; then
+                exit 0;
+              fi
+              echo "Connecting.."
+              sleep 1
+          done
+          echo "Could not establish tcp connection to ${HOST:-mongo}:${PORT:-27017}"
+          exit 1;
