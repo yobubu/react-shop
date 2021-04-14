@@ -31,12 +31,12 @@ f_s3() {
         --versioning-configuration Status=Enabled
 }
 
-if [[ $S3_COND ]] && [[ $DYNAMODB_COND ]]; then
+if [[ "$S3_COND" ]] && [[ "$DYNAMODB_COND" ]]; then
     echo "State bucket & DynamoDB Lock Table already exist"
-elif [[ $S3_COND ]] && [[ ! $DYNAMODB_COND ]]; then
+elif [[ "$S3_COND" ]] && [[ ! "$DYNAMODB_COND" ]]; then
     echo "Creating DynamoDB Lock Table"
     f_dynamodb
-elif [[ ! $S3_COND ]] && [[ $DYNAMODB_COND ]]; then
+elif [[ ! "$S3_COND" ]] && [[ "$DYNAMODB_COND" ]]; then
     echo "Creating state Bucket"
     f_s3
 else
