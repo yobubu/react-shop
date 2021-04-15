@@ -18,9 +18,9 @@ image:
 stages:
   - terraform global init
   - terraform global plan
-  - terraform global apply
+  # - terraform global apply
   - terraform staging plan
-  - terraform staging apply
+  # - terraform staging apply
   - build api
   - build client
   - test
@@ -51,23 +51,24 @@ terraform global plan:
     #TODO store secrets in pipeline variables and map to the file
     - mv terraform.tfvars.example terraform.tfvars
     - terraform plan -out "global-plan"
+    - terraform apply -input=false "global-plan"
   artifacts:
     paths:
       - ./infrastructure/global/global-plan
 
-terraform global apply:
-  stage: terraform global apply
-  environment:
-    name: staging
-  before_script:
-    - terraform --version
-    - cd infrastructure/global
-    - rm -rf .terraform
-    - terraform init
-  script:
-    - terraform apply -input=false "global-plan"
-  dependencies:
-    - terraform global plan
+# terraform global apply:
+#   stage: terraform global apply
+#   environment:
+#     name: staging
+#   before_script:
+#     - terraform --version
+#     - cd infrastructure/global
+#     - rm -rf .terraform
+#     - terraform init
+#   script:
+#     - terraform apply -input=false "global-plan"
+#   dependencies:
+#     - terraform global plan
   
 terraform staging plan:
   stage: terraform staging plan
@@ -82,21 +83,22 @@ terraform staging plan:
   script:
     - mv terraform.tfvars.example terraform.tfvars
     - terraform plan -out "staging-plan"
+    - terraform apply -input=false "staging-plan"
   artifacts:
     paths:
       - ./infrastructure/staging/staging-plan
 
-terraform staging apply:
-  stage: terraform staging apply
-  environment:
-    name: staging
-  before_script:
-    - terraform --version
-    - cd infrastructure/staging
-    - rm -rf .terraform
-    - terraform init
-  script:
-    - terraform apply -input=false "staging-plan"
+# terraform staging apply:
+#   stage: terraform staging apply
+#   environment:
+#     name: staging
+#   before_script:
+#     - terraform --version
+#     - cd infrastructure/staging
+#     - rm -rf .terraform
+#     - terraform init
+#   script:
+#     - terraform apply -input=false "staging-plan"
 
 build client:
   stage: build client
