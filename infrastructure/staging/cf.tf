@@ -4,7 +4,7 @@ resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
 
 resource "aws_cloudfront_distribution" "default_distribution" {
   origin {
-    domain_name = aws_s3_bucket.website_bucket.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.website-bucket.bucket_regional_domain_name
     origin_id   = "website"
 
     s3_origin_config {

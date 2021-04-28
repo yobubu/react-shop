@@ -13,8 +13,8 @@ resource "aws_route53_record" "app" {
   name    = "backend.${data.aws_route53_zone.main.name}"
   type    = "A"
   alias {
-    name                   = aws_alb.alb_backend_api.dns_name
-    zone_id                = aws_alb.alb_backend_api.zone_id
+    name                   = aws_lb.alb_backend_api.dns_name
+    zone_id                = aws_lb.alb_backend_api.zone_id
     evaluate_target_health = true
   }
 }
