@@ -6,7 +6,14 @@ provider "aws" {
   version = "~> 3.36"
 }
 
+provider "aws" {
+  alias   = "us-east-1"
+  region  = "us-east-1"
+  version = "~> 3.36.0"
+}
+
 terraform {
+  required_version = "~> 0.13.5"
   # terraform.backend: configuration cannot contain interpolations
   backend "s3" {
     bucket         = "react-shop-infrastructure"
