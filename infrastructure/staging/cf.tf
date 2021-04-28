@@ -52,7 +52,7 @@ resource "aws_cloudfront_distribution" "default_distribution" {
 
   tags = {
     Project     = var.project
-    Environment = var.stage
+    Environment = var.environment
     Terraform   = true
   }
 
