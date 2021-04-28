@@ -8,21 +8,21 @@
 # }
 output "backend_registry_id" {
   description = "The account ID of the registry holding the repository."
-  value = aws_ecr_repository.backend_repo.registry_id
+  value       = aws_ecr_repository.backend_repo.registry_id
 }
 output "backend_repository_url" {
   description = "The URL of the repository."
-  value = aws_ecr_repository.backend_repo.repository_url
+  value       = aws_ecr_repository.backend_repo.repository_url
 }
 output "frontend_registry_id" {
   description = "The account ID of the registry holding the repository."
-  value = aws_ecr_repository.frontend_repo.registry_id
+  value       = aws_ecr_repository.frontend_repo.registry_id
 }
 output "frontend_repository_url" {
   description = "The URL of the repository."
-  value = aws_ecr_repository.frontend_repo.repository_url
+  value       = aws_ecr_repository.frontend_repo.repository_url
 }
 output "documentdb_endpoint" {
   description = "The DNS address of the DocDB instance"
-  value = aws_docdb_cluster.documentdb.endpoint
+  value       = aws_docdb_cluster.documentdb.endpoint
 }

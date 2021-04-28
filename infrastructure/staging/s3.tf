@@ -3,8 +3,8 @@ locals {
 }
 
 resource "aws_s3_bucket" "website-bucket" {
-  bucket = "${var.project}-${var.region}-${var.environment}-website-bucket"
-  acl    = "public-read"
+  bucket        = "${var.project}-${var.region}-${var.environment}-website-bucket"
+  acl           = "public-read"
   force_destroy = true
 
   website {
@@ -23,14 +23,14 @@ data "aws_iam_policy_document" "website-bucket-policy" {
   statement {
     sid = "allow-public-access"
     actions = [
-    "s3:GetObject"
+      "s3:GetObject"
     ]
     resources = [
-    "arn:aws:s3:::${local.website-bucket-name}/*"
+      "arn:aws:s3:::${local.website-bucket-name}/*"
     ]
     principals {
       type        = "*"
-      identifiers = [ "*" ]
+      identifiers = ["*"]
     }
   }
-  }
+}
