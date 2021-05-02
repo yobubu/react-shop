@@ -34,3 +34,9 @@ data "aws_iam_policy_document" "website-bucket-policy" {
     }
   }
 }
+
+resource "aws_s3_bucket" "variables-bucket" {
+  bucket        = "${var.project}-${var.region}-${var.environment}-variables-bucket"
+  acl           = "private"
+  force_destroy = true
+}

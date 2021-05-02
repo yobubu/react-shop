@@ -2,18 +2,15 @@
 # You need to adjust it before apply!
 
 provider "aws" {
-  region  = var.region
-  version = "~> 3.36"
+  region = var.region
 }
 
 provider "aws" {
-  alias   = "us-east-1"
-  region  = "us-east-1"
-  version = "~> 3.36.0"
+  alias  = "us-east-1"
+  region = "us-east-1"
 }
 
 terraform {
-  required_version = "~> 0.13.5"
   # terraform.backend: configuration cannot contain interpolations
   backend "s3" {
     bucket         = "react-shop-infrastructure"

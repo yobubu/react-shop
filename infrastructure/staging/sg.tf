@@ -34,8 +34,8 @@ resource "aws_security_group" "backend_allow_http" {
 
   ingress {
     description = "http from load balancer"
-    from_port   = 80
-    to_port     = 80
+    from_port   = var.app_port
+    to_port     = var.app_port
     protocol    = "tcp"
     self        = true
   }

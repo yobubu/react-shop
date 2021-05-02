@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/static", express.static(path.join(__dirname, "static")));
-app.use(bodyParser.json());
+app.use(express.json());
 
 // routes
 app.use("/api/unsafegames", unsafegames);
@@ -46,8 +46,6 @@ app.use("/api/cart", cart);
 const {
   MONGO_USER,
   MONGO_PASS,
-  MONGO_HOST,
-  MONGO_PORT,
   MONGO_DB,
   MONGO_CONN_STRING
 } = process.env;
@@ -59,7 +57,8 @@ mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_CONN_
   {
     sslValidate: true,
     sslCA: ca,
-    useNewUrlParser: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   },
   (err, client) => {
     if (err)

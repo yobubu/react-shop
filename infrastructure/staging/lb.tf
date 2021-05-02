@@ -14,7 +14,7 @@ resource "aws_lb" "alb_backend_api" {
 
 resource "aws_lb_target_group" "target_group_backend_api" {
   name                 = "${var.project}-${var.environment}-backend-tg"
-  port                 = 80
+  port                 = var.app_port
   protocol             = "HTTP"
   target_type          = "ip"
   vpc_id               = data.terraform_remote_state.network_remote_state.outputs.aws_vpc_id

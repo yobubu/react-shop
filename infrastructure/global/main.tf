@@ -3,7 +3,6 @@
 
 provider "aws" {
   region  = var.region
-  version = "3.36"
 }
 
 terraform {
