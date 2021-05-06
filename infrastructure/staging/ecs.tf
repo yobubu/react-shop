@@ -30,7 +30,7 @@ module "ecs-task-container" {
   essential       = true
   environment_files = [
     {
-      value = "${aws_s3_bucket.variables-bucket.arn}/dev.env"
+      value = "${aws_s3_bucket.variables-bucket.arn}/${var.environment}.env"
       type  = "s3"
     }
   ]

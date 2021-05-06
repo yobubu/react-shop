@@ -58,7 +58,7 @@ services:
 
   api:
     container_name: api
-    image: ${AWS_ECR_REGISTRY:-088302454178.dkr.ecr.ap-southeast-1.amazonaws.com}/${ECR_API_IMAGE:-react-shop}:${IMAGE_TAG:-latest}
+    image: ${AWS_ECR_REGISTRY:-088302454178.dkr.ecr.ap-southeast-1.amazonaws.com}/${ECR_API_IMAGE:-react-shop-dev-backend-ecr}:${IMAGE_TAG:-latest}
     build:
       context: ./api
       dockerfile: Dockerfile

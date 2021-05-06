@@ -1,16 +1,17 @@
 variables:
   PROJECT_NAME: 'react-shop'
   AWS_ECR_REGISTRY: '088302454178.dkr.ecr.ap-southeast-1.amazonaws.com'
-  AWS_S3_WEBSITE_BUCKET: ''
+  AWS_S3_WEBSITE_BUCKET: 'react-shop-ap-southeast-1-dev-website-bucket'
   ECR_WEB_IMAGE: 'react-shop-dev-frontend-ecr'
   ECR_API_IMAGE: 'react-shop-dev-backend-ecr'
   IMAGE_TAG: $CI_COMMIT_REF_NAME-$CI_COMMIT_SHORT_SHA
+  REACT_APP_BASE_URL: 'https://backend.shop.devops.codes'
   
 cache:
   key: ${CI_COMMIT_REF_SLUG}
 
 image: 
-  name: hashicorp/terraform:0.13.5  
+  name: hashicorp/terraform:0.15.1
   entrypoint:
     - '/usr/bin/env'
     - 'PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin'
@@ -25,7 +26,7 @@ stages:
   - build client
   - test
   # - deploy api
-  # - deploy client
+  - deploy client
 
 terraform global init:
   stage: terraform global init
@@ -111,7 +112,7 @@ build client:
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
   script:
     - cd client
-    - docker build -t $ECR_WEB_IMAGE:$IMAGE_TAG --target Yarn .
+    - docker build -t $ECR_WEB_IMAGE:$IMAGE_TAG --build-arg REACT_APP_BASE_URL=$REACT_APP_BASE_URL --target Yarn .
     - docker tag $ECR_WEB_IMAGE:$IMAGE_TAG $AWS_ECR_REGISTRY/$ECR_WEB_IMAGE:$IMAGE_TAG
     - docker push $AWS_ECR_REGISTRY/$ECR_WEB_IMAGE:$IMAGE_TAG
     - docker create -it --name frontend-container $AWS_ECR_REGISTRY/$ECR_WEB_IMAGE:$IMAGE_TAG bash
@@ -147,17 +148,17 @@ build api:
 #   script:
 #     - ./deploy.sh
 
-# deploy client:
-#   stage: deploy client
-#   environment: 
-#     name: staging
-#   image: bentolor/docker-dind-awscli
-#   services:
-#     - name: docker:dind 
-#   before_script:
-#     - cd ./client/build
-#   script:
-#     - aws s3 sync . s3://$AWS_S3_WEB_BUCKET/
+deploy client:
+  stage: deploy client
+  environment: 
+    name: staging
+  image: bentolor/docker-dind-awscli
+  services:
+    - name: docker:dind 
+  before_script:
+    - cd ./client/build
+  script:
+    - aws s3 sync . s3://$AWS_S3_WEBSITE_BUCKET/
 
 test:
   stage: test
