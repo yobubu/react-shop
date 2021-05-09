@@ -26,3 +26,13 @@ output "documentdb_endpoint" {
   description = "The DNS address of the DocDB instance"
   value       = aws_docdb_cluster.documentdb.endpoint
 }
+
+output "ecs_cluster_name" {
+  description = "The DNS address of the DocDB instance"
+  value       = aws_ecs_cluster.ecs_cluster.name
+}
+
+output "ecs_service_name" {
+  description = "The DNS address of the DocDB instance"
+  value       = aws_ecs_service.ecs_service_backend.name
+}

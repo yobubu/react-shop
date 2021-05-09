@@ -18,14 +18,12 @@ image:
 
 stages:
   - terraform global init
-  - terraform global plan
-  # - terraform global apply
-  - terraform staging plan
-  # - terraform staging apply
+  - terraform global apply
+  - terraform staging apply
   - build api
   - build client
   - test
-  # - deploy api
+  - deploy api
   - deploy client
 
 terraform global init:
@@ -38,8 +36,8 @@ terraform global init:
   script:
     - ./infrastructure/init-remote-backend.sh
 
-terraform global plan:
-  stage: terraform global plan
+terraform global apply:
+  stage: terraform global apply
   environment:
     name: staging
   before_script:
@@ -57,22 +55,8 @@ terraform global plan:
     paths:
       - ./infrastructure/global/global-plan
 
-# terraform global apply:
-#   stage: terraform global apply
-#   environment:
-#     name: staging
-#   before_script:
-#     - terraform --version
-#     - cd infrastructure/global
-#     - rm -rf .terraform
-#     - terraform init
-#   script:
-#     - terraform apply -input=false "global-plan"
-#   dependencies:
-#     - terraform global plan
-  
-terraform staging plan:
-  stage: terraform staging plan
+terraform staging apply:
+  stage: terraform staging apply
   environment:
     name: staging
   before_script:
@@ -88,18 +72,6 @@ terraform staging plan:
   artifacts:
     paths:
       - ./infrastructure/staging/staging-plan
-
-# terraform staging apply:
-#   stage: terraform staging apply
-#   environment:
-#     name: staging
-#   before_script:
-#     - terraform --version
-#     - cd infrastructure/staging
-#     - rm -rf .terraform
-#     - terraform init
-#   script:
-#     - terraform apply -input=false "staging-plan"
 
 build client:
   stage: build client
@@ -129,36 +101,13 @@ build api:
   services:
     - name: docker:dind 
   before_script:
+    - apk add curl
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
   script:
     - cd api
     - docker build -t $ECR_API_IMAGE:$IMAGE_TAG .
     - docker tag $ECR_API_IMAGE:$IMAGE_TAG $AWS_ECR_REGISTRY/$ECR_API_IMAGE:$IMAGE_TAG
     - docker push $AWS_ECR_REGISTRY/$ECR_API_IMAGE:$IMAGE_TAG
-
-# deploy api:
-#   stage: deploy api
-#   environment:
-#     name: staging
-#   image: bentolor/docker-dind-awscli
-#   services:
-#     - name: docker:dind 
-#   before_script:
-#     - chmod +x ./deploy.sh
-#   script:
-#     - ./deploy.sh
-
-deploy client:
-  stage: deploy client
-  environment: 
-    name: staging
-  image: bentolor/docker-dind-awscli
-  services:
-    - name: docker:dind 
-  before_script:
-    - cd ./client/build
-  script:
-    - aws s3 sync . s3://$AWS_S3_WEBSITE_BUCKET/
 
 test:
   stage: test
@@ -168,13 +117,7 @@ test:
   services:
     - name: docker:dind 
   before_script:
-    - docker info
-    - apk update
-    - apk upgrade
-    - apk add py-pip python3-dev libffi-dev openssl-dev gcc libc-dev rust cargo make sudo curl
-    - sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    - sudo chmod +x /usr/local/bin/docker-compose
-    - sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+    - apk add docker-compose
     - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ECR_REGISTRY
   script:
     - docker-compose up -d mongo mongo_seed
@@ -187,3 +130,36 @@ test:
     - HOST="web-test" PORT="80" docker-compose --no-ansi run --rm wait-for
     - docker-compose down -v
     - docker image ls
+
+deploy api:
+  stage: deploy api
+  environment:
+    name: staging
+  image: bentolor/docker-dind-awscli
+  services:
+    - name: docker:dind 
+  before_script:
+    - apk add curl git
+    - curl -q --location https://releases.hashicorp.com/terraform/0.15.1/terraform_0.15.1_linux_amd64.zip --output terraform.zip
+    - unzip -o terraform.zip -d /usr/bin
+  script:
+    - cd infrastructure/staging
+    - terraform init
+    - mv terraform.tfvars.example terraform.tfvars
+    - export TF_VAR_app_image=$AWS_ECR_REGISTRY/$ECR_API_IMAGE:$IMAGE_TAG
+    - terraform apply -auto-approve
+    - export ECS_CLUSTER_NAME=$(terraform output ecs_cluster_name | tr -d \")
+    - export ECS_SERVICE_NAME=$(terraform output ecs_service_name | tr -d \")
+    - aws ecs wait services-stable --cluster $ECS_CLUSTER_NAME --services $ECS_SERVICE_NAME
+
+deploy client:
+  stage: deploy client
+  environment: 
+    name: staging
+  image: bentolor/docker-dind-awscli
+  services:
+    - name: docker:dind 
+  before_script:
+    - cd ./client/build
+  script:
+    - aws s3 sync . s3://$AWS_S3_WEBSITE_BUCKET/
