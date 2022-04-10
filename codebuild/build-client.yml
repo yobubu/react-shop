@@ -7,7 +7,7 @@ env:
 
 phases:
   install:
-   runtime-versions:
+    runtime-versions:
       nodejs: 14.x
     commands:
       - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
