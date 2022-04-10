@@ -16,7 +16,8 @@ const ModalPage = ({ open, onClose }) => (
       </Modal.Header>
 
       <Modal.Content image>
-        <Image wrapped size="medium" src={ModalPhoto} />
+        {/* to do - change photo */}
+        {/* <Image wrapped size="medium" src={ModalPhoto} /> */}
         <Modal.Description>
           <Header>Thank you for coming to my app</Header>
           <p>

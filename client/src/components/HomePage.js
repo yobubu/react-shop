@@ -5,15 +5,15 @@ class HomePage extends React.Component {
   render() {
     return (
       <div className="ui stackable">
-        <h1>Before you start.</h1>
+        <h1>Welcome to yobubu.</h1>
 
         <h2>
-          Please take a look at this short video presenting functionality of app
+          My free time
         </h2>
 
         <YouTube
           className="ui stackable container"
-          videoId="Wk3vtXJgr-I"
+          videoId="cyJSZ0u24gc"
           onReady={this._onReady}
         />
       </div>
