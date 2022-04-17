@@ -1,6 +1,6 @@
 resource "aws_codepipeline" "client_pipeline" {
   name     = "client-pipeline"
-  role_arn = "arn:aws:iam::141917287833:role/service-role/AWSCodePipelineServiceRole-eu-west-1-client-pipeline"
+  role_arn = aws_iam_role.codepipeline_role.arn
 
   artifact_store {
     location = aws_s3_bucket.codepipeline_bucket.bucket
@@ -25,9 +25,9 @@ resource "aws_codepipeline" "client_pipeline" {
       output_artifacts = ["SourceArtifact"]
 
       configuration = {
-        ConnectionArn    = "arn:aws:codestar-connections:eu-west-1:141917287833:connection/ecc48ee8-d743-4721-a316-961c2be988f0"
-        FullRepositoryId = "yobubu/react-shop"
-        BranchName       = "devops-project"
+        ConnectionArn        = aws_codestarconnections_connection.github.arn
+        FullRepositoryId     = "yobubu/react-shop"
+        BranchName           = "devops-project"
         OutputArtifactFormat = "CODE_ZIP"
       }
     }
@@ -57,7 +57,7 @@ resource "aws_codepipeline" "client_pipeline" {
 
     action {
       name            = "Deploy"
-      namespace        = "DeployVariables"
+      namespace       = "DeployVariables"
       category        = "Deploy"
       owner           = "AWS"
       provider        = "S3"
@@ -65,8 +65,8 @@ resource "aws_codepipeline" "client_pipeline" {
       version         = "1"
 
       configuration = {
-        BucketName     = "react-shop-yobubu"
-        Extract        = "true"
+        BucketName = "react-shop-yobubu"
+        Extract    = "true"
       }
     }
   }
@@ -81,8 +81,8 @@ resource "aws_s3_bucket_acl" "codepipeline_bucket_acl" {
 }
 
 resource "aws_iam_role" "codepipeline_role" {
-  name = "test-role"
-
+  name               = "AWSCodePipelineServiceRole-eu-west-1-client-pipeline"
+  path               = "/service-role/"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -99,9 +99,9 @@ resource "aws_iam_role" "codepipeline_role" {
 EOF
 }
 
-# resource "aws_iam_role_policy" "codepipeline_policy" {
-#   name = "codepipeline_policy"
-#   role = aws_iam_role.codepipeline_role.id
+# # resource "aws_iam_role_policy" "codepipeline_policy" {
+# #   name = "AWSCodePipelineServiceRole-eu-west-1-client-pipeline"
+# #   role = aws_iam_role.codepipeline_role.id
 
 #   policy = <<EOF
 # {
@@ -126,7 +126,7 @@ EOF
 #       "Action": [
 #         "codestar-connections:UseConnection"
 #       ],
-#       "Resource": "${aws_codestarconnections_connection.example.arn}"
+#       "Resource": "${aws_codestarconnections_connection.github.arn}"
 #     },
 #     {
 #       "Effect": "Allow",
@@ -140,6 +140,11 @@ EOF
 # }
 # EOF
 # }
+
+resource "aws_codestarconnections_connection" "github" {
+  name          = "mygithub"
+  provider_type = "GitHub"
+}
 
 # data "aws_kms_alias" "s3kmskey" {
 #   name = "alias/myKmsKey"
