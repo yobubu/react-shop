@@ -5,3 +5,4 @@ build
 # terraform
 .terraform
 *.tfvars
+.DS_Stores

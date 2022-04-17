@@ -5,12 +5,12 @@ resource "aws_codebuild_project" "build_client" {
   service_role  = "arn:aws:iam::141917287833:role/service-role/codebuild-build-client-service-role"
 
   artifacts {
-    packaging              = "NONE"
-    type                   = "CODEPIPELINE"
+    packaging = "NONE"
+    type      = "CODEPIPELINE"
   }
 
   cache {
-    type     = "NO_CACHE"
+    type = "NO_CACHE"
   }
 
   environment {
@@ -29,7 +29,7 @@ resource "aws_codebuild_project" "build_client" {
 
   logs_config {
     cloudwatch_logs {
-      group_name  = "build-client"
+      group_name = "build-client"
     }
 
   }
