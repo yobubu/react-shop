@@ -1,7 +1,7 @@
 resource "aws_security_group" "public_lb" {
   name        = "${local.stack_name}-public-lb"
   description = "Allow HTTP/HTTPS to public ALB"
-  vpc_id      = "vpc-0b7f23f3f624eb838"
+  vpc_id      = data.terraform_remote_state.shared_remote_state.outputs.aws_vpc_id
 
   ingress {
     description      = "HTTP"
@@ -33,7 +33,7 @@ resource "aws_security_group" "public_lb" {
 resource "aws_security_group" "backend_ecs" {
   name        = "${local.stack_name}-backend-ecs"
   description = "Allow HTTP to backend ECS"
-  vpc_id      = "vpc-0b7f23f3f624eb838"
+  vpc_id      = data.terraform_remote_state.shared_remote_state.outputs.aws_vpc_id
 
   ingress {
     description = "HTTP"

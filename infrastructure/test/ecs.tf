@@ -23,7 +23,7 @@ resource "aws_ecs_service" "backend" {
   }
 
   network_configuration {
-    subnets         = ["subnet-07972c611ecac7842", "subnet-087cce72daa1ace31", "subnet-0bf3b650061b61c0c"]
+    subnets         = data.terraform_remote_state.shared_remote_state.outputs.aws_vpc_private_subnets
     security_groups = [aws_security_group.backend_ecs.id]
   }
 }

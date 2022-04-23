@@ -3,7 +3,7 @@ resource "aws_lb" "public_lb" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.public_lb.id, aws_security_group.backend_ecs.id]
-  subnets            = ["subnet-056e79af0730eabe3", "subnet-0ba658937aa4e62d4", "subnet-07f20734668e0e517"]
+  subnets            = data.terraform_remote_state.shared_remote_state.outputs.aws_vpc_public_subnets
 
   enable_deletion_protection = false
 }
@@ -24,5 +24,5 @@ resource "aws_lb_target_group" "ecs_backend" {
   port        = 80
   protocol    = "HTTP"
   target_type = "ip"
-  vpc_id      = "vpc-0b7f23f3f624eb838"
+  vpc_id      = data.terraform_remote_state.shared_remote_state.outputs.aws_vpc_id
 }
