@@ -38,6 +38,8 @@ services:
 
   api:
     container_name: api
+    image: "api:${IMAGE_TAG:-latest}"
+
     build:
       context: ./api
       dockerfile : Dockerfile
