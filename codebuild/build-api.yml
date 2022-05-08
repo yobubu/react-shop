@@ -11,10 +11,15 @@ phases:
       - echo "install stage"
   pre_build:
     comands:
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 141917287833.dkr.ecr.$AWS_REGION .amazonaws.com
       - IMAGE_TAG="$CODEBUILD_BUILD_NUMBER-$(echo "CODEBUILD_RESOLVED_SOURCE_VERSION" | cut -c 1-7)"
   build:
     commands:
       - docker-compose build api
+      - docker compose up -d mongo
+      - HOST=mongo Port=27017 docker compose run --rm wait_for
+      - docker compose up -d api
+      - HOST=api Port=2370 docker compose run --rm wait_for
   post_build:
     commands:
       - docker images

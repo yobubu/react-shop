@@ -9,7 +9,6 @@ x-env-aliases:
     MONGO_DB: "${MONGO_DB:-shop}"
     JWT_SECRET: "${JWT_SECRET:-rabdomstring}"
 
-
   - &DEFAULT_MONGO_ENVS
     MONGO_INITDB_ROOT_USERNAME: "${MONGO_USER:-sammy}"
     MONGO_INITDB_ROOT_PASSWORD: "${MONGO_PASS:-dummy}"
@@ -18,7 +17,6 @@ x-env-aliases:
     MONGO_USER: "${MONGO_USER:-sammy}"
     MONGO_PASS: "${MONGO_PASS:-dummy}"
     MONGO_CONN_STRING: "${MONGO_CONN_STRING:-mongo:27017/shop?authSource=admin}"
-
 
 networks:
   reactshop_net: {}
@@ -76,3 +74,20 @@ services:
     depends_on:
       - mongo
   
+  wait_for:
+    image: busybox:1.33.1
+    entrypoint: ["sh", "-c"]
+    command:
+      - |
+          END_TIME=$$(( $$( date +%s ) + 30))
+          while [ $$(date +%s) -lt $$END_TIME ]; do
+            if nc -zv ${HOST:-mongo} ${PORT:-27017}; then
+              exit 0;
+            fi
+            sleep 1
+            echo "Connecting to ${HOST:-mongo}.."
+          done
+          echo "Could not establish connection to ${HOST:-mongo}:$PORT:-27017}"
+          exit 1;
+    networks:
+      reactshop_net: 
