@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "backend" {
 [
   {
     "name": "api",
-    "image": "141917287833.dkr.ecr.eu-west-1.amazonaws.com/react-shop-shared-eu-west-1-api:latest",
+    "image": "nginx",
     "cpu": 512,
     "memory": 1024,
     "essential": true,
