@@ -11,7 +11,7 @@ phases:
       - echo "install stage"
   pre_build:
     commands:
-      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 141917287833.dkr.ecr.$AWS_REGION .amazonaws.com
+      - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 141917287833.dkr.ecr.$AWS_REGION.amazonaws.com
       - IMAGE_TAG="$CODEBUILD_BUILD_NUMBER-$(echo "CODEBUILD_RESOLVED_SOURCE_VERSION" | cut -c 1-7)"
   build:
     commands:
