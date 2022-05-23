@@ -138,7 +138,25 @@ resource "aws_iam_role_policy" "client_codebuild" {
         "s3:*"
       ],
       "Resource": ["*"]
-    }
+    },
+     {
+      "Effect": "Allow",
+      "Action": [
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:CompleteLayerUpload",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:InitiateLayerUpload",
+                "ecr:PutImage",
+                "ecr:UploadLayerPart"
+                ],
+      "Resource": ["${aws_ecr_repository.client.arn}"]
+     },
+     {
+            "Effect": "Allow",
+            "Action": "ecr:GetAuthorizationToken",
+            "Resource": "*"
+        }
   ]
 }
 POLICY
@@ -290,7 +308,25 @@ resource "aws_iam_role_policy" "api_codebuild" {
         "${aws_s3_bucket.codepipeline_bucket.arn}",
         "${aws_s3_bucket.codepipeline_bucket.arn}/*"
       ]
-    }
+    },
+      {
+      "Effect": "Allow",
+      "Action": [
+                "ecr:BatchGetImage",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:CompleteLayerUpload",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:InitiateLayerUpload",
+                "ecr:PutImage",
+                "ecr:UploadLayerPart"
+                ],
+      "Resource": ["${aws_ecr_repository.api.arn}"]
+     },
+     {
+            "Effect": "Allow",
+            "Action": "ecr:GetAuthorizationToken",
+            "Resource": "*"
+        }
   ]
 }
 POLICY
