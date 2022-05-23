@@ -4,6 +4,7 @@ version: 0.2
 env:
   variables:
     AWS_REGION: "eu-west-1"
+    REACT_APP_BASE_URL: "https://backend.yobubu.devops.codes/"
 
 phases:
   install:
