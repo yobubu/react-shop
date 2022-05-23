@@ -15,3 +15,9 @@ variable "region" {
   default     = "eu-west-1"
   description = "Name of the region"
 }
+
+variable "domain" {
+  type        = string
+  default     = "yobubu.devops.codes"
+  description = "Dmain fodr Cloudfront Frontend"
+}
