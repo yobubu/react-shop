@@ -12,7 +12,7 @@ resource "aws_ecs_service" "backend" {
   launch_type     = "FARGATE"
   cluster         = aws_ecs_cluster.backend.id
   task_definition = aws_ecs_task_definition.backend.arn
-  desired_count   = 2
+  desired_count   = 1
 
 
   load_balancer {
@@ -23,7 +23,7 @@ resource "aws_ecs_service" "backend" {
 
   network_configuration {
     subnets         = data.terraform_remote_state.shared_remote_state.outputs.aws_vpc_private_subnets
-    security_groups = [aws_security_group.backend_ecs.id]
+    security_groups = [aws_security_group.backend_ecs.id, aws_security_group.docdb.id]
   }
 }
 
@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "backend" {
 [
   {
     "name": "api",
-    "image": "141917287833.dkr.ecr.eu-west-1.amazonaws.com/react-shop-shared-eu-west-1-api:latest",
+    "image": "${var.api_image}",
     "cpu": 512,
     "memory": 1024,
     "essential": true,
@@ -48,7 +48,14 @@ resource "aws_ecs_task_definition" "backend" {
           "hostPort": 2370
         }
     ],
-     "logConfiguration": {
+    "environment": [
+      {"name": "MONGO_USER", "value": "sammy"},
+      {"name": "MONGO_PASS", "value": "dummy"},
+      {"name": "MONGO_CONN_STRING", "value": "${aws_docdb_cluster.docdb.endpoint}:27017/sample-database?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"},
+      {"name": "MONGO_DB", "value": "shop"},
+      {"name": "JWT_SECRET", "value": "randomstring"}
+    ],
+    "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
                     "awslogs-group": "${aws_cloudwatch_log_group.backend_ecs.name}",

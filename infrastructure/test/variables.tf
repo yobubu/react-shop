@@ -21,3 +21,9 @@ variable "domain" {
   default     = "yobubu.devops.codes"
   description = "Dmain fodr Cloudfront Frontend"
 }
+
+variable "api_image" {
+  type        = string
+  default     = "141917287833.dkr.ecr.eu-west-1.amazonaws.com/react-shop-shared-eu-west-1-api:16-d0f4c1a"
+  description = "name of ECR image for Api"
+}

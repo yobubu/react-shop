@@ -7,7 +7,7 @@ x-env-aliases:
     MONGO_PASS: "${MONGO_PASS:-dummy}"
     MONGO_CONN_STRING: "${MONGO_CONN_STRING:-mongo:27017?authSource=admin}"
     MONGO_DB: "${MONGO_DB:-shop}"
-    JWT_SECRET: "${JWT_SECRET:-rabdomstring}"
+    JWT_SECRET: "${JWT_SECRET:-randomstring}"
 
   - &DEFAULT_MONGO_ENVS
     MONGO_INITDB_ROOT_USERNAME: "${MONGO_USER:-sammy}"
