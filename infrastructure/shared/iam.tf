@@ -309,7 +309,7 @@ resource "aws_iam_role_policy" "api_codebuild" {
         "${aws_s3_bucket.codepipeline_bucket.arn}/*"
       ]
     },
-      {
+    {
       "Effect": "Allow",
       "Action": [
                 "ecr:BatchGetImage",
@@ -321,12 +321,12 @@ resource "aws_iam_role_policy" "api_codebuild" {
                 "ecr:UploadLayerPart"
                 ],
       "Resource": ["${aws_ecr_repository.api.arn}"]
-     },
-     {
+    },
+    {
             "Effect": "Allow",
             "Action": "ecr:GetAuthorizationToken",
             "Resource": "*"
-        }
+    }
   ]
 }
 POLICY
