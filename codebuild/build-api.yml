@@ -4,6 +4,7 @@ version: 0.2
 env:
   variables:
     AWS_REGION: "eu-west-1"
+    TERRAFORM_VERSION: 1.1.8
 
 phases:
   install:
