@@ -1,0 +1,27 @@
+version: 0.2
+
+# variables to use during deploy
+env:
+  variables:
+    TERRAFORM_VERSION: 1.1.8
+
+phases:
+  install:
+    commands:
+      - curl -q --location https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip --output terraform.zip
+      - unzip -o terraform.zip -d /usr/bin
+  build:
+    commands:
+      - export TF_VAR_api_image="$(cat api_image.txt)"
+      - cd infrastructure/test
+      - terraform init
+      - terraform fmt -check
+      - terraform validate
+      - terraform apply -auto-approve
+artifacts:
+  files:
+    - api/**/*
+    - codebuild/**/*
+    - infrastructure/**/*
+    - docker-compose.yml
+    - api_image.txt

@@ -125,22 +125,21 @@ resource "aws_codepipeline" "api_pipeline" {
     }
   }
 
-  # stage {
-  #   name = "Deploy"
+  stage {
+    name = "Deploy"
 
-  #   action {
-  #     name            = "Deploy"
-  #     namespace       = "DeployVariables"
-  #     category        = "Deploy"
-  #     owner           = "AWS"
-  #     provider        = "S3"
-  #     input_artifacts = ["BuildArtifact"]
-  #     version         = "1"
+    action {
+      name            = "Deploy"
+      namespace       = "DeployVariables"
+      category        = "Build"
+      owner           = "AWS"
+      provider        = "CodeBuild"
+      input_artifacts = ["BuildArtifact"]
+      version         = "1"
 
-  #     configuration = {
-  #       BucketName = "react-shop-yobubu"
-  #       Extract    = "true"
-  #     }
-  #   }
-  # }
+      configuration = {
+        ProjectName = aws_codebuild_project.deploy_api.name
+      }
+    }
+  }
 }
