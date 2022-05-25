@@ -4,14 +4,11 @@ version: 0.2
 env:
   variables:
     AWS_REGION: "eu-west-1"
-    TERRAFORM_VERSION: 1.1.8
 
 phases:
   install:
     commands:
       - echo "install stage"
-      - curl -q --location https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip --output terraform.zip
-      - unzip -o terraform.zip -d /usr/bin
   pre_build:
     commands:
       - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 141917287833.dkr.ecr.$AWS_REGION.amazonaws.com
@@ -27,12 +24,8 @@ phases:
       - echo "testing"
       - docker-compose down
       - docker-compose push api
-      - export TF_VAR_api_image="$ECR_API_URL:$IMAGE_TAG"
-      - cd infrastructure/test
-      - terraform init
-      - terraform fmt -check
-      - terraform validate
-      - terraform apply -auto-approve
+      - echo "$ECR_API_URL:$IMAGE_TAG" > api_image.txt
+
   post_build:
     commands:
       - docker images
@@ -42,3 +35,4 @@ artifacts:
     - codebuild/**/*
     - infrastructure/**/*
     - docker-compose.yml
+    - api_image.txt
