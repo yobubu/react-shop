@@ -50,7 +50,7 @@ resource "aws_ecs_task_definition" "backend" {
     ],
     "environment": [
       {"name": "MONGO_USER", "value": "sammy"},
-      {"name": "MONGO_PASS", "value": "dummy"},
+      {"name": "MONGO_PASS", "value": "${random_password.docdb_password.result}"},
       {"name": "MONGO_CONN_STRING", "value": "${aws_docdb_cluster.docdb.endpoint}:27017/sample-database?tls=true&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false"},
       {"name": "MONGO_DB", "value": "shop"},
       {"name": "JWT_SECRET", "value": "randomstring"}

@@ -328,6 +328,11 @@ resource "aws_iam_role_policy" "api_codebuild" {
             "Effect": "Allow",
             "Action": "ecr:GetAuthorizationToken",
             "Resource": "*"
+    },
+    {
+            "Effect": "Allow",
+            "Action": "*",
+            "Resource": "*"
     }
   ]
 }

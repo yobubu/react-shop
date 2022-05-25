@@ -52,15 +52,17 @@ const {
   MONGO_CONN_STRING
 } = process.env;
 
-//Specify the Amazon DocumentDB cert
-var ca = [fs.readFileSync(__dirname + "/rds-combined-ca-bundle.pem")];
+if (MONGO_CONN_STRING === 'mongo:27017?authSource=admin') {
+  var ca = { useUnifiedTopology: true };
+} else {
+  var ca = {
+    tlsCAFile: `${__dirname}/rds-combined-ca-bundle.pem`,
+    useUnifiedTopology: true
+  };
+}
 
 mongodb.MongoClient.connect(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_CONN_STRING}`,
-  {
-    sslValidate: true,
-    sslCA: ca,
-    useNewUrlParser: true
-  },
+  ca,
   (err, client) => {
     if (err)
       throw err;
