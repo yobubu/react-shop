@@ -2,7 +2,7 @@ resource "aws_lb" "public_lb" {
   name               = "${local.stack_name}-lb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.public_lb.id , aws_security_group.backend_ecs.id]
+  security_groups    = [aws_security_group.public_lb.id, aws_security_group.backend_ecs.id]
   subnets            = data.terraform_remote_state.shared_remote_state.outputs.aws_vpc_public_subnets
 
   enable_deletion_protection = false
