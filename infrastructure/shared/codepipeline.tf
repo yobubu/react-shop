@@ -102,7 +102,7 @@ resource "aws_codepipeline" "api_pipeline" {
       configuration = {
         ConnectionArn        = aws_codestarconnections_connection.github.arn
         FullRepositoryId     = "yobubu/react-shop"
-        BranchName           = "devops-branch"
+        BranchName           = "devops-project"
         OutputArtifactFormat = "CODE_ZIP"
       }
     }
