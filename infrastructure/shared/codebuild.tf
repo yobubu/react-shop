@@ -70,7 +70,7 @@ resource "aws_codebuild_project" "build_api" {
   }
 
   environment {
-    privileged_mode             = false
+    privileged_mode             = true
     compute_type                = "BUILD_GENERAL1_SMALL"
     image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
