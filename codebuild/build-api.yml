@@ -4,6 +4,7 @@ version: 0.2
 env:
   variables:
     AWS_REGION: "us-west-1"
+    PORT: 2370
 
 phases:
   install:
