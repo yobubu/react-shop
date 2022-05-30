@@ -3,7 +3,7 @@ locals {
 }
 
 resource "random_password" "docdb_password" {
-  length      = 3
+  length      = 13
   special     = false
   lower       = true
   upper       = true

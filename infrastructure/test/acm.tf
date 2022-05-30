@@ -1,5 +1,5 @@
 resource "aws_acm_certificate" "frontend" {
-  provider          = aws.us-east-2
+  provider          = aws.us-east-1
   domain_name       = var.domain
   validation_method = "DNS"
 

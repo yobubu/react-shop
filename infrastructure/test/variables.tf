@@ -19,7 +19,7 @@ variable "region" {
 variable "domain" {
   type        = string
   default     = "yobubu.devops.codes"
-  description = "Dmain fodr Cloudfront Frontend"
+  description = "Domain for Cloudfront Frontend"
 }
 
 variable "api_image" {

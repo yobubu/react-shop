@@ -17,7 +17,7 @@ resource "aws_ecs_service" "backend" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group.ecs_backend.arn
-    container_name   = "backend"
+    container_name   = "api"
     container_port   = 2370
   }
 
@@ -39,8 +39,8 @@ resource "aws_ecs_task_definition" "backend" {
   {
     "name": "api",
     "image": "${var.api_image}",
-    "cpu": 1024,
-    "memory": 2048,
+    "cpu": 512,
+    "memory": 1024,
     "essential": true,
     "portMappings": [
         {
