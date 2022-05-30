@@ -1,7 +1,7 @@
 resource "aws_route53_record" "Frontend" {
 
   allow_overwrite = true
-  name            = var.domain
+  name            = "frontend.${var.domain}"
   type            = "A"
   zone_id         = data.aws_route53_zone.domain.zone_id
   alias {

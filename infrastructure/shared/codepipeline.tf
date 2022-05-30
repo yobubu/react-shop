@@ -3,7 +3,7 @@ resource "aws_codestarconnections_connection" "github" {
   provider_type = "GitHub"
 }
 
-# CLIENT POIPELINE
+# CLIENT PIPELINE
 
 resource "aws_codepipeline" "client_pipeline" {
   name     = "${local.stack_name}-client-pipeline"
@@ -13,6 +13,8 @@ resource "aws_codepipeline" "client_pipeline" {
     location = aws_s3_bucket.codepipeline_bucket.bucket
     type     = "S3"
   }
+
+
 
   stage {
     name = "Source"
@@ -100,7 +102,7 @@ resource "aws_codepipeline" "api_pipeline" {
       configuration = {
         ConnectionArn        = aws_codestarconnections_connection.github.arn
         FullRepositoryId     = "yobubu/react-shop"
-        BranchName           = "devops-project"
+        BranchName           = "devops-branch"
         OutputArtifactFormat = "CODE_ZIP"
       }
     }

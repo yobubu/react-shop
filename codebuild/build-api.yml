@@ -3,7 +3,7 @@ version: 0.2
 # variables to use during the build
 env:
   variables:
-    AWS_REGION: "eu-west-1"
+    AWS_REGION: "us-west-1"
 
 phases:
   install:
@@ -20,7 +20,7 @@ phases:
       - docker-compose up -d mongo
       - HOST=mongo PORT=27017 docker-compose run --rm wait_for
       - docker-compose up -d api
-      - HOST=api PORT=2370 docker-compose run --rm wait_for
+      - HOST=api Port=2370 docker-compose run --rm wait_for
       - echo "testing"
       - docker-compose down
       - docker-compose push api
