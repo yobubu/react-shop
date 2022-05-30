@@ -70,7 +70,7 @@ resource "aws_codebuild_project" "build_api" {
   }
 
   environment {
-    privileged_mode             = true
+    privileged_mode             = false
     compute_type                = "BUILD_GENERAL1_SMALL"
     image                       = "aws/codebuild/standard:5.0"
     type                        = "LINUX_CONTAINER"
@@ -93,7 +93,7 @@ resource "aws_codebuild_project" "build_api" {
   vpc_config {
     vpc_id = module.vpc.vpc_id
 
-    subnets = module.vpc.private_subnets
+    subnets = module.vpc.public_subnets
 
     security_group_ids = [module.vpc.default_security_group_id]
   }

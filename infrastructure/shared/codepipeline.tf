@@ -62,7 +62,7 @@ resource "aws_codepipeline" "client_pipeline" {
       namespace       = "DeployVariables"
       category        = "Deploy"
       owner           = "AWS"
-      provider        = "S3"
+      provider        = "CodeBuild"
       input_artifacts = ["BuildArtifact"]
       version         = "1"
 
@@ -100,7 +100,7 @@ resource "aws_codepipeline" "api_pipeline" {
       configuration = {
         ConnectionArn        = aws_codestarconnections_connection.github.arn
         FullRepositoryId     = "yobubu/react-shop"
-        BranchName           = "devops-project"
+        BranchName           = "devops-branch"
         OutputArtifactFormat = "CODE_ZIP"
       }
     }

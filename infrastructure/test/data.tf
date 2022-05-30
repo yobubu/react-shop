@@ -8,7 +8,7 @@ data "terraform_remote_state" "shared_remote_state" {
   }
 }
 
-data "aws_route53_zone" "domain" {
+data "aws_route53_zone" "domena" {
   name         = var.domain
   private_zone = false
 }

@@ -10,7 +10,7 @@ output "aws_vpc_private_subnets" {
 
 output "aws_vpc_public_subnets" {
   description = "List of IDs of public subnets"
-  value       = module.vpc.public_subnets
+  value       = module.vpc.public_subnet
 }
 
 output "ecr_client_url" {
