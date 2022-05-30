@@ -16,7 +16,7 @@ resource "aws_cloudfront_distribution" "frontend" {
     }
   }
 
-  enabled             = false
+  enabled             = true
   is_ipv6_enabled     = true
   comment             = "Frontend Cloudfront"
   default_root_object = "index.html"
